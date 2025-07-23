@@ -6,8 +6,7 @@
 
 {
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
+  
   imports =
   #let
   #	fromRoot = path: "${inputs.self}/${path}";
@@ -19,6 +18,8 @@
       ./steam.nix
       ( import (my.utils.fromRoot "/shared/system/management.nix") { path = "/etc/nixos"; } )
       ./desktops
+      ./programs
+      ./misc
       #"${inputs.self}/steam.nix"
 #      (my.utils.fromRoot "steam/steam.nix")
     ];
@@ -51,8 +52,7 @@
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
 
-  nixpkgs.config.allowUnfree = true;
-  
+    
 
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
@@ -83,6 +83,13 @@
 	#userEmail = "gustav@fagerlind.net";
   };
 
+  /*programs.neovim = {
+
+  	enable = true;
+	defaultEditor = true;
+  
+  };*/
+
   #services.displayManager.ly.enable=true;
   #services.displayManager.autoLogin.enable = true;
   #services.displayManager.autoLogin.user = "goos";
@@ -90,7 +97,7 @@
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
-    neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+ # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     kitty
     fastfetch
