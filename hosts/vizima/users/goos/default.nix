@@ -1,10 +1,12 @@
 { pkgs, ... }:
 {			
 
-	isNormalUser = true;
+	users.users.goos = {
+		isNormalUser = true;
     		
-	extraGroups = [ "wheel" "networkmanager" "nixmgr" ];
+		extraGroups = [ "wheel" "networkmanager" "nixmgr" ];
 
-	shell = pkgs.zsh;
+		shell = pkgs.zsh;
+	};
 
 }
