@@ -4,7 +4,7 @@
 	imports = [
 		./autologin.nix
 
-		./hyprland/configuration.nix
+		./hyprland
 	];
 
 }

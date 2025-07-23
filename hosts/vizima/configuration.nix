@@ -13,12 +13,12 @@
   #	fromRoot = path: "${inputs.self}/${path}";
   #in
     [ # Include the results of the hardware scan.
-      ./hardware/configuration.nix
+      ./hardware
       ./boot.nix
-      ./users/users.nix
+      ./users
       ./steam.nix
       ( import (my.utils.fromRoot "/shared/system/management.nix") { path = "/etc/nixos"; } )
-      ./desktops/configuration.nix
+      ./desktops
       #"${inputs.self}/steam.nix"
 #      (my.utils.fromRoot "steam/steam.nix")
     ];
@@ -99,7 +99,7 @@
     nemo
     gh
     hyprsunset
-    wofi    
+    rofi-wayland
     spotify
   ];
 
