@@ -5,6 +5,7 @@
 		./editors
 		./shells
 		./browsers
+		./bitwarden.nix
 	];
 
 }
