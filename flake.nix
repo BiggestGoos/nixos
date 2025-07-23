@@ -19,11 +19,14 @@
     let
     		my.utils.root = builtins.toString ./.;
     		my.utils.fromRoot = path: "${my.utils.root}/${path}";
-		hostname = "vizima";
     in
     { 
 
-    	${hostname} = nixpkgs.lib.nixosSystem {
+	vizima =
+	let
+		hostname = "vizima";
+	in
+	nixpkgs.lib.nixosSystem {
     		system = "x86-64-linux";
 
 		specialArgs = { inherit inputs; inherit my; inherit hostname; };
@@ -40,6 +43,31 @@
 	  			};
 			}
       		];
-    	};};
+    	};
+
+	kovir = 
+	let
+		hostname = "kovir";
+	in
+	nixpkgs.lib.nixosSystem {
+		system = "x86-64-linux";
+
+		specialArgs = { inherit inputs; inherit my; inherit hostname; };
+
+    		modules = [ 	
+      			./hosts/${hostname}/configuration.nix 
+
+			home-manager.nixosModules.home-manager
+			{
+	 			home-manager = {
+	    				useGlobalPkgs = true;
+	    				useUserPackages = true;
+	    				users = import ./hosts/${hostname}/users/home_manager_users.nix;
+	  			};
+			}
+      		];
+
+	};
+    };
     };
 }
