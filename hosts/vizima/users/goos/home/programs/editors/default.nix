@@ -1,0 +1,8 @@
+{ lib, osConfig, ... }:
+{
+
+	imports = [
+		./neovim
+	];
+
+}

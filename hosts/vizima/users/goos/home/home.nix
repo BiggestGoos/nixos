@@ -1,8 +1,11 @@
 { config, pkgs, ... }:
 {
 
+	home.username = "goos";
+	
 	imports = [
 		./desktops
+		./programs
 	];
 
 	programs.git = {

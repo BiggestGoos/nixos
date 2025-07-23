@@ -1,6 +1,6 @@
-{ ... }:
+{ pkgs, lib, ... }:
 {
 	
-	users.users.goos = import ./goos;
+	users.users.goos = import ./goos { inherit pkgs; };
 
 }
