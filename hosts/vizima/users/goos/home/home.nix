@@ -1,6 +1,10 @@
 { config, pkgs, ... }:
 {
 
+	imports = [
+		./desktops
+	];
+
 	programs.git = {
 		enable = true;
 		userName = "BiggestGoos";
