@@ -11,9 +11,13 @@
 		inputs.nixpkgs.follows = "nixpkgs";
 	};
 
+	floorp-disable-lto = {
+      		url = "github:NixOS/nixpkgs?ref=pull/422814/head";
+    	};
+
   };
 
-  outputs = { self, nixpkgs, home-manager }@inputs: { 
+  outputs = { self, nixpkgs, home-manager, floorp-disable-lto }@inputs: { 
 
     nixosConfigurations = 
     let
@@ -30,7 +34,7 @@
     		system = "x86-64-linux";
 
 		specialArgs = { inherit inputs; inherit my; inherit hostname; };
-		
+
     		modules = [ 	
       			./hosts/${hostname}/configuration.nix 
 
@@ -40,6 +44,7 @@
 	    				useGlobalPkgs = true;
 	    				useUserPackages = true;
 	    				users = import ./hosts/${hostname}/users/home_manager_users.nix;
+					extraSpecialArgs = { inherit inputs; inherit my; inherit hostname; };
 	  			};
 			}
       		];

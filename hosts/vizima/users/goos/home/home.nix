@@ -1,7 +1,11 @@
 { config, pkgs, ... }:
+let
+	username = "goos";
+in
 {
 
-	home.username = "goos";
+	home.username = username;
+	home.homeDirectory = "/home/${username}";
 	
 	imports = [
 		./desktops

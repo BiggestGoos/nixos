@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "floorp-disable-lto": {
+      "locked": {
+        "lastModified": 1751758156,
+        "narHash": "sha256-uSQym/NXvkWmyWESpJR8Zou0u6Idr5uFyGBSIM59hu4=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "87f6213006df821ac218d982d32fcb7cb9cef5e6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "pull/422814/head",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -38,6 +54,7 @@
     },
     "root": {
       "inputs": {
+        "floorp-disable-lto": "floorp-disable-lto",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs"
       }
