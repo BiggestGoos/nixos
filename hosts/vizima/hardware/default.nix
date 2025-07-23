@@ -5,12 +5,19 @@
 	(modulesPath + "/installer/scan/not-detected.nix")
 	./graphics.nix
 	./networking.nix
+	./lid.nix
+	./power.nix
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "vmd" "nvme" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ "dm-snapshot" "cryptd"];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+
+  services.fstrim = {
+  	enable = true;
+	interval = "weekly";
+  };
 
   fileSystems."/" =
     { device = "/dev/disk/by-label/vizima-base";
