@@ -1,4 +1,4 @@
-{ inputs, hostname, ... }:
+{ inputs, hostname, config, ... }:
 {
 
 	programs.floorp = {
@@ -13,7 +13,7 @@
 			"sv-SE"
 		];
 
-		profiles."${hostname}" = {
+		profiles."${config.home.username}" = {
 
 			userChrome = builtins.readFile ./css/userChrome.css;
 			userContent = builtins.readFile ./css/userContent.css;
