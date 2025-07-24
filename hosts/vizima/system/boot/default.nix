@@ -2,6 +2,8 @@
 {
 
 	imports = [
-		./boot.nix
+		./bootloader.nix
+		./plymouth
 	];
+
 }
