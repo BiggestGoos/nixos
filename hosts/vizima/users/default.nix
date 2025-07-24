@@ -1,8 +1,10 @@
-{ pkgs, lib, ... }:
+{ ... }:
 {
 
 	imports = [
-		./goos
+		./users
+		./desktops
+		./programs
 	];
 
 }

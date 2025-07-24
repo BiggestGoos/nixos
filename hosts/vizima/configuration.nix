@@ -12,13 +12,10 @@
   #	fromRoot = path: "${inputs.self}/${path}";
   #in
     [ # Include the results of the hardware scan.
-      ./hardware
-      ./boot.nix
       ./users
       ./steam.nix
       ( import (my.utils.fromRoot "/shared/system/management.nix") { path = "/etc/nixos"; } )
-      ./desktops
-      ./programs
+      ./system
       ./misc
       #"${inputs.self}/steam.nix"
 #      (my.utils.fromRoot "steam/steam.nix")
