@@ -12,6 +12,7 @@
 		./tops
 		./media
 		./consoles
+		./gaming
 	];
 
 }
