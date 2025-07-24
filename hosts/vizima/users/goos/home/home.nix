@@ -7,7 +7,7 @@ in
 	home.username = username;
 	home.homeDirectory = "/home/${username}";
 	
-	home.activationGenerateGcRoot = lib.mkForce true;
+	#home.activationGenerateGcRoot = lib.mkForce true;
 
 	imports = [
 		./desktops

@@ -6,7 +6,6 @@ in
 {
 	
 	home.file."${configHomeDir}/env" = {
-#		force = true;
 		text = 
 		''
 		
@@ -34,7 +33,6 @@ in
 	};
 
 	home.file."${configHomeDir}/env-hyprland" = {
-		force = true;
 		text = 
 		''
 			
