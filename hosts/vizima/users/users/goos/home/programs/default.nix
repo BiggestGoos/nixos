@@ -5,7 +5,14 @@
 		./editors
 		./shells
 		./browsers
-		./bitwarden.nix
+		./fetchers
+		./file_managers
+		./utility
+		./git
+		./tops
+		./media
+		./app_launchers
+		./consoles
 	];
 
 }
