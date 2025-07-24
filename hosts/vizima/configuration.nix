@@ -83,6 +83,8 @@
 	#userEmail = "gustav@fagerlind.net";
   };
 
+  services.blueman.enable = true;
+
   /*programs.neovim = {
 
   	enable = true;
