@@ -4,6 +4,7 @@
 	imports = [
 		./configuration
 		./programs
+		./themes
 	];
 
 }
