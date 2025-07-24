@@ -67,7 +67,7 @@
 	 			home-manager = {
 	    				useGlobalPkgs = true;
 	    				useUserPackages = true;
-	    				users = import ./hosts/${hostname}/users/home_manager_users.nix;
+	    				users = import ./hosts/${hostname}/users/users/home_manager_users.nix;
 	  			};
 			}
       		];
