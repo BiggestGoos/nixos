@@ -8,6 +8,7 @@
 	./lid.nix
 	./power.nix
 	./bluetooth.nix
+	./audio.nix
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "vmd" "nvme" "usb_storage" "sd_mod" ];
