@@ -2,8 +2,7 @@
 {
 
 	imports = [
-		./configuration
-		./programs
+		./swaync
 	];
 
 }

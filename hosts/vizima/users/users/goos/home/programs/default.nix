@@ -11,7 +11,6 @@
 		./git
 		./tops
 		./media
-		./app_launchers
 		./consoles
 	];
 

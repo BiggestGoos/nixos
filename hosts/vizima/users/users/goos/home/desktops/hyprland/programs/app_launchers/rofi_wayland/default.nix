@@ -12,7 +12,7 @@ in
 
 	};
 
-	#home.file."${configHomeDir}/config.rasi" = ./config.rasi;
-	home.file."${configHomeDir}/current.rasi" = ./current.rasi;
+	home.file."${configHomeDir}/config.rasi".source = ./config.rasi;
+	home.file."${configHomeDir}/current.rasi".source = ./current.rasi;
 
 }
