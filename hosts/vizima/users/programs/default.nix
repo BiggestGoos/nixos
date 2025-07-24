@@ -4,6 +4,7 @@
 	imports = [
 		./shells
 		./editors
+		./gaming
 	];
 
 }

@@ -13,7 +13,6 @@
   #in
     [ # Include the results of the hardware scan.
       ./users
-      ./steam.nix
       ( import (my.utils.fromRoot "/shared/system/management.nix") { path = "/etc/nixos"; } )
       ./system
       ./misc
