@@ -4,6 +4,7 @@
 	imports = [
 		./gtk
 		./qt
+		./cursor
 	];
 
 }
