@@ -13,6 +13,7 @@
 		./media
 		./consoles
 		./gaming
+		./social
 	];
 
 }
