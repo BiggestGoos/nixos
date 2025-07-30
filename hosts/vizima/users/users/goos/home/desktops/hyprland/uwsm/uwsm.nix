@@ -1,8 +1,9 @@
-{ config, ... }:
+{ config, ... }@args:
 let
 	configDir = "uwsm";
 	configHomeDir = "${config.xdg.configHome}/${configDir}";
 in
+with args; lib.mkIf (builtins.elem "hyprland" osConfig.desktops.enabled)
 {
 	
 	home.file."${configHomeDir}/env" = {

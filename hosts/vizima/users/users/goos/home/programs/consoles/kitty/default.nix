@@ -25,7 +25,7 @@
 
 			remember_window_size = false;
 			window_padding_width = 0;
-			hide_window_decorations = true;
+			#hide_window_decorations = true;
 			confirm_os_window_close = 2;
 
 			background = "#021117";

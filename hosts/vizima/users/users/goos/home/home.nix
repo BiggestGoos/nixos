@@ -12,5 +12,13 @@ in
 		./programs
 	];	
 
+	specialisation.test3.configuration = {
+
+		home.packages = [
+			pkgs.onefetch
+		];
+
+	};
+
 	home.stateVersion = "25.11";
 }

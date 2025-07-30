@@ -12,8 +12,11 @@
 	};
 
 	floorp-disable-lto = {
-      		url = "github:NixOS/nixpkgs?ref=pull/422814/head";
-    	};
+		#url = "github:NixOS/nixpkgs?ref=pull/412138/head"; # 11.27
+		url = "github:NixOS/nixpkgs?ref=pull/422814/head"; # 11.28 - Disable lto
+		#url = "github:NixOS/nixpkgs?ref=pull/429058/head"; # 11.29
+		#url = "github:NixOS/nixpkgs?ref=pull/429123/head"; # 11.29 - NixOS 25.05
+	};
 
   };
 
@@ -21,34 +24,58 @@
 
     nixosConfigurations = 
     let
-    		my.utils.root = builtins.toString ./.;
-    		my.utils.fromRoot = path: "${my.utils.root}/${path}";
-    in
+    	szy = import ./szy { root = ./.; };
+	in
     { 
 
-	vizima =
-	let
-		hostname = "vizima";
-	in
-	nixpkgs.lib.nixosSystem {
-    		system = "x86-64-linux";
+		vizima =
+			let
+				hostname = "vizima";
+			in
+			nixpkgs.lib.nixosSystem {
+    	
+				system = "x86-64-linux";
 
-		specialArgs = { inherit inputs; inherit my; inherit hostname; };
+				specialArgs = { inherit inputs; inherit hostname; inherit szy; };	
 
-    		modules = [ 	
-      			./hosts/${hostname}/configuration.nix 
+    			modules = [ 
+	
+					({ ... }:
+					{
 
-			home-manager.nixosModules.home-manager
-			{
-	 			home-manager = {
+						imports = [
+
+				      		./hosts/${hostname}/configuration.nix
+		
+							home-manager.nixosModules.home-manager
+							{
+				
+				/*specialisation.test.configuration = {
+
+					home-manager = {
 	    				useGlobalPkgs = true;
 	    				useUserPackages = true;
 	    				users = import ./hosts/${hostname}/users/users/home_manager_users.nix;
-					extraSpecialArgs = { inherit inputs; inherit my; inherit hostname; };
-	  			};
+						extraSpecialArgs = { inherit inputs; inherit my; inherit hostname; };
+  					};
+
+				};*/
+
+	 			home-manager = {
+	    			useGlobalPkgs = true;
+	    			useUserPackages = true;
+					backupFileExtension = "backup";
+	    			users = import ./hosts/${hostname}/users/users/home_manager_users.nix;
+					extraSpecialArgs = { inherit inputs; inherit hostname; };
+  				};
 			}
-      		];
-    	};
+
+		];
+
+		})
+
+      	];
+    };
 
 	kovir = 
 	let
@@ -57,7 +84,7 @@
 	nixpkgs.lib.nixosSystem {
 		system = "x86-64-linux";
 
-		specialArgs = { inherit inputs; inherit my; inherit hostname; };
+		specialArgs = { inherit inputs; inherit hostname; };
 
     		modules = [ 	
       			./hosts/${hostname}/configuration.nix 

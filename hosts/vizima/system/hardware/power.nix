@@ -7,7 +7,7 @@
 
 	services.auto-cpufreq = {
 
-		enable = true;
+		enable = false;
 
 		settings = {
 

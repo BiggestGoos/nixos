@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 {
 
 	imports = [
@@ -8,6 +8,7 @@
 		./xdg_portal.nix
 		./programs
 		./luks_resume.nix
+		./autologin.nix
 	];
 
 }
