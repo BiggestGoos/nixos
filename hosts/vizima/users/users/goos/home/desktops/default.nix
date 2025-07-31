@@ -1,8 +1,8 @@
-{ ... }:
+{ osConfig, ... }:
 {
 
 	imports = [
-		./hyprland
-	];
+		./${osConfig.desktops.default}
+	] ++ (builtins.map (name: ./${name}) osConfig.desktops.enabled);
 
 }

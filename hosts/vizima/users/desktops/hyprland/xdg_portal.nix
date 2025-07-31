@@ -1,4 +1,4 @@
-{ pkgs, ... }@args: with args; lib.mkIf (builtins.elem "hyprland" config.desktops.enabled)
+{ pkgs, szy, ... }:# szy.desktops.ifEnabled "hyprland"
 {
 
 	xdg.portal = {

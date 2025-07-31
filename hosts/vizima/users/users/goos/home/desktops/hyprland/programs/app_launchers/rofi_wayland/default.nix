@@ -1,9 +1,8 @@
-{ pkgs, config, ... }@args:
+{ pkgs, config, szy, ... }@args:
 let
 	configDir = "rofi";
 	configHomeDir = "${config.xdg.configHome}/${configDir}";
 in
-with args; lib.mkIf (builtins.elem "hyprland" osConfig.desktops.enabled)
 {
 
 	programs.rofi = {

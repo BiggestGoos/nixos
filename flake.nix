@@ -16,6 +16,7 @@
 		url = "github:NixOS/nixpkgs?ref=pull/422814/head"; # 11.28 - Disable lto
 		#url = "github:NixOS/nixpkgs?ref=pull/429058/head"; # 11.29
 		#url = "github:NixOS/nixpkgs?ref=pull/429123/head"; # 11.29 - NixOS 25.05
+		#url = "github:NixOS/nixpkgs?ref=pull/424715/head"; # 12.0.15
 	};
 
   };
@@ -24,13 +25,15 @@
 
     nixosConfigurations = 
     let
-    	szy = import ./szy { root = ./.; };
+    	
+		
 	in
     { 
 
 		vizima =
 			let
 				hostname = "vizima";
+				szy = import ./szy { inherit inputs; inherit hostname; };
 			in
 			nixpkgs.lib.nixosSystem {
     	
@@ -66,7 +69,7 @@
 	    			useUserPackages = true;
 					backupFileExtension = "backup";
 	    			users = import ./hosts/${hostname}/users/users/home_manager_users.nix;
-					extraSpecialArgs = { inherit inputs; inherit hostname; };
+					extraSpecialArgs = { inherit inputs; inherit hostname; inherit szy; };
   				};
 			}
 

@@ -1,4 +1,4 @@
-{ ... }@args: with args; lib.mkIf (builtins.elem "hyprland" config.desktops.enabled)
+{ szy, ... }:# szy.desktops.ifEnabled "hyprland"
 {
 
 	programs.hyprland = {

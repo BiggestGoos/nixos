@@ -1,7 +1,7 @@
-{ ... }@args: with args; lib.mkIf (builtins.elem "gnome" config.desktops.enabled)
+{ config, ... }: # lib.mkIf (config.desktops.default == "gnome") #szy.desktops.ifEnabled "gnome"
 {
 
-	services.displayManager.gdm.enable = with args; (config.desktops.default == "gnome");
+	services.displayManager.gdm.enable = (config.desktops.default == "gnome");#szy.desktops.isDefault "gnome";
 	services.desktopManager.gnome.enable = true;
 
 }

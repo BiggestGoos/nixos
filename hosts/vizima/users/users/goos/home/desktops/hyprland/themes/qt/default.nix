@@ -1,4 +1,4 @@
-{ pkgs, ... }@args: with args; lib.mkIf (osConfig.desktops.default == "hyprland")
+{ pkgs, szy, ... }: szy.desktops.ifDefault "hyprland"
 {
 
 	qt = {

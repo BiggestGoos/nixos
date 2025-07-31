@@ -1,4 +1,4 @@
-{ pkgs, ... }@args: with args; lib.mkIf (builtins.elem "hyprland" osConfig.desktops.enabled)
+{ pkgs, szy, ... }:
 {
 
 	home.packages = with pkgs; [

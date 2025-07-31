@@ -1,36 +1,16 @@
-{ pkgs, lib, config, desktop, ... }:
+{ pkgs, lib, config, desktop, szy, ... }:
 {
-	
-	options = { 
-		
-		desktops = 
-		let
-			available = [ "hyprland" "gnome" "plasma" ];
-		in
-		{ 
-			
-			default = lib.mkOption {
-		
-				type = lib.types.enum available;
-				default = "hyprland";
-	
-			};
 
-			enabled = lib.mkOption {
-				type = lib.types.listOf (lib.types.enum available);
-				default = [ "hyprland" ];
-			};
-
+	options.desktops = {
+		default = lib.mkOption {
+			type = lib.types.enum szy.desktops.available;
+			default = "hyprland";
 		};
-
+		enabled = lib.mkOption {
+			type = lib.types.listOf (lib.types.enum szy.desktops.available);
+			default = [ "hyprland" ];
+		};
 	};
-
-
-	imports = [
-		./hyprland
-		./gnome
-		./plasma
-	];
 
 	config = {
 
@@ -39,15 +19,28 @@
 			hyprland = "hyprland";
 			gnome = "gnome";
 			plasma = "plasma";
-
-			mkConfiguration = default: enabled: { configuration = 
+	
+			mkConfiguration = default: enabled:
 			{ 
-				environment.etc."specialisation".text = default;
-				desktops = {
-					default = default;
-					enabled = enabled ++ [ default ];
-				};
-			}; };
+				configuration = 
+				{ 
+					config = {
+						
+						environment.etc."specialisation".text = default;
+
+						desktops = {
+							default = default;
+							enabled = enabled ++ [ default ];
+						};
+					};
+
+					imports = [
+						./${default}
+					] ++ (builtins.map (name: ./${name}) enabled);
+
+				}; 
+			};
+
 		in
 		{
 		
