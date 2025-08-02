@@ -4,16 +4,46 @@
 	options.desktops = {
 		default = lib.mkOption {
 			type = lib.types.enum szy.desktops.available;
-			default = "hyprland";
+			default = "desktop-hyprland";
 		};
 		enabled = lib.mkOption {
 			type = lib.types.listOf (lib.types.enum szy.desktops.available);
-			default = [ "hyprland" ];
+			default = [ "desktop-hyprland" ];
 		};
 	};
 
-	config = {
+	config = {	
 
+		profiles.base.branches.desktop.branches = {
+
+			hyprland = {
+
+				imports = [
+					./hyprland
+				];
+
+			};
+
+			gnome = {
+				
+				imports = [
+					./gnome
+				];
+
+			};
+
+			plasma = {
+
+				imports = [
+					./plasma
+				];
+
+			};
+
+		};
+
+		profiles.base.branches.desktop.imports = [ ];
+/*
 		specialisation = 
 		let
 			hyprland = "hyprland";
@@ -45,10 +75,10 @@
 		{
 		
 			${hyprland} = mkConfiguration hyprland [ ];
-			${gnome} = mkConfiguration gnome [ ];
+			${gnome} = mkConfiguration gnome [ "hyprland" ];
 			${plasma} = mkConfiguration plasma [ ];
 	
-		};
+		};*/
 
 		# Make agnostic to bootloader, or at least throw error if not systemd-boot for the moment.
 		boot.loader.systemd-boot.extraInstallCommands = ''

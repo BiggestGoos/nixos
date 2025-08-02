@@ -5,7 +5,7 @@ let
   username = "goos";
 in
 #/*szy.desktops.ifDefault "hyprland" */ lib.mkIf (is_default)
-lib.mkIf (config.desktops.default == "hyprland")
+#lib.mkIf (config.desktops.default == "hyprland")
 {
   services.greetd = {
     enable = true;

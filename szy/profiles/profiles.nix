@@ -1,7 +1,7 @@
 { config, lib }:
 rec {
 
-	available = [ "desktop-hyprland" "desktop-gnome" "desktop-plasma" ];
+	available = [ "hyprland" "gnome" "plasma" ];
 
 	isValid = name: (builtins.elem name available);
 	assertValid = name: assert (isValid name); name;
