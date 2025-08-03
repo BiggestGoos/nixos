@@ -1,20 +1,47 @@
-{ pkgs, lib, config, desktop, szy, ... }:
+{ pkgs, lib, config, szy, ... }:
 {
 
-	options.desktops = {
-		default = lib.mkOption {
-			type = lib.types.enum szy.desktops.available;
-			default = "desktop-hyprland";
-		};
-		enabled = lib.mkOption {
-			type = lib.types.listOf (lib.types.enum szy.desktops.available);
-			default = [ "desktop-hyprland" ];
-		};
-	};
+	imports = [
+		(szy.utils.fromRoot "szy/desktops")
+	];
 
 	config = {	
 
-		profiles.base.branches.desktop.branches = {
+		profiles.base.branches = 
+		let
+		
+			mkDesktops = desktops: builtins.listToAttrs (builtins.map (desktop: 
+			let
+				default = desktop.default;
+				enabled = [ default ] ++ (desktop.enabled or [  ]);
+
+				value.configuration = {
+					imports = (builtins.map (e: ./${e}) enabled);
+
+					desktops = { inherit default enabled; };
+				};
+			in
+				{
+					name = default;
+					value = value;
+				}
+			) desktops);
+
+		in
+			mkDesktops [
+			{
+				default = "hyprland";
+				enabled = [ "gnome" ];
+			}
+			{
+				default = "gnome";
+			}
+			{
+				default = "plasma";
+			}
+			];
+
+		/*{
 
 			hyprland = {
 
@@ -23,6 +50,9 @@
 					imports = [
 						./hyprland
 					];
+
+					desktops.default = "hyprland";
+					desktops.enabled = [ "hyprland" ];
 
 				};
 
@@ -52,7 +82,7 @@
 
 			};
 
-		};
+		};*/
 
 /*
 		specialisation = 

@@ -1,10 +1,12 @@
 { config, lib }:
 rec {
 
-	default = config.profiles.default;
-	enabled = config.profiles.enabled;
+	available = config.desktops.available;
 
-	isValid = name: (builtins.elem name enabled);
+	default = config.desktops.default;
+	enabled = config.desktops.enabled;
+
+	isValid = name: (builtins.elem name available);
 	assertValid = name: assert (isValid name); name;
 
 	isEnabled = name: if (enabled == null) then false else (builtins.elem (assertValid name) enabled);
