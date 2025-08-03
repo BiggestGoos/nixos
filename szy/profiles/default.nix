@@ -1,79 +1,108 @@
-{ lib, config, ... }:
+{ lib, config, pkgs, ... }:
 {
 
 	options.profiles = {
 
 		base.branches = lib.mkOption {
 
-			type = lib.types.attrs;
+			type = 
+			let
+				template = {
+
+					options.branches = lib.mkOption {
+						type = lib.types.attrsOf (lib.types.submoduleWith { modules = [ template ]; });	
+						default = { };
+					};
+
+					options.configuration = lib.mkOption {
+						type = lib.types.attrs;
+						default = { };
+					};
+
+					options.resolveTo = lib.mkOption {
+						type = lib.types.bool;
+						default = false;
+					};
+
+				};
+			in
+				lib.types.attrsOf (lib.types.submoduleWith { modules = [ template ]; });
 
 		};
 
 		resolved = lib.mkOption {
 
+			type = lib.types.listOf (lib.types.listOf lib.types.attrs);
+			readOnly = true;
+
+			default = 
+			let
+				flattenTree = import ./flattenTree.nix;
+			in
+				(flattenTree config.profiles.base);
+
+		};
+
+		available = lib.mkOption {
+			type = lib.types.listOf lib.types.str;
+			readOnly = true;
+
+			default = 
+			let
+				result = (builtins.map (profile: (builtins.concatStringsSep "-" (builtins.map (branch: branch.name) profile))) config.profiles.resolved);
+			in
+				result;
+
+		};
+
+		default = lib.mkOption {
+			type = lib.types.enum (config.profiles.available);
+			default = (builtins.elemAt (config.profiles.available) 0);
+		};
+
+		test = lib.mkOption {
+			
 			type = lib.types.attrs;
-			readOnly = true;	
 
 		};
 
 	};
 
-	config = 
-	{
+	config = {
 
-		/*profiles.base = {
+		specialisation = (builtins.listToAttrs (builtins.map (
+		profile: 
+		let
 
-			branches = {
+			name = (builtins.concatStringsSep "-" (builtins.map (branch: branch.name) profile));
+			value.configuration = 
+			{ 
+				environment.etc."specialisation".text = name;
 
-				gfx = {
-
-					branches = {
-
-						hyprland = {
-
-							imports = [
-								./hyprland
-							];
-
-						};
-
-						gnome = {
-						
-							imports = [
-								./gnome
-							];
-
-						};
-
-						plasma = {
-
-							imports = [
-								./plasma
-							];
-
-						};
-
-					};
-
-					imports = [
-						./gfx
-					];
-
-				};
-
-				nogfx = {
-
-					imports = [
-						./nogfx
-					];
-
-				};
-
+				profiles.default = name;
+				
+				imports = (builtins.map (branch: branch.configuration) profile);
 			};
 
-		};*/
+		in
+			{
+				inherit name value;
+			}
+		) config.profiles.resolved));
 
-		profiles.resolved = 
+		#Make agnostic to bootloader, or at least throw error if not systemd-boot for the moment.
+		boot.loader.systemd-boot.extraInstallCommands = ''
+			${pkgs.gnused}/bin/sed -i -E "s/default nixos-generation-([0-9]+).*\.conf/default nixos-generation-\1-specialisation-${config.profiles.default}.conf/" /boot/loader/loader.conf
+		'';
+
+	};
+
+	#config = 
+	#{
+
+		
+
+		/*profiles.resolved = 
 		let
 			base = config.profiles.base;
 
@@ -134,7 +163,7 @@
 				let
 					name = builtins.elemAt branch_names i;
 					elem = builtins.getAttr name branches;
-					value = elem.imports;
+					value = elem.configuration;
 
 					result = 
 					(if !(builtins.hasAttr "branches" elem) then
@@ -189,7 +218,7 @@
 					ii = num.current;
 					name = builtins.elemAt branch_names i;
 					elem = builtins.getAttr name branches;
-					value = elem.imports;
+					value = elem.configuration;
 					list = builtins.elemAt inner_lists i;
 				in
 					if !(builtins.hasAttr "branches" elem) then
@@ -205,19 +234,21 @@
 
 			#resolved = { inherit flat; };
 
-			imports_list = builtins.map (list: builtins.concatLists (builtins.map (list: list.imports) list)) flat;
+			#configs = builtins.map (list: builtins.concatLists (builtins.map (list: list.configuration) list)) flat;
 			names = builtins.map (list: builtins.concatStringsSep "-" (builtins.map (list: list.name) list)) flat;
 			count = builtins.length names;
 
-			resolved = (builtins.listToAttrs (builtins.genList (i: { name = (builtins.elemAt names i); value = {
-				configuration = {
-					config = {
-						environment.etc."specialisation".text = (builtins.elemAt names i);
-						desktops.default = (builtins.elemAt names i);
-					};
-					imports = (builtins.elemAt imports_list i); 
-				};
-			}; }) count));
+			resolved = { inherit names count; };
+
+			#resolved = (builtins.listToAttrs (builtins.genList (i: { name = (builtins.elemAt names i); value = {
+			#	configuration = {
+			#		config = {
+			#			environment.etc."specialisation".text = (builtins.elemAt names i);
+			#			desktops.default = (builtins.elemAt names i);
+			#		};
+			#		imports = (builtins.elemAt imports_list i); 
+			#	};
+			#}; }) count));
 
 			#test = get_count { current = base.branches.gfx.branches.hyprland; };
 			#resolved = { inherit test; };
@@ -226,8 +257,8 @@
 
 		#specialisation = (builtins.listToAttrs );
 
-		specialisation = config.profiles.resolved;
+		#specialisation = config.profiles.resolved;*/
 
-	};
+	#};
 
 }

@@ -18,31 +18,42 @@
 
 			hyprland = {
 
-				imports = [
-					./hyprland
-				];
+				configuration = {
+					
+					imports = [
+						./hyprland
+					];
+
+				};
 
 			};
 
 			gnome = {
 				
-				imports = [
-					./gnome
-				];
+				configuration = {
+					
+					imports = [
+						./gnome
+					];
+
+				};
 
 			};
 
 			plasma = {
 
-				imports = [
-					./plasma
-				];
+				configuration = {
+					
+					imports = [
+						./plasma
+					];
+
+				};
 
 			};
 
 		};
 
-		profiles.base.branches.desktop.imports = [ ];
 /*
 		specialisation = 
 		let
@@ -81,9 +92,9 @@
 		};*/
 
 		# Make agnostic to bootloader, or at least throw error if not systemd-boot for the moment.
-		boot.loader.systemd-boot.extraInstallCommands = ''
-			${pkgs.gnused}/bin/sed -i -E "s/default nixos-generation-([0-9]+).*\.conf/default nixos-generation-\1-specialisation-${config.desktops.default}.conf/" /boot/loader/loader.conf
-		'';
+		#boot.loader.systemd-boot.extraInstallCommands = ''
+		#	${pkgs.gnused}/bin/sed -i -E "s/default nixos-generation-([0-9]+).*\.conf/default nixos-generation-\1-specialisation-${config.desktops.default}.conf/" /boot/loader/loader.conf
+		#'';
 
 	};
 
