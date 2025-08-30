@@ -11,17 +11,9 @@
 		inputs.nixpkgs.follows = "nixpkgs";
 	};
 
-	floorp-disable-lto = {
-		#url = "github:NixOS/nixpkgs?ref=pull/412138/head"; # 11.27
-		url = "github:NixOS/nixpkgs?ref=pull/422814/head"; # 11.28 - Disable lto
-		#url = "github:NixOS/nixpkgs?ref=pull/429058/head"; # 11.29
-		#url = "github:NixOS/nixpkgs?ref=pull/429123/head"; # 11.29 - NixOS 25.05
-		#url = "github:NixOS/nixpkgs?ref=pull/424715/head"; # 12.0.15
-	};
-
   };
 
-  outputs = { self, nixpkgs, home-manager, floorp-disable-lto }@inputs: { 
+  outputs = { self, nixpkgs, home-manager, }@inputs: { 
 
     nixosConfigurations = 
     let

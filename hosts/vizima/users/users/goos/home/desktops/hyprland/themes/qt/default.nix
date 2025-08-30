@@ -1,4 +1,4 @@
-{ pkgs, szy, ... }:# szy.desktops.ifDefault "hyprland"
+{ pkgs, szy, ... }: szy.desktops.ifDefault "hyprland"
 {
 
 	qt = {
@@ -6,7 +6,7 @@
     	platformTheme.name = "gtk";
     	style = {
     		name = "gtk2";
-    		package = pkgs.libsForQt5.breeze-qt5;
+    		package = pkgs.kdePackages.breeze-gtk;
     	};
   	};
 
