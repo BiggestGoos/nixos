@@ -1,4 +1,4 @@
-{ pkgs, szy, ... }:# szy.desktops.ifEnabled "hyprland"
+{ pkgs, szy, ... }:
 {
 
 	environment.systemPackages = [

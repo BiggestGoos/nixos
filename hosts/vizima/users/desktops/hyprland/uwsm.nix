@@ -1,4 +1,4 @@
-{ szy, ... }:# szy.desktops.ifEnabled "hyprland"
+{ szy, ... }:
 {
 
 	programs.uwsm = {

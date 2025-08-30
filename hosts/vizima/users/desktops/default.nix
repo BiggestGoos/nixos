@@ -35,9 +35,11 @@
 			}
 			{
 				default = "gnome";
+				enabled = [ "hyprland" ];
 			}
 			{
 				default = "plasma";
+				enabled = [ "hyprland" ];
 			}
 			];
 

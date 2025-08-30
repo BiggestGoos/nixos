@@ -9,7 +9,7 @@ in
 {
 
 	utils = import ./utils.nix { inherit root; };
-	desktops = import ./desktops/desktops.nix { inherit config lib; };
+	desktops = import ./desktops/desktops.nix { inherit lib; };
 	profiles = import ./profiles/profiles.nix { inherit config lib; };
 
 }

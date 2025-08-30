@@ -26,6 +26,7 @@
 			let
 				hostname = "vizima";
 				szy = import ./szy { inherit inputs; inherit hostname; };
+				config = self.outputs.nixosConfigurations.${hostname}.config;
 			in
 			nixpkgs.lib.nixosSystem {
     	
@@ -35,8 +36,10 @@
 
     			modules = [ 
 	
-					({ ... }:
+					({ config, ... }:
 					{
+
+						#_module.args.ifDefault = name: configuration: nixpkgs.lib.mkIf (config.desktops.default == name) configuration;
 
 						imports = [
 

@@ -1,18 +1,36 @@
-{ config, lib }:
+{ lib }:
 rec {
 
-	available = config.desktops.available;
+	available = config: config.desktops.available;
 
-	default = config.desktops.default;
-	enabled = config.desktops.enabled;
+	default = config: config.desktops.default;
+	enabled = config: config.desktops.enabled;
 
-	isValid = name: (builtins.elem name available);
-	assertValid = name: assert (isValid name); name;
+	isValid = config: name: (builtins.elem name (available config));
+	assertValid = config: name: assert (isValid config name); name;
 
-	isEnabled = name: if (enabled == null) then false else (builtins.elem (assertValid name) enabled);
-	isDefault = name: if (default == null) then false else ((assertValid name) == default);
+	isEnabled = config: name: if (enabled config == null) then false else (builtins.elem (assertValid config name) enabled config);
+	isDefault = config: name: if (default config == null) then false else ((assertValid config name) == default config);
 
-	ifEnabled = name: configuration: (lib.mkIf (isEnabled name) configuration);
-	ifDefault = name: configuration: (lib.mkIf (isDefault name) configuration);
+	ifEnabled = config: name: configuration: (lib.mkIf (isEnabled config name) configuration);
+	ifDefault = config: name: configuration: (lib.mkIf (isDefault config name) configuration);
+/*
+	bake = config: rec {
 
+		available = available config;
+
+		default = default config;
+		enabled = enabled config;
+
+		isValid = isValid config;
+		assertValid = assertValid config;
+		
+		isEnabled = isEnabled config;
+		isDefault = isDefault config;
+
+		ifEnabled = ifEnabled config;
+		ifDefault = ifDefault config;
+
+	};
+*/
 }

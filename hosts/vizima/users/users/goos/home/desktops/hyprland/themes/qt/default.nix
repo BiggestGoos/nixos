@@ -1,4 +1,4 @@
-{ pkgs, szy, ... }: szy.desktops.ifDefault "hyprland"
+{ pkgs, szy, osConfig, ... }: szy.desktops.ifDefault osConfig "hyprland"
 {
 
 	qt = {

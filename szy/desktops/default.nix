@@ -1,4 +1,4 @@
-{ lib, config, szy, ... }:
+{ lib, config, ... }:
 {
 
 	options.desktops = {
@@ -10,12 +10,12 @@
 		};
 
 		default = lib.mkOption {
-			type = lib.types.nullOr (lib.types.enum szy.desktops.available);
+			type = lib.types.nullOr (lib.types.enum config.desktops.available);
 			default = null;
 		};
 
 		enabled = lib.mkOption {
-			type = lib.types.nullOr (lib.types.listOf (lib.types.enum szy.desktops.available));
+			type = lib.types.nullOr (lib.types.listOf (lib.types.enum config.desktops.available));
 			default = null;
 		};
 

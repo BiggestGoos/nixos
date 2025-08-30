@@ -1,7 +1,7 @@
-{ config, ... }: # lib.mkIf (config.desktops.default == "gnome") #szy.desktops.ifEnabled "gnome"
+{ config, szy, ... }: 
 {
 	
-	services.displayManager.gdm.enable = (config.desktops.default == "gnome");#szy.desktops.isDefault "gnome";
+	services.displayManager.gdm.enable = szy.desktops.isDefault config "gnome";
 	services.desktopManager.gnome.enable = true;
 
 }
