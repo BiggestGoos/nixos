@@ -3,7 +3,7 @@
 
 	programs.librewolf = {
 
-		enable = true;
+		enable = config.browsers.enable;
 
 		languagePacks = [
 			"en-US"

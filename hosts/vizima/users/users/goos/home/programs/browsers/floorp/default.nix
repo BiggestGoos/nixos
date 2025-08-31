@@ -3,7 +3,7 @@
 
 	programs.floorp = {
 
-		enable = true;
+		enable = config.browsers.enable;
 
 		languagePacks = [
 			"en-US"
