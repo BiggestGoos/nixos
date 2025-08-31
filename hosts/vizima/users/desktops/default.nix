@@ -31,15 +31,15 @@
 			mkDesktops [
 			{
 				default = "hyprland";
-				enabled = [ "gnome" ];
+#				enabled = [ "gnome" ];
 			}
 			{
 				default = "gnome";
-				enabled = [ "hyprland" ];
+#				enabled = [ "hyprland" ];
 			}
 			{
 				default = "plasma";
-				enabled = [ "hyprland" ];
+#				enabled = [ "hyprland" ];
 			}
 			];
 

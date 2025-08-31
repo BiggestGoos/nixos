@@ -1,4 +1,4 @@
-{ szy, ... }: 
+{ szy, osConfig, ... }:
 {
 
 	imports = [

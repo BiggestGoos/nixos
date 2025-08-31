@@ -11,6 +11,8 @@ in
 		
 			# Uwsm environment
 
+			export XDG_CURRENT_DESKTOP=Hyprland
+
 			# Cursor
 			export XCURSOR_SIZE=24
 
