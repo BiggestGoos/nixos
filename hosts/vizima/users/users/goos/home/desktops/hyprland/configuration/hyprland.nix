@@ -13,6 +13,8 @@ in
 		settings =
 		{
 
+			"$browser" = config."${szy}".browsers.defaultValues.command;
+
 			source = 
 			let
 				config_dir = "./${configHyprlandDir}";

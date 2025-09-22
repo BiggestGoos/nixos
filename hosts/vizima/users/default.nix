@@ -5,7 +5,8 @@
 		./users
 		./desktops
 		./programs
+		./services
 		./resources
-	];
+	];	
 
 }

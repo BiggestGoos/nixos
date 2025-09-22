@@ -2,7 +2,7 @@
 {
 
 	imports = [
-		./rofi_wayland
+		./rofi
 	];
 
 }

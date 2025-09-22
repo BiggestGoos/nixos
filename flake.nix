@@ -13,7 +13,7 @@
 
   };
 
-  outputs = { self, nixpkgs, home-manager, }@inputs: { 
+  outputs = { self, nixpkgs, home-manager }@inputs: { 
 
     nixosConfigurations = 
     let
@@ -32,7 +32,7 @@
     	
 				system = "x86-64-linux";
 
-				specialArgs = { inherit inputs; inherit hostname; inherit szy; };	
+				specialArgs = { inherit inputs szy; };	
 
     			modules = [ 
 	
@@ -64,7 +64,7 @@
 	    			useUserPackages = true;
 					backupFileExtension = "backup";
 	    			users = import ./hosts/${hostname}/users/users/home_manager_users.nix;
-					extraSpecialArgs = { inherit inputs; inherit hostname; inherit szy; };
+					extraSpecialArgs = { inherit inputs szy; };
   				};
 			}
 

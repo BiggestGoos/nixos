@@ -1,8 +1,8 @@
-{ pkgs, szy, lib, config, ... }:
+{ pkgs, szy, lib, config, hostname, ... }:
 let
   tuigreet = "${pkgs.tuigreet}/bin/tuigreet";
   session = "${pkgs.uwsm}/bin/uwsm start -F -- ${pkgs.hyprland}/share/wayland-sessions/hyprland.desktop";
-  username = "goos";
+  username = config."${szy}".users.default;
 in
 szy.desktops.ifDefault config "hyprland"
 {

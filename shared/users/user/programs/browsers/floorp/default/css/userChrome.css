@@ -20,6 +20,7 @@ Quote: https://userChrome.org | https://github.com/topics/userchrome
 @-moz-document url(chrome://browser/content/browser.xhtml) {
 /* Please write your custom CSS under this line*/
 
-
+	/* Remove close button*/ 
+	.titlebar-buttonbox-container{ display:none } 
 
 }

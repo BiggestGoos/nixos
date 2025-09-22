@@ -9,7 +9,7 @@
 	systemd.tmpfiles.settings."nixmgr-privileges" = {
 	
 		# Change mode and owner recursively, Z
-		# I would like to set root to 'the root of the flak' but I don't think that is possible as of now (2025-07-22), at least easily.
+		# I would like to set root to 'the root of the flake' but I don't think that is possible as of now (2025-07-22), at least easily.
 		"${path}"."Z" = {
 			user = "root";
 			group = "nixmgr";

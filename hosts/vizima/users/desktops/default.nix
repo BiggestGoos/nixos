@@ -5,9 +5,19 @@
 		(szy.utils.fromRoot "szy/desktops")
 	];
 
-	config = {	
+	config = {
 
-		profiles.base.branches = 
+		profiles.base.branches.desktop.configuration = {
+
+			environment.sessionVariables.NIXOS_OZONE_WL = "0";
+
+			imports = [
+				./power.nix
+			];
+
+		};
+
+		profiles.base.branches.desktop.branches = 
 		let
 		
 			mkDesktops = desktops: builtins.listToAttrs (builtins.map (desktop: 
@@ -42,93 +52,6 @@
 #				enabled = [ "hyprland" ];
 			}
 			];
-
-		environment.sessionVariables.NIXOS_OZONE_WL = "1";
-
-		/*{
-
-			hyprland = {
-
-				configuration = {
-					
-					imports = [
-						./hyprland
-					];
-
-					desktops.default = "hyprland";
-					desktops.enabled = [ "hyprland" ];
-
-				};
-
-			};
-
-			gnome = {
-				
-				configuration = {
-					
-					imports = [
-						./gnome
-					];
-
-				};
-
-			};
-
-			plasma = {
-
-				configuration = {
-					
-					imports = [
-						./plasma
-					];
-
-				};
-
-			};
-
-		};*/
-
-/*
-		specialisation = 
-		let
-			hyprland = "hyprland";
-			gnome = "gnome";
-			plasma = "plasma";
-	
-			mkConfiguration = default: enabled:
-			{ 
-				configuration = 
-				{ 
-					config = {
-						
-						environment.etc."specialisation".text = default;
-
-						desktops = {
-							default = default;
-							enabled = enabled ++ [ default ];
-						};
-					};
-
-					imports = [
-						./${default}
-					] ++ (builtins.map (name: ./${name}) enabled);
-
-				}; 
-			};
-
-		in
-		{
-		
-			${hyprland} = mkConfiguration hyprland [ ];
-			${gnome} = mkConfiguration gnome [ "hyprland" ];
-			${plasma} = mkConfiguration plasma [ ];
-	
-		};*/
-
-		# Make agnostic to bootloader, or at least throw error if not systemd-boot for the moment.
-		#boot.loader.systemd-boot.extraInstallCommands = ''
-		#	${pkgs.gnused}/bin/sed -i -E "s/default nixos-generation-([0-9]+).*\.conf/default nixos-generation-\1-specialisation-${config.desktops.default}.conf/" /boot/loader/loader.conf
-		#'';
 
 	};
 
