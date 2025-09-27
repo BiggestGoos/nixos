@@ -1,10 +1,10 @@
-{ pkgs, szy, lib, config, hostname, ... }:
+{ desktop, pkgs, szy, lib, config, hostname, ... }:
 let
   tuigreet = "${pkgs.tuigreet}/bin/tuigreet";
   session = "${pkgs.uwsm}/bin/uwsm start -F -- ${pkgs.hyprland}/share/wayland-sessions/hyprland.desktop";
   username = config."${szy}".users.default;
 in
-szy.desktops.ifDefault config "hyprland"
+lib.mkIf (desktop.isDefault "hyprland")
 {
   services.greetd = {
     enable = true;

@@ -1,36 +1,34 @@
-{ lib }:
+{ config, lib, options, utils }:
 rec {
+	
+	mkDesktop = { name, enabled ? [], imports ? [], configuration ? { ... }: {}, additionalOptions ? {} }:
+	{
+		options = (utils.mergeAll [ ({
 
-	available = config: config.desktops.available;
+			"${options}".desktops.desktops."${name}" = {
+			
+				enabled = lib.mkOption {
+					type = lib.types.listOf (lib.types.enum config."${options}".desktops.available);
+					readOnly = true;
+					default = [ name ] ++ enabled;
+				};
 
-	default = config: config.desktops.default;
-	enabled = config: config.desktops.enabled;
+				imports = lib.mkOption {
+					type = lib.types.listOf lib.types.path;
+					readOnly = true;
+					default = imports;
+				};
 
-	isValid = config: name: (builtins.elem name (available config));
-	assertValid = config: name: assert (isValid config name); name;
+				configuration = lib.mkOption {
+					type = lib.types.attrs;
+					readOnly = true;
+					default = { __functor = (self: ({ desktop, ... }@args: (configuration { inherit desktop args; }))); };
+				};
 
-	isEnabled = config: name: if (enabled config == null) then false else (builtins.elem (assertValid config name) enabled config);
-	isDefault = config: name: if (default config == null) then false else ((assertValid config name) == default config);
+			};
 
-	ifEnabled = config: name: configuration: (lib.mkIf (isEnabled config name) configuration);
-	ifDefault = config: name: configuration: (lib.mkIf (isDefault config name) configuration);
-/*
-	bake = config: rec {
-
-		available = available config;
-
-		default = default config;
-		enabled = enabled config;
-
-		isValid = isValid config;
-		assertValid = assertValid config;
-		
-		isEnabled = isEnabled config;
-		isDefault = isDefault config;
-
-		ifEnabled = ifEnabled config;
-		ifDefault = ifDefault config;
+		}) additionalOptions ]);
 
 	};
-*/
+
 }

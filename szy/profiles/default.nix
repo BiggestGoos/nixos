@@ -1,7 +1,7 @@
-{ lib, config, pkgs, ... }:
+{ lib, config, pkgs, szy, ... }:
 {
 
-	options.profiles = {
+	options."${szy}".profiles = {
 
 		base.branches = lib.mkOption {
 
@@ -39,7 +39,7 @@
 			let
 				flattenTree = import ./flattenTree.nix;
 			in
-				(flattenTree config.profiles.base);
+				(flattenTree config."${szy}".profiles.base);
 
 		};
 
@@ -49,26 +49,15 @@
 
 			default = 
 			let
-				result = (builtins.map (profile: (builtins.concatStringsSep "-" (builtins.map (branch: branch.name) profile))) config.profiles.resolved);
+				result = (builtins.map (profile: (builtins.concatStringsSep "-" (builtins.map (branch: branch.name) profile))) config."${szy}".profiles.resolved);
 			in
 				result;
 
 		};
 
-		default = lib.mkOption {
-			type = lib.types.nullOr (lib.types.enum (config.profiles.available));
-			default = null;
-		};
-
 		enabled = lib.mkOption {
-			type = lib.types.nullOr (lib.types.listOf lib.types.str);
+			type = lib.types.nullOr (lib.types.enum (config."${szy}".profiles.available));
 			default = null;
-		};
-
-		test = lib.mkOption {
-			
-			type = lib.types.attrs;
-
 		};
 
 	};
@@ -85,8 +74,11 @@
 
 				environment.etc."specialisation".text = name;
 
-				profiles.default = name;
-				profiles.enabled = (builtins.map (branch: branch.name) profile);
+				"${szy}".profiles = {
+					
+					enabled = name;
+
+				};
 				
 				imports = (builtins.map (branch: branch.configuration) profile);
 
@@ -96,7 +88,7 @@
 			{
 				inherit name value;
 			}
-		) config.profiles.resolved));
+		) config."${szy}".profiles.resolved));
 
 		#Make agnostic to bootloader.
 		boot.loader.systemd-boot.extraInstallCommands = 
@@ -104,7 +96,7 @@
 			boot_dir = config.boot.loader.efi.efiSysMountPoint;
 			config_path = boot_dir + "/loader/loader.conf";
 
-			default = config.profiles.default;
+			default = config."${szy}".profiles.enabled;
 			bootName = if (builtins.isNull default) then "$(</etc/specialisation)" else default;
 		in
 		''

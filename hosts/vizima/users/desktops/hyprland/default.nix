@@ -1,6 +1,17 @@
-{ ... }:
+{ config, szy, pkgs, lib, ... }:
+szy.desktops.mkDesktop
 {
+
+	name = "hyprland";
+
+	#enabled = [ "plasma" ];
+
+	configuration = { desktop, args, ... }: {
 	
+		
+			
+	};
+
 	imports = [
 		./hyprland.nix
 		./polkit.nix

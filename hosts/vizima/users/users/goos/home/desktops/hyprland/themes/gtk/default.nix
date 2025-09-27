@@ -1,4 +1,4 @@
-{ pkgs, szy, osConfig, ... }: szy.desktops.ifDefault osConfig "hyprland"
+{ pkgs, szy, osConfig, lib, desktop, ... }: lib.mkIf (desktop.isDefault "hyprland")
 {
 
 	gtk = {

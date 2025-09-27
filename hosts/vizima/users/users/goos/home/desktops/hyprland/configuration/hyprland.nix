@@ -1,10 +1,15 @@
-{ config, szy, ... }:
+{ config, szy, pkgs, ... }:
 let
 	configHomeDir = "${config.xdg.configHome}/hypr";
 	configHyprlandDir = "hyprland";
 	configFullDir = "${configHomeDir}/${configHyprlandDir}";
 in
 {
+
+	# When I change this to finally using nix more I will just make the backlight buttons reference with '${pkgs.brightnessctl}/bin/...".
+	home.packages = [
+		pkgs.brightnessctl
+	];
 
 	wayland.windowManager.hyprland = {
 

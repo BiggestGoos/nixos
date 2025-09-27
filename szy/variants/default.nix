@@ -1,4 +1,4 @@
-{ options, lib, ... }:
+{ options, lib, utils, ... }:
 {
 
 	mkVarying = { path, config, option, variants, defaultVariants ? [], configuration ? {}, additionalOptions ? {} }:
@@ -15,7 +15,7 @@
 		}
 		)))) variants;
 
-		options = (lib.attrsets.recursiveUpdate (lib.attrsets.setAttrByPath keyNames ({
+		options = (utils.mergeAll [ (lib.attrsets.setAttrByPath keyNames ({
 
 			availableVariants = lib.mkOption {
 				type = lib.types.listOf lib.types.str;
@@ -28,7 +28,7 @@
 				default = defaultVariants;
 			};
 
-		})) additionalOptions);
+		})) additionalOptions ]);
 
 		config = configuration;
 

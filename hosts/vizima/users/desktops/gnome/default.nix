@@ -1,7 +1,8 @@
-{ config, szy, ... }: 
+{ szy, ... }:
 {
-	
-	services.displayManager.gdm.enable = szy.desktops.isDefault config "gnome";
-	services.desktopManager.gnome.enable = true;
+
+	imports = [
+		(szy.utils.fromShared "users/desktops/gnome")
+	];
 
 }
