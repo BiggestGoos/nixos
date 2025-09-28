@@ -10,7 +10,8 @@
 
 	};
 
-	config = {
+	config = 
+	{
 
 		systemd.sleep.extraConfig = "HibernateDelaySec=${config."${szy}".desktops.options.power.hibernateDelay}";
 

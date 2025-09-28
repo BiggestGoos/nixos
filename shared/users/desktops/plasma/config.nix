@@ -1,4 +1,4 @@
-{ desktop, ... }:
+{ desktop, szy, config, ... }:
 {
 
 	services.xserver.enable = true;

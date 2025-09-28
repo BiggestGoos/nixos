@@ -11,9 +11,21 @@ let
 	availableDesktops = config."${szy}".desktops.available;
 
 in
+szy.variants.mkVarying
 {
 
-	options."${szy}".desktops = {
+	path = ./options/variants;
+	inherit config;
+
+	option = [ "desktops" ];
+
+	variants = [
+		"autologin"
+		"hibernateResume"
+		"wayland"
+	];
+
+	additionalOptions."${szy}".desktops = {
 
 		profilePrefix = lib.mkOption {
 			type = lib.types.listOf lib.types.str;
@@ -43,14 +55,12 @@ in
 
 	};	
 
-	config."${szy}".profiles.base.branches = (lib.attrsets.setAttrByPath (lib.lists.init resolvedProfilePrefix) {
+	configuration."${szy}".profiles.base.branches = (lib.attrsets.setAttrByPath (lib.lists.init resolvedProfilePrefix) {
 
 		configuration = {
-			
-			environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
 			imports = [
-				./power.nix
+				./options/power
 			];
 
 		};

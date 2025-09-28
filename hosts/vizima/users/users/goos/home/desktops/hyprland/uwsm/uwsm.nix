@@ -30,11 +30,11 @@ in
 
 			# Steam
 			export STEAM_FORCE_DESKTOPUI_SCALING=1.25
-
-			# Nix-wayland
-			export NIXOS_OZONE_WL=1
-
 		'';
+		
+			/*# Nix-wayland
+			export NIXOS_OZONE_WL=1*/
+		
 	};
 
 	home.file."${configHomeDir}/env-hyprland" = {

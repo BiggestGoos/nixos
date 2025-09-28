@@ -8,4 +8,9 @@
 		./hyprland
 	];
 
+	"${szy}".desktops.enabledVariants = [
+		"autologin"
+		"hibernateResume"
+	];
+
 }
