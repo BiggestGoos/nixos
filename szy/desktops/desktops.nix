@@ -9,11 +9,13 @@ rec {
 	in
 	{
 		
-		options = (utils.mergeAll [ {
+		options = (utils.mergeAll [ (utils.mergeAll [ {
 
 			"${options}".desktops.desktops = (builtins.listToAttrs (builtins.map (variant: 
 			let
-				resolvedName = lib.strings.concatStringsSep "+" ([ name ] ++ variant.names);
+				resolvedNames = [ name ] ++ variant.names;
+				resolvedName = lib.strings.concatStringsSep "+" (resolvedNames);
+				isEnabled = (builtins.elem variant.names config."${options}".desktops.desktops."${name}".variants);
 			in
 			{
 
@@ -25,6 +27,12 @@ rec {
 						type = lib.types.listOf lib.types.str;
 						readOnly = true;
 						default = [ name ] ++ variant.names;
+					};
+
+					isEnabled = lib.mkOption {
+						type = lib.types.bool;
+						readOnly = true;
+						default = if (isEnabled == null) then false else isEnabled;
 					};
 
 					enabled = lib.mkOption {
@@ -53,53 +61,14 @@ rec {
 				};
 
 			}) resolvedVariants));
-		} additionalOptions ]);
+		} additionalOptions ]) ({ 
 
-/*		options = (utils.mergeAll [ {
-
-			"${options}".desktops.desktops."${name}" = {
-			
-				enabled = lib.mkOption {
-					type = lib.types.listOf (lib.types.enum config."${options}".desktops.available);
-					readOnly = true;
-					default = [ name ] ++ enabled;
-				};
-
-				imports = lib.mkOption {
-					type = lib.types.listOf lib.types.path;
-					readOnly = true;
-					default = imports;
-				};
-
-				configuration = lib.mkOption {
-					type = lib.types.attrs;
-					readOnly = true;
-					default = { __functor = (self: ({ desktop, ... }@args: (configuration { inherit desktop args; }))); };
-				};
-
-				variants = lib.mkOption {
-					type = 
-					let
-						template.options = {
-
-							names = lib.mkOption {
-								type = lib.types.listOf lib.types.str;
-							};
-
-							variants = lib.mkOption {
-								type = lib.types.listOf (lib.types.enum config."${options}".desktops.desktops."${name}".availableVariants);
-							};
-
-						};
-					in
-						lib.types.listOf (lib.types.submoduleWith { modules = [ template ]; });
-					readOnly = true;
-					default = variants;
-				};
-
+			"${options}".desktops.desktops."${name}".variants = lib.mkOption {
+				type = lib.types.listOf (lib.types.enum (builtins.map (variant: variant.names) resolvedVariants));
+				default = [ [] ];
 			};
 
-		} additionalOptions ]);*/
+		}) ]);
 
 	};
 

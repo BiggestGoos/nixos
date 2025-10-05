@@ -1,6 +1,6 @@
-variant:
+theme:
 { szy, config, lib, ... }:
-lib.mkIf variant.enabled
+lib.mkIf theme.enabled
 {
 
 	programs.librewolf = {

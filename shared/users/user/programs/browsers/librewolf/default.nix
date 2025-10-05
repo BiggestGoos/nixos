@@ -2,7 +2,7 @@
 let
 	package = pkgs.librewolf;
 in
-szy.variants.mkVarying
+szy.themes.mkThemed
 {
 
 	path = ./.;
@@ -10,13 +10,11 @@ szy.variants.mkVarying
 
 	option = [ "browsers" "browsers" "librewolf" ];
 
-	variants = [
+	themes = [
 		"default"
 	];
 
-	defaultVariants = [
-		"default"
-	];
+	defaultTheme = "default";
 
 	configuration = {
 
@@ -41,7 +39,7 @@ szy.variants.mkVarying
 		let
 			directory = "${package}";
 			command = directory + "/bin/librewolf";
-			searchCommand = command + "--search";
+			searchCommand = command + " --search";
 			autostartCommand = command + "";
 			desktopEntry = "librewolf.desktop";
 		in

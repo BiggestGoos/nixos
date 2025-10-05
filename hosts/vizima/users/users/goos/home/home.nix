@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, szy, osConfig, ... }:
 let
 	username = "goos";
 in
@@ -10,6 +10,7 @@ in
 	imports = [
 		./desktops
 		./programs
+		(szy.utils.fromRoot "szy/themes")
 	];	
 
 	specialisation.test3.configuration = {

@@ -15,13 +15,6 @@ szy.desktops.mkDesktop
 					"wayland"
 				];
 
-				options = {
-
-					hibernateResume.commands = [
-						"${pkgs.procps}/bin/pkill -USR1 hyprlock"
-					];
-	
-				};
 			};
 		};
 
@@ -34,13 +27,12 @@ szy.desktops.mkDesktop
 
 			uwsm.enable = true;
 
-			hyprlock.enable = true;
-
 		};
 	};
-
+	
 	imports = [
 		./displayManager.nix
+		./lockscreens.nix
 		./polkit.nix
 		./xdgPortal.nix
 		./variants

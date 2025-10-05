@@ -3,10 +3,10 @@
 
 	# https://wiki.nixos.org/wiki/Laptop
 
-	services.logind.settings.Login = { 
+	/*services.logind.settings.Login = { 
 		HandleLidSwitch = "suspend-then-hibernate";
 		HandleLidSwitchExternalPower = "suspend-then-hibernate";
 		HandleLidSwitchDocked = "suspend-then-hibernate";
-	};
+	};*/
 
 }

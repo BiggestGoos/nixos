@@ -1,5 +1,5 @@
-{ variant, lib, config, ... }:
-lib.mkIf variant.enabled
+{ theme, lib, config, ... }:
+lib.mkIf theme.enabled
 {
 
 	# https://gist.github.com/0XDE57/fbd302cef7693e62c769

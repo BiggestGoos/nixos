@@ -1,5 +1,5 @@
-{ variant, lib, config, ... }:
-lib.mkIf variant.enabled
+{ theme, lib, config, ... }:
+lib.mkIf theme.enabled
 {
 
 	# https://www.reddit.com/r/firefox/comments/17hlkhp/what_are_your_must_have_changes_in_aboutconfig/

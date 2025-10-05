@@ -1,4 +1,4 @@
-variant:
+theme:
 { szy, inputs, hostname, config, lib, pkgs, ... }:
 {
 
@@ -7,12 +7,12 @@ variant:
 		./styling.nix
 		{
 			_module.args = {
-				inherit variant;
+				inherit theme;
 			};
 		}
 	];
 
-	programs.floorp = lib.mkIf variant.enabled {
+	programs.floorp = lib.mkIf theme.enabled {
 
 		languagePacks = [
 			"en-US"

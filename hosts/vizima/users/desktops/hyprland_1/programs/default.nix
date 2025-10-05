@@ -1,8 +1,0 @@
-{ ... }:
-{
-
-	imports = [
-		./lock_screens
-	];
-
-}
