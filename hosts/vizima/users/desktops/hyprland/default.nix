@@ -7,7 +7,7 @@
 
 	"${szy}".desktops.desktops.hyprland.variants = [
 		[]
-		[ "tandi" ]	
+		[ "fallout" ]	
 	];
 
 }

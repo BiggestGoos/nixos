@@ -7,7 +7,7 @@ szy.variants.mkVarying
 	option = [ "desktops" "desktops" "hyprland" ];
 
 	variants = [
-		"tandi"
+		"fallout"
 	];
 
 }

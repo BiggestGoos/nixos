@@ -65,6 +65,11 @@ szy.themes.mkThemed
 				default = desktopEntry;
 			};
 
+			package = lib.mkOption {
+				type = lib.types.package;
+				default = pkgs.floorp-bin;
+			};
+
 		};
 
 	};

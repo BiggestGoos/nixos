@@ -40,6 +40,11 @@
 				default = values.desktopEntry or "";
 			};
 
+			package = lib.mkOption {
+				type = lib.types.nullOr lib.types.package;
+				default = values.package or null;
+			};
+
 		};
 
 	};

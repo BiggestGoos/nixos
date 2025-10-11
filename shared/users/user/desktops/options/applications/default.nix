@@ -1,27 +1,22 @@
 { szy, config, lib, ... }:
 {
 
-	options."${szy}".desktops.options.applications = {
+	options."${szy}".desktops.options.applications = lib.mkOption {
 
-		
-
-		applications = lib.mkOption {
-
-			type = lib.types.attrsOf (lib.types.submoduleWith { modules = [ ({
-				options = {
-					command = lib.mkOption {
-						type = lib.types.str;
-					};
-					desktopEntry = lib.mkOption {
-						type = lib.types.nullOr lib.types.str;
-						default = null;
-					};
+		type = lib.types.attrsOf (lib.types.submoduleWith { modules = [ ({
+			options = {
+				command = lib.mkOption {
+					type = lib.types.str;
 				};
-			}) ]; });
-		};
+				desktopEntry = lib.mkOption {
+					type = lib.types.nullOr lib.types.str;
+					default = null;
+				};
+			};
+		}) ]; });
 	};
 
-	config."${szy}".desktops.options.applications.applications = {
+	config."${szy}".desktops.options.applications = {
 
 		browser = 
 		let

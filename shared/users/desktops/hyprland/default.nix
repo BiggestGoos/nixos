@@ -40,8 +40,8 @@ szy.desktops.mkDesktop
 
 	variants = [
 		{
-			names = [ "tandi" ];
-			variants = [ "tandi" ];
+			names = [ "fallout" ];
+			variants = [ "fallout" ];
 		}
 	];
 
