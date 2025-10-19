@@ -52,6 +52,7 @@ in
 				./options/variants
 				./options/power
 				./options/displays
+				./options/devices
 				./options/variables
 			];
 

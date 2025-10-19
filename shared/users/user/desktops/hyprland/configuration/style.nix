@@ -91,6 +91,7 @@ in
 			};
 		};
 
+		# I feel like this should actually be something that the individual program does and not something that should be here.
 		windowrule = [
 			"opacity 1.0 override ${builtins.toString (inactiveOpacity / activeOpacity)} override, class:^(kitty)$"
 		];

@@ -14,26 +14,13 @@ in
 
 	wayland.windowManager.hyprland.settings = {
 
-		input = {
-
-			kb_layout = "se";
-
-			touchpad = {
-
-				scroll_factor = 0.25;
-				middle_button_emulation = false;
-				clickfinger_behavior = true;
-
-			};
-		};
-
 		gesture = lib.lists.optionals (desktop.isEnabledStrict [ "hyprland" ]) [
 			"3, horizontal, workspace"
 		];
 
 		binds = {
 			
-			drag_threshold = 10;
+			drag_threshold = lib.mkIf (desktop.isEnabledStrict [ "hyprland" ]) 10;
 			allow_pin_fullscreen = true;
 
 		};
@@ -63,7 +50,7 @@ in
 			"${mainMod} + ALT, left, workspace, -1"
 			"${mainMod} + ALT, right, workspace, +1"
 		] ++ (builtins.map (i: "${mainMod}, ${builtins.toString i}, workspace, ${builtins.toString i}") (builtins.genList (x: x) 10))
-		  ++ (builtins.map (i: "${mainMod} + SHIFHT, ${builtins.toString i}, movetoworkspace, ${builtins.toString i}") (builtins.genList (x: x) 10)));
+		  ++ (builtins.map (i: "${mainMod} + SHIFT, ${builtins.toString i}, movetoworkspace, ${builtins.toString i}") (builtins.genList (x: x) 10)));
 
 		bindr = 
 		let
@@ -80,7 +67,7 @@ in
 		in
 		lib.lists.optionals (desktop.isEnabledStrict [ "hyprland" ])
 		[
-			"${mainMod}, mouse:273, movewindow"
+			"${mainMod}, mouse:272, movewindow"
 			"${mainMod}, mouse:273, resizewindow"
 		];
 
