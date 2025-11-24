@@ -8,16 +8,13 @@ szy.desktops.mkDesktop
 	{
 	
 		"${szy}" = {
+		
+			desktops.options.wayland.variables.enabledFor = [
+				"hyprland"
+			];
 
-			desktops = {
-
-				enabledVariants = [
-					"wayland"
-				];
-
-			};
 		};
-
+	
 		programs = {
 
 			hyprland = {
@@ -28,17 +25,22 @@ szy.desktops.mkDesktop
 			uwsm.enable = true;
 
 		};
+
 	};
 	
 	imports = [
 		./displayManager.nix
-		./lockscreens.nix
-		./polkit.nix
+		./lockscreen.nix
 		./xdgPortal.nix
 		./variants
+		./brightness.nix
 	];
 
-	variants = [
+	/*globalImports = [
+		./brightnessGlobal.nix
+	];*/
+
+	styles = [
 		{
 			names = [ "fallout" ];
 			variants = [ "fallout" ];

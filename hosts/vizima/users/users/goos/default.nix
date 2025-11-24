@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {			
 
 	users.users.goos = {
@@ -11,8 +11,9 @@
 			"networkmanager"
 			# To manage nix configuration
 			"nixmgr"
-			# To use gamemode
+			
 			"gamemode"
+			"video"
 		];
 
 		shell = pkgs.zsh;

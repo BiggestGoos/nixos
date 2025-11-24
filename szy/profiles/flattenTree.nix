@@ -11,6 +11,7 @@ let
         	step = {
             	name = k;
             	configuration = child.configuration or {};
+				globalConfiguration = child.globalConfiguration or {};
         	};
         in
           	flattenTree child (prefix ++ [ step ])

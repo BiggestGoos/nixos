@@ -2,7 +2,7 @@
 {
 
 	imports = [
-		(szy.utils.fromShared "users/desktops/plasma")
+		(szy.utils.fromShared "users/desktops/desktops/plasma")
 	];
 
 }

@@ -8,4 +8,6 @@
 		./uwsm.nix
 	];
 
+	services.hyprpolkitagent.enable = true;
+
 }

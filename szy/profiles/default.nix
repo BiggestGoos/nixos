@@ -7,19 +7,24 @@
 
 			type = 
 			let
-				template = {
+				template.options = {
 
-					options.branches = lib.mkOption {
+					branches = lib.mkOption {
 						type = lib.types.attrsOf (lib.types.submoduleWith { modules = [ template ]; });	
 						default = { };
 					};
 
-					options.configuration = lib.mkOption {
+					configuration = lib.mkOption {
 						type = lib.types.attrs;
 						default = { };
 					};
 
-					options.resolveTo = lib.mkOption {
+					globalConfiguration = lib.mkOption {
+						type = lib.types.attrs;
+						default = { };
+					};
+
+					resolveTo = lib.mkOption {
 						type = lib.types.bool;
 						default = false;
 					};
@@ -64,7 +69,12 @@
 
 	config = {
 
-		specialisation = (builtins.listToAttrs (builtins.map (
+		specialisation = 
+		let
+			resolved = config."${szy}".profiles.resolved;
+			globalConfiguration = szy.utils.mergeAll (builtins.map (profile: profile.globalConfiguration) (lib.lists.flatten resolved));
+		in
+		(builtins.listToAttrs (builtins.map (
 		profile: 
 		let
 
@@ -80,7 +90,7 @@
 
 				};
 				
-				imports = (builtins.map (branch: branch.configuration) profile);
+				imports = [ globalConfiguration ] ++ (builtins.map (branch: branch.configuration) profile);
 
 			};
 
@@ -88,7 +98,7 @@
 			{
 				inherit name value;
 			}
-		) config."${szy}".profiles.resolved));
+		) resolved));
 
 		#Make agnostic to bootloader.
 		boot.loader.systemd-boot.extraInstallCommands = 

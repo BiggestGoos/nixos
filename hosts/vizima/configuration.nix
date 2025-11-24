@@ -15,7 +15,7 @@ services.printing.drivers = [ pkgs.hplip ];
 
 	environment.systemPackages = [
 		pkgs.system-config-printer
-		pkgs.playerctl
+#		pkgs.playerctl
 	];
 
 	services.avahi = {

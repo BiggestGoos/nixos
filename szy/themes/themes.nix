@@ -8,10 +8,10 @@
 	variants.mkVarying {
 		inherit path config option configuration;
 		variants = themes;
-		defaultVariants = [ defaultTheme ] ++ defaultModifiers;
+		default = [ defaultTheme ];
 		additionalOptions = utils.mergeAll [ additionalOptions (lib.attrsets.setAttrByPath keyNames ({
 
-			enabledTheme = lib.mkOption {
+			themes.enabled = lib.mkOption {
 				type = lib.types.enum themes;
 				default = 
 				let
@@ -23,7 +23,7 @@
 						globalEnabled);
 			};
 
-			enabledModifiers = lib.mkOption {
+			themes.modifiers.enabled = lib.mkOption {
 				type = lib.types.listOf (lib.types.enum modifiers);
 				default = 
 				let
@@ -36,16 +36,16 @@
 						intersected);
 			};
 
-			enabledVariants = lib.mkOption {
+			variants.enabled = lib.mkOption {
 				type = lib.types.listOf (lib.types.enum themes);
 				readOnly = true;
-				default = [ (lib.attrsets.getAttrFromPath (keyNames ++ [ "enabledTheme" ]) config) ];
+				default = [ (lib.attrsets.getAttrFromPath (keyNames ++ [ "themes" "enabled" ]) config) ];
 			};
 
 		})) ];
 		additionalData = 
 		let
-			enabledModifiers = (lib.attrsets.getAttrFromPath (keyNames ++ [ "enabledModifiers" ]) config);
+			enabledModifiers = (lib.attrsets.getAttrFromPath (keyNames ++ [ "themes" "modifiers" "enabled" ]) config);
 		in
 		{
 			modifiers = {

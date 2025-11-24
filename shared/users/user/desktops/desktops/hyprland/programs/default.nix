@@ -12,6 +12,8 @@
 		./hyprlock.nix
 		./rofi.nix
 		./swaync.nix
+		./playerctl.nix
+		./brillo.nix
 	];
 
 }

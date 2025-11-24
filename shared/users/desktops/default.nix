@@ -50,10 +50,14 @@ in
 
 			imports = [
 				./options/variants
+				./options/actions
+				./options/audio
 				./options/power
 				./options/displays
 				./options/devices
 				./options/variables
+
+				./config/audio
 			];
 
 		}) ];
@@ -95,6 +99,9 @@ in
 
 					imports = (lib.lists.flatten (builtins.map (currentDesktop: (config."${szy}".desktops.desktops."${currentDesktop}".imports)) desktopValues.enabled)) ++ [ ({ _module.args.desktop = desktopData; }) ] ++ (builtins.map (currentDesktop: (config."${szy}".desktops.desktops."${currentDesktop}".configuration)) desktopValues.enabled);
 
+				};
+				globalConfiguration = {
+					imports = [ desktopValues.global.configuration ] ++ desktopValues.global.imports;
 				};
 			};
 		}) availableDesktops));

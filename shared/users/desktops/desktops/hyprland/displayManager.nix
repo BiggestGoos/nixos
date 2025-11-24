@@ -6,7 +6,7 @@
 	];
 
 	services.displayManager.ly = 
-	lib.mkIf (config."${szy}".desktops.options.autologin.enabled == false)
+	lib.mkIf ((desktop.isDefaultStrict [ "hyprland" ]) && (config."${szy}".desktops.options.autologin.enabled == false))
 	{
 		enable = true;
 	};

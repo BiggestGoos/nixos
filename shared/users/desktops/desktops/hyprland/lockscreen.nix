@@ -1,4 +1,5 @@
-{ szy, config, pkgs, ... }:
+{ szy, config, pkgs, desktop, lib, ... }:
+lib.mkIf (desktop.isEnabledStrict [ "hyprland" ])
 {
 	
 	security.pam.services.hyprlock = {};

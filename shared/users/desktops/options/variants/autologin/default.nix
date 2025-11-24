@@ -16,6 +16,6 @@ variant:
 
 	};
 
-	config."${szy}".desktops.options.autologin.enabled = lib.mkForce variant.enabled;
+	config."${szy}".desktops.options.autologin.enabled = (lib.mkForce variant.enabled);
 
 }

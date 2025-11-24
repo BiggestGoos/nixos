@@ -1,4 +1,5 @@
-{ szy, ... }: 
+{ szy, lib, desktop, ... }:
+lib.mkIf (desktop.isEnabledStrict [ "hyprland" ])
 {
 
 	services.hypridle = {

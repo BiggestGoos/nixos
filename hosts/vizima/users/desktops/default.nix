@@ -59,7 +59,7 @@
 								
 								scrolling = {
 
-									factor = 0.25;
+									factor = 0.5;
 
 								};
 
@@ -91,7 +91,7 @@
 
 				};
 
-				enabledVariants = [
+				variants.enabled = [
 					"autologin"
 					"hibernateResume"
 				];

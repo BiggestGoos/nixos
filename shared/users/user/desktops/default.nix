@@ -16,8 +16,10 @@ additionalConfiguration:
 	) osConfig."${szy}".desktops.enabled)) ++ [ additionalConfiguration ] ++ [ {
 		_module.args.desktop = osConfig."${szy}".desktops.desktopData;
 	} ] ++ [  
-		./options/applications
+		./options/actions
 		./options/variables
+
+		./config/actions
 	]);
 
 }

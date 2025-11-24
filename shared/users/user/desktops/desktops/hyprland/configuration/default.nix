@@ -3,7 +3,7 @@
 
 	imports = [
 		./style.nix
-		./input.nix
+		./binds.nix
 		./misc.nix
 		./devices.nix
 		./displays.nix

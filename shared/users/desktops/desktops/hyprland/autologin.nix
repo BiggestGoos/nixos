@@ -4,7 +4,7 @@ let
   session = "${pkgs.uwsm}/bin/uwsm start -F -- ${pkgs.hyprland}/share/wayland-sessions/hyprland.desktop";
   username = config."${szy}".desktops.options.autologin.user;
 in
-lib.mkIf ((desktop.isDefault [ "hyprland" ]) && (config."${szy}".desktops.options.autologin.enabled))
+lib.mkIf (config."${szy}".desktops.options.autologin.enabled)
 {
   services.greetd = {
     enable = true;
@@ -13,7 +13,7 @@ lib.mkIf ((desktop.isDefault [ "hyprland" ]) && (config."${szy}".desktops.option
         command = "${session} > /tmp/hyprland.log 2>&1";
         user = "${username}";
       };
-      default_session = {
+      default_session = lib.mkIf (desktop.isDefaultStrict [ "hyprland" ]) {
         command = "${tuigreet} --greeting 'Welcome to NixOS!' --asterisks --remember --remember-user-session";
         user = "greeter";
       };

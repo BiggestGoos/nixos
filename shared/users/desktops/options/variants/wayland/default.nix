@@ -1,9 +1,8 @@
 variant:
 { lib, config, szy, ... }:
-lib.mkIf variant.enabled
-{
+let
 
-	"${szy}".desktops.options.variables.default = {
+	variables = {
 
 		NIXOS_OZONE_WL = "1";
 
@@ -18,6 +17,30 @@ lib.mkIf variant.enabled
 
 		# Electron
 		ELECTRON_OZONE_PLATFORM_HINT = "auto";
+
+	};
+
+	enabledFor = config."${szy}".desktops.options.wayland.variables.enabledFor;
+
+in
+{
+
+	options."${szy}".desktops.options.wayland.variables.enabledFor = lib.mkOption { 
+		type = lib.types.listOf (lib.types.enum config."${szy}".desktops.available);
+		default = [];
+	};
+
+	config."${szy}".desktops = { 
+
+		options.variables.variables = lib.mkIf variant.enabled (builtins.listToAttrs (builtins.map 
+		(desktop: 
+		{
+			name = desktop;
+			value = variables;
+		}
+		) enabledFor));
+
+		variants.enabled = lib.mkIf (enabledFor != []) [ "wayland" ];
 
 	};
 

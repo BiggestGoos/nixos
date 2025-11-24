@@ -1,21 +1,21 @@
 { config, lib, options, utils }:
 rec {
 	
-	mkDesktop = { name, enabled ? [], imports ? [], configuration ? { ... }: {}, additionalOptions ? {}, variants ? [] }:
+	mkDesktop = { name, enabled ? [], imports ? [], configuration ? { ... }: {}, globalImports ? [], globalConfiguration ? {}, additionalOptions ? {}, styles ? [] }:
 	let
 		
-		resolvedVariants = [ { names = []; variants = []; } ] ++ variants;
+		resolvedStyles = [ { names = []; variants = []; } ] ++ styles;
 
 	in
 	{
 		
 		options = (utils.mergeAll [ (utils.mergeAll [ {
 
-			"${options}".desktops.desktops = (builtins.listToAttrs (builtins.map (variant: 
+			"${options}".desktops.desktops = (builtins.listToAttrs (builtins.map (style: 
 			let
-				resolvedNames = [ name ] ++ variant.names;
+				resolvedNames = [ name ] ++ style.names;
 				resolvedName = lib.strings.concatStringsSep "+" (resolvedNames);
-				isEnabled = (builtins.elem variant.names config."${options}".desktops.desktops."${name}".variants);
+				isEnabled = (builtins.elem style.names config."${options}".desktops.desktops."${name}".styles.enabled);
 			in
 			{
 
@@ -26,7 +26,7 @@ rec {
 					names = lib.mkOption {
 						type = lib.types.listOf lib.types.str;
 						readOnly = true;
-						default = [ name ] ++ variant.names;
+						default = [ name ] ++ style.names;
 					};
 
 					isEnabled = lib.mkOption {
@@ -51,20 +51,36 @@ rec {
 						type = lib.types.attrs;
 						readOnly = true;
 						default = { __functor = (self: ({ desktop, ... }@args: (utils.mergeAll [ (configuration { inherit desktop args; }) 
-						(lib.optionalAttrs ((builtins.length variant.variants) != 0) { 
+						(lib.optionalAttrs ((builtins.length style.variants) != 0) { 
 							
-							"${options}".desktops.desktops."${name}".enabledVariants = variant.variants;
+							"${options}".desktops.desktops."${name}".variants.enabled = style.variants;
 
 						}) ]))); };
 					};
 
+					global = {
+
+						imports = lib.mkOption {
+							type = lib.types.listOf lib.types.path;
+							readOnly = true;
+							default = globalImports;
+						};
+
+						configuration = lib.mkOption {
+							type = lib.types.attrs;
+							readOnly = true;
+							default = globalConfiguration;
+						};
+
+					};
+
 				};
 
-			}) resolvedVariants));
+			}) resolvedStyles));
 		} additionalOptions ]) ({ 
 
-			"${options}".desktops.desktops."${name}".variants = lib.mkOption {
-				type = lib.types.listOf (lib.types.enum (builtins.map (variant: variant.names) resolvedVariants));
+			"${options}".desktops.desktops."${name}".styles.enabled = lib.mkOption {
+				type = lib.types.listOf (lib.types.enum (builtins.map (style: style.names) resolvedStyles));
 				default = [ [] ];
 			};
 

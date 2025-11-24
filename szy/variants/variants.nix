@@ -1,7 +1,7 @@
 { options, lib, utils, ... }:
 {
 
-	mkVarying = { path, config, option, variants, defaultVariants ? [], configuration ? {}, additionalOptions ? {}, additionalData ? {} }:
+	mkVarying = { path, config, option, variants, default ? null, configuration ? {}, additionalOptions ? {}, additionalData ? {}, allowMultipleEnabled ? true }:
 	let
 		keyNames = [ options ] ++ option;
 	in
@@ -11,24 +11,24 @@
 		(utils.mergeAll [ ({
 			name = variant;
 			__toString = self: self.name;
-			enabled = (builtins.elem variant (lib.attrsets.getAttrFromPath (keyNames ++ [ "enabledVariants" ]) config));
+			enabled = (if (allowMultipleEnabled) then (builtins.elem variant (lib.attrsets.getAttrFromPath (keyNames ++ [ "variants" "enabled" ]) config)) else (variant == (lib.attrsets.getAttrFromPath (keyNames ++ [ "variants" "enabled" ]) config)));
 		}) additionalData ])
 		)))) variants;
 
-		options = (utils.mergeAll [ (lib.attrsets.setAttrByPath keyNames ({
+		options = (utils.mergeAll [ (lib.attrsets.setAttrByPath keyNames ({ variants = {
 
-			availableVariants = lib.mkOption {
+			available = lib.mkOption {
 				type = lib.types.listOf lib.types.str;
 				default = variants;
 				readOnly = true;
 			};
 
-			enabledVariants = lib.mkOption {
-				type = lib.types.listOf (lib.types.enum variants);
-				default = defaultVariants;
+			enabled = lib.mkOption {
+				type = if (allowMultipleEnabled) then (lib.types.listOf (lib.types.enum variants)) else (lib.types.enum variants);
+				default = if (default == null) then [] else default;
 			};
 
-		})) additionalOptions ]);
+		}; })) additionalOptions ]);
 
 		config = configuration;
 
