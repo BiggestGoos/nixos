@@ -2,7 +2,7 @@
 {
 
 	imports = [
-		(szy.utils.fromShared "users/desktops/desktops/gnome")
+		(szy.utils.fromShared "users/desktops/gnome")
 	];
 
 }

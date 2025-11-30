@@ -2,7 +2,7 @@
 {
 
 	imports = [
-		(szy.utils.fromShared "users/desktops/desktops/hyprland")
+		(szy.utils.fromShared "users/desktops/hyprland")
 	];
 
 	"${szy}".desktops.desktops.hyprland.styles.enabled = [

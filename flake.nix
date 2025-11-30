@@ -25,7 +25,7 @@
 		vizima =
 			let
 				hostname = "vizima";
-				szy = import ./szy { inherit inputs; inherit hostname; };
+				szy = import ./szy/library { inherit inputs; inherit hostname; };
 				config = self.outputs.nixosConfigurations.${hostname}.config;
 			in
 			nixpkgs.lib.nixosSystem {
@@ -34,7 +34,7 @@
 
 				specialArgs = { inherit inputs szy; };	
 
-    			modules = [ 
+    			modules = [ szy.utils.import.modules.path ] ++ [ 
 	
 					({ config, ... }:
 					{
@@ -65,6 +65,7 @@
 					backupFileExtension = "backup";
 	    			users = import ./hosts/${hostname}/users/users/home_manager_users.nix;
 					extraSpecialArgs = { inherit inputs szy; };
+					sharedModules = [ szy.utils.import.modules.users.user.path ];
   				};
 			}
 

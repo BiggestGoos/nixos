@@ -2,88 +2,90 @@
 {
 
 	imports = [
-		(import (szy.utils.fromShared "users/desktops") 
-		{
-			
-			"${szy}".desktops = {
+		./plasma
+		./gnome
+		./hyprland
+	];
 
-				options = {
+	"${szy}".desktops.configuration = {
+
+		"${szy}".desktops = {
+
+			components = {
+
+				displays = {
 
 					displays = {
 
-						displays = {
+						main = {
 
-							main = {
-
-								hardware = {
-									portName = "eDP-1";
-									description = "Chimei Innolux Corporation 0x1406";
-								};
+							hardware = {
+								portName = "eDP-1";
+								description = "Chimei Innolux Corporation 0x1406";
+							};
 	
-								scale = 1.25;
+							scale = 1.25;
 			
-							};
-
-							secondary = {
-
-								hardware = {
-									portName = "HDMI-A-1";
-									description = "Philips Consumer Electronics Company PHL 288E2 AU52038000277";
-								};
-
-								scale = 1.5;
-
-							};
-
 						};
 
-						default.name = "main";
+						secondary = {
+
+							hardware = {
+								portName = "HDMI-A-1";
+								description = "Philips Consumer Electronics Company PHL 288E2 AU52038000277";
+							};
+
+							scale = 1.5;
+
+						};
 
 					};
 
-					devices = {
+					default.name = "main";
 
-						keyboards = {
+				};
 
-							default = {
+				devices = {
 
-								xkb.layout = "se";
+					keyboards = {
 
-							};
+						default = {
+
+							xkb.layout = "se";
 
 						};
 
-						pointers = {
+					};
+	
+					pointers = {
 
-							touchpads.default = {
+						touchpads.default = {
 								
-								scrolling = {
+							scrolling = {
 
-									factor = 0.5;
-
-								};
-
-								tapAndDrag = "timeout";
-
-								clickfingerBehavior = true;
+								factor = 0.5;
 
 							};
 
-							touchpads.touchpads.laptop = {
+							tapAndDrag = "timeout";
 
-								hardware.name = "syna30bd:00-06cb:ce08-2";
+							clickfingerBehavior = true;
 
-								sensitivity = 0;
+						};
 
-							};
+						touchpads.touchpads.laptop = {
 
-							generics.generics.pointingStick = {
+							hardware.name = "syna30bd:00-06cb:ce08-2";
 
-								hardware.name = "syna30bd:00-06cb:ce08-1";
+							sensitivity = 0;
 
-								sensitivity = -1;
+						};
 
-							};
+						generics.generics.pointingStick = {
+
+							hardware.name = "syna30bd:00-06cb:ce08-1";
+
+							sensitivity = -1;
 
 						};
 
@@ -91,17 +93,15 @@
 
 				};
 
-				variants.enabled = [
-					"autologin"
-					"hibernateResume"
-				];
-				
 			};
 
-		})
-		./plasma
-		./gnome
-		./hyprland
-	];
+			variants.enabled = [
+				"autologin"
+				"hibernateResume"
+			];
+				
+		};
+
+	};
 
 }

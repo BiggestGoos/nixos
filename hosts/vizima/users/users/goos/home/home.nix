@@ -10,7 +10,7 @@ in
 	imports = [
 		./desktops
 		./programs
-		(szy.utils.fromRoot "szy/themes")
+	#	(szy.utils.fromRoot "szy/themes")
 	];	
 
 	specialisation.test3.configuration = {

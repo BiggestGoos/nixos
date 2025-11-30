@@ -1,0 +1,9 @@
+{ szy, ... }:
+{
+	
+	imports = [
+		./desktops
+		./themes
+	];
+
+}

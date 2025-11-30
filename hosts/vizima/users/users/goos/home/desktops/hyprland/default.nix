@@ -2,10 +2,10 @@
 {
 
 	imports = [
-		(szy.utils.fromShared "users/user/desktops/desktops/hyprland")
+		(szy.utils.fromShared "users/user/desktops/hyprland")
 	];
 
-	"${szy}".desktops.options.actions.actions.category.programs.set = {
+	"${szy}".desktops.components.actions.actions.category.programs.set = {
 
 		terminalEmulator.command = "kitty --single-instance";
 		fileManager.command = "yazi";
