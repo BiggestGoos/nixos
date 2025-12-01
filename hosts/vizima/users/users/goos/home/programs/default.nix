@@ -1,10 +1,11 @@
-{ ... }:
+{ szy, ... }:
 {
 
 	imports = [
 		./editors
 		./shells
-		./browsers
+	#	./browsers
+		./browser
 		./fetchers
 		./file_managers
 		./utility
@@ -15,6 +16,8 @@
 		./gaming
 		./social
 		./productivity
+#		./browsers2
+#		(szy.utils.fromShared "/users/user/programs/browsers2")
 	];
 
 }

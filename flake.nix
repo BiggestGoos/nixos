@@ -25,8 +25,7 @@
 		vizima =
 			let
 				hostname = "vizima";
-				szy = import ./szy/library { inherit inputs; inherit hostname; };
-				config = self.outputs.nixosConfigurations.${hostname}.config;
+				szy = import ./szy/library { inherit inputs hostname; rawRoot = "/etc/nixos"; };
 			in
 			nixpkgs.lib.nixosSystem {
     	

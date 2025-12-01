@@ -20,7 +20,7 @@ in
 			default = {};
 		};
 
-		import = lib.mkOption {
+		user.import = lib.mkOption {
 			type = lib.types.functionTo (lib.types.listOf lib.types.path);
 			readOnly = true;
 			default = path: if (config."${szy}".desktops.enabled == null) then [] else (lib.lists.flatten (builtins.map (enabledDesktopName: 

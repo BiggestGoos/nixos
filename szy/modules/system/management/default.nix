@@ -1,4 +1,9 @@
-{ path, ... }:
+{ szy, ... }:
+let
+
+	path = szy.utils.rawRoot;
+
+in
 {
 
 	# In the future, add some sort of thing that adds all users in the 'wheel' group to 'nixmgr' or something like that.

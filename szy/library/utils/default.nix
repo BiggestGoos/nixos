@@ -1,7 +1,7 @@
-{ root, lib, hostname }:
+{ root, rawRoot, lib, hostname }:
 {
 
-	inherit root hostname;
+	inherit root rawRoot hostname;
 
 	fromRoot = path: "${root}/${path}";
 	

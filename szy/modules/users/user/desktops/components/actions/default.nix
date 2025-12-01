@@ -14,7 +14,7 @@
 
 				browser = 
 				let
-					default = config."${szy}".browsers.defaultValues;
+					default = config."${szy}".programs.browser.default.values;
 				in
 				lib.mkDefault
 				{

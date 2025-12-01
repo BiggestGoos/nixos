@@ -5,7 +5,6 @@
 		./users
 		./desktops
 		./programs
-		./resources
 	];	
 
 }

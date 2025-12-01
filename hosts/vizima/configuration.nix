@@ -2,7 +2,7 @@
 {
 
 	imports = [  
-		(import (szy.utils.fromRoot "shared/system/management.nix") { path = "/etc/nixos"; })
+	#	(import (szy.utils.fromRoot "shared/system/management.nix") { path = "/etc/nixos"; })
 	#	(szy.utils.fromRoot "szy/profiles")
 	#	(szy.utils.fromRoot "szy/themes")
 		./users
