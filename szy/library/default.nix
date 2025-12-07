@@ -13,6 +13,7 @@ rec {
 	desktops = import ./desktops { inherit config lib options utils; };
 	profiles = import ./profiles;
 	programs = import ./programs { inherit config lib options utils; };
+	users = import ./users { inherit config lib options utils; };
 	variants = import ./variants { inherit options lib utils; };
 	themes = import ./themes { inherit options lib utils variants; };
 

@@ -1,16 +1,13 @@
-{ szy, pkgs, ... }:
+{ szy, ... }:
 {
 
 	imports = [
-		./shells
-		./editors
-		./gaming
-		(szy.utils.fromShared "users/programs/preload")
-	];
-
-	environment.systemPackages = [
-		pkgs.git
-		pkgs.gh
+		./shell
+		./editor
+		./fileManager
+		./steam
+		./git
+		(szy.utils.fromShared "users/programs/terminalTools")
 	];
 
 }

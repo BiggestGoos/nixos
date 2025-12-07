@@ -1,4 +1,4 @@
-{ szy, config, ... }:
+{ lib, szy, config, ... }:
 szy.programs.mkProgram
 {
 
@@ -6,13 +6,12 @@ szy.programs.mkProgram
 	name = "browser";
 
 	additionalValues = [
-		"desktopEntry"
-		"autostart"
 		"search"
 	];
 
 	configuration = 
-	{ values }:
+	{ enabled, values, ... }:
+	lib.mkIf (enabled)
 	{
 
 		xdg.mimeApps = {

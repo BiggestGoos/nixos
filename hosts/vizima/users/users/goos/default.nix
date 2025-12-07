@@ -1,22 +1,18 @@
-{ pkgs, config, ... }:
-{			
+{ szy, pkgs, config, ... }:
+szy.users.mkUser
+{
 
-	users.users.goos = {
-		isNormalUser = true;
-    		
-		extraGroups = [ 
-			# To use sudo
-			"wheel"
-			# To manage network settings with NetworkManager
-			"networkmanager"
-			# To manage nix configuration
-			"nixmgr"
-			
-			"gamemode"
-			"video"
-		];
+	name = "goos";
+	userType = "normal";
 
-		shell = pkgs.zsh;
-	};
+	# Should be added instead by respective declarer to 'normal' user-type groups
+	extraGroups = [
+		"networkmanager"
+		"nixmgr"
+		"gamemode"
+		"video"
+	];
+
+	homeConfig = ./home;
 
 }

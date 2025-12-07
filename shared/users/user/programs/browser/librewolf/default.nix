@@ -10,21 +10,20 @@ szy.programs.mkInstance
 	name = "librewolf";
 
 	values = 
-	{ command }:
+	{ finalCommand, ... }:
 	{
 		inherit package;
 		desktopEntry = "librewolf.desktop";
-		autostart = command;
-		search = "${command} --search";
+		search = "${finalCommand} --search";
 	};
 
 	configuration = 
-	{ optionKeys, ... }:
+	{ enabled, optionKeys, ... }:
 	szy.themes.mkThemed
 	{
 
 		path = ./.;
-		inherit config;
+		inherit config enabled;
 
 		option = optionKeys;
 

@@ -2,22 +2,21 @@
 {
 
 	imports = [
-		./editors
-		./shells
-	#	./browsers
+		(szy.utils.fromShared "users/user/programs/terminalTools")
+		./editor
+		./shell
+		./terminal
+		./notes
+		./steam
+		./discord
 		./browser
-		./fetchers
-		./file_managers
-		./utility
+		./fastfetch
+		./fileManager
 		./git
-		./tops
-		./media
-		./consoles
-		./gaming
-		./social
-		./productivity
-#		./browsers2
-#		(szy.utils.fromShared "/users/user/programs/browsers2")
+		./systemMonitor
+		./spotify
+		./passwordManager
+		./nh
 	];
 
 }

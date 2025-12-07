@@ -1,9 +1,8 @@
-{ ... }:
+{ lib, config, szy, ... }:
 {
 
 	imports = [
-		./git
-		./github
+		(szy.utils.fromShared "users/user/programs/git")
 	];
 
 }

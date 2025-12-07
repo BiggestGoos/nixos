@@ -11,7 +11,7 @@
 		(utils.mergeAll [ ({
 			name = variant;
 			__toString = self: self.name;
-			enabled = (if (allowMultipleEnabled) then (builtins.elem variant (lib.attrsets.getAttrFromPath (keyNames ++ [ "variants" "enabled" ]) config)) else (variant == (lib.attrsets.getAttrFromPath (keyNames ++ [ "variants" "enabled" ]) config)));
+			enabled = (if ((lib.attrsets.getAttrFromPath (keyNames ++ [ "variants" "enabled" ]) config) == null) then false else (if (allowMultipleEnabled) then (builtins.elem variant (lib.attrsets.getAttrFromPath (keyNames ++ [ "variants" "enabled" ]) config)) else (variant == (lib.attrsets.getAttrFromPath (keyNames ++ [ "variants" "enabled" ]) config))));
 		}) additionalData ])
 		)))) variants;
 
@@ -24,8 +24,8 @@
 			};
 
 			enabled = lib.mkOption {
-				type = if (allowMultipleEnabled) then (lib.types.listOf (lib.types.enum variants)) else (lib.types.enum variants);
-				default = if (default == null) then [] else default;
+				type = lib.types.nullOr (if (allowMultipleEnabled) then (lib.types.listOf (lib.types.enum variants)) else (lib.types.enum variants));
+				default = default;
 			};
 
 		}; })) additionalOptions ]);

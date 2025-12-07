@@ -6,7 +6,7 @@ variant:
 
 		user = lib.mkOption {
 			type = lib.types.enum config."${szy}".users.available;
-			default = config."${szy}".users.default;
+			default = config."${szy}".users.default.name;
 		};
 
 		enabled = lib.mkOption {

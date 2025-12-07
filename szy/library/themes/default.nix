@@ -1,14 +1,15 @@
 { options, lib, utils, variants }:
 {
 
-	mkThemed = { path, config, option, themes, modifiers ? [], defaultTheme, defaultModifiers ? [], configuration ? {}, additionalOptions ? {} }:
+	mkThemed = { path, config, option, themes, modifiers ? [], enabled ? true, defaultTheme, defaultModifiers ? [], configuration ? {}, additionalOptions ? {} }:
 	let
 		keyNames = [ options ] ++ option;
 	in
 	variants.mkVarying {
-		inherit path config option configuration;
+		inherit path config option;
+		configuration = lib.mkIf (enabled) configuration;
 		variants = themes;
-		default = [ defaultTheme ];
+		default = if (defaultTheme == null) then null else [ defaultTheme ];
 		additionalOptions = utils.mergeAll [ additionalOptions (lib.attrsets.setAttrByPath keyNames ({
 
 			themes.enabled = lib.mkOption {
@@ -37,9 +38,9 @@
 			};
 
 			variants.enabled = lib.mkOption {
-				type = lib.types.listOf (lib.types.enum themes);
+				type = lib.types.nullOr (lib.types.listOf (lib.types.enum themes));
 				readOnly = true;
-				default = [ (lib.attrsets.getAttrFromPath (keyNames ++ [ "themes" "enabled" ]) config) ];
+				default = if (enabled == false) then null else [ (lib.attrsets.getAttrFromPath (keyNames ++ [ "themes" "enabled" ]) config) ];
 			};
 
 		})) ];

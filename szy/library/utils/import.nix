@@ -3,7 +3,7 @@ rec {
 
 	internal.shared = rec {
 
-		path = root + "/szy/internal/shared";
+		path = root + "/szy/modules/internal/shared";
 		from = file: path + "/${file}";
 
 	};

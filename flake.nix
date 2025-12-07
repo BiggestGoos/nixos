@@ -62,7 +62,7 @@
 	    			useGlobalPkgs = true;
 	    			useUserPackages = true;
 					backupFileExtension = "backup";
-	    			users = import ./hosts/${hostname}/users/users/home_manager_users.nix;
+	    			users = builtins.mapAttrs (name: value: (import value.path)) config."${szy}".users.homeManagerPaths;
 					extraSpecialArgs = { inherit inputs szy; };
 					sharedModules = [ szy.utils.import.modules.users.user.path ];
   				};
