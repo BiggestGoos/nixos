@@ -36,9 +36,9 @@ szy.desktops.mkDesktop
 		./brightness.nix
 	];
 
-	/*globalImports = [
+	globalImports = [
 		./brightnessGlobal.nix
-	];*/
+	];
 
 	styles = [
 		{

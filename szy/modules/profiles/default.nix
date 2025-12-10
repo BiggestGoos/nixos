@@ -19,11 +19,6 @@
 						default = { };
 					};
 
-					globalConfiguration = lib.mkOption {
-						type = lib.types.attrs;
-						default = { };
-					};
-
 					resolveTo = lib.mkOption {
 						type = lib.types.bool;
 						default = false;
@@ -68,7 +63,6 @@
 		specialisation = 
 		let
 			resolved = config."${szy}".profiles.resolved;
-			globalConfiguration = szy.utils.mergeAll (builtins.map (profile: profile.globalConfiguration) (lib.lists.flatten resolved));
 		in
 		(builtins.listToAttrs (builtins.map (
 		profile: 
@@ -86,7 +80,7 @@
 
 				};
 				
-				imports = [ globalConfiguration ] ++ (builtins.map (branch: branch.configuration) profile);
+				imports = (builtins.map (branch: branch.configuration) profile);
 
 			};
 
@@ -96,11 +90,11 @@
 			}
 		) resolved));
 
-		#Make agnostic to bootloader.
+		# Make agnostic to bootloader.
 		boot.loader.systemd-boot.extraInstallCommands = 
 		let
-			boot_dir = config.boot.loader.efi.efiSysMountPoint;
-			config_path = boot_dir + "/loader/loader.conf";
+			bootDir = config.boot.loader.efi.efiSysMountPoint;
+			configPath = bootDir + "/loader/loader.conf";
 
 			default = config."${szy}".profiles.enabled;
 			bootName = if (builtins.isNull default) then "$(</etc/specialisation)" else default;
@@ -112,7 +106,7 @@
 				current_profile="-specialisation-${bootName}"
 			fi
 			
-			${pkgs.gnused}/bin/sed -i -E "s/default nixos-generation-([0-9]+).*\.conf/default nixos-generation-\1$current_profile.conf/" ${config_path}
+			${pkgs.gnused}/bin/sed -i -E "s/default nixos-generation-([0-9]+).*\.conf/default nixos-generation-\1$current_profile.conf/" ${configPath}
 		'';
 
 		assertions = [

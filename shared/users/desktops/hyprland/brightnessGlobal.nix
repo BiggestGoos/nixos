@@ -1,6 +1,6 @@
-{ config, pkgs, ... }:
+{ szy, config, pkgs, ... }:
 {
-
+/*
 	hardware.i2c.enable = true;
 
 	boot.extraModulePackages = [ config.boot.kernelPackages.ddcci-driver ];
@@ -12,5 +12,8 @@
 		package = pkgs.ddcutil-service;
 
 	};
+*/
+
+	"${szy}".users.types.groups.normal = [ "video" ];
 
 }

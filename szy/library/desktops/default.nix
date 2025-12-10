@@ -8,6 +8,8 @@ rec {
 
 	in
 	{
+
+		imports = [ globalConfiguration ] ++ globalImports;
 		
 		options = (utils.mergeAll [ (utils.mergeAll [ {
 
@@ -56,22 +58,6 @@ rec {
 							"${options}".desktops.desktops."${name}".variants.enabled = style.variants;
 
 						}) ]))); };
-					};
-
-					global = {
-
-						imports = lib.mkOption {
-							type = lib.types.listOf lib.types.path;
-							readOnly = true;
-							default = globalImports;
-						};
-
-						configuration = lib.mkOption {
-							type = lib.types.attrs;
-							readOnly = true;
-							default = globalConfiguration;
-						};
-
 					};
 
 				};

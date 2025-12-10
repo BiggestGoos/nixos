@@ -2,9 +2,9 @@
 {
 
 	imports = [
+		./generated
 		./hardware
 		./boot
-		./locale.nix
 	];
 
 }

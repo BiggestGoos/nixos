@@ -9,31 +9,23 @@
 				url = "https://github.com/BiggestGoos/plymouth-fork/archive/refs/tags/release3.tar.gz";
 				sha256 = "0fimhs4vlb7mvj837f7nqlijbpx73mvi55wiavv2ri3qff7qqgcq";
 			};
-    		}));
+    	}));
 
 	};
 
 	boot = {
 
-    		consoleLogLevel = 3;
-    		initrd.verbose = false;
-    		initrd.systemd.enable = true;
-    		kernelParams = [
-        		"quiet"
-        		"splash"
-        		"intremap=on"
-        		"rd.udev.log_priority=3"
-        		"rd.systemd.show_status=auto"
+    	kernelParams = [
 			"plymouth.use_simpledrm"
-    		];
+    	];
 
-       		plymouth = { 
+       	plymouth = { 
 			
 			enable = true;
-    			font = "${pkgs.hack-font}/share/fonts/truetype/Hack-Regular.ttf";
-    			logo = "${pkgs.nixos-icons}/share/icons/hicolor/128x128/apps/nix-snowflake.png";
+    		font = "${pkgs.hack-font}/share/fonts/truetype/Hack-Regular.ttf";
+    		logo = "${pkgs.nixos-icons}/share/icons/hicolor/128x128/apps/nix-snowflake.png";
 
-    			extraConfig = "UseFirmwareBackground=false";
+    		extraConfig = "UseFirmwareBackground=false";
 		
 		};
 

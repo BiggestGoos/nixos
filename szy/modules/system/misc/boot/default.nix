@@ -2,7 +2,8 @@
 {
 
 	imports = [
-		./settings.nix
+		./bootloader
+		./settings
 	];
 
 }

@@ -1,8 +1,11 @@
-{ ... }:
+{ lib, pkgs, ... }:
 {
 
 	imports = [
-		./management
+		./misc
+		./hardware
 	];
+
+	boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
 
 }

@@ -1,5 +1,5 @@
 enabled:
-{ lib, ... }:
+{ szy, lib, ... }:
 lib.mkIf (enabled)
 {
 
@@ -7,5 +7,7 @@ lib.mkIf (enabled)
 		gamescope.enable = true;
 		gamemode.enable = true;
 	};
+
+	"${szy}".users.types.groups.normal = [ "gamemode" ];
 
 }

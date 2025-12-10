@@ -13,15 +13,17 @@ szy.programs.mkProgram
 	];
 
 	singleInstance = true;
-	
+
 	configuration = 
 	{ enabled, ... }:
 	lib.mkIf (enabled)
 	{
+
 		programs.nh = {
 			enable = true;
 			flake = szy.utils.rawRoot;
 		};
+
 	};
 
 }

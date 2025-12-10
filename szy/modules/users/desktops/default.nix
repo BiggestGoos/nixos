@@ -110,9 +110,6 @@ in
 					imports = (lib.lists.flatten (builtins.map (currentDesktop: (config."${szy}".desktops.desktops."${currentDesktop}".imports)) desktopValues.enabled)) ++ [ ({ _module.args.desktop = desktopData; }) ] ++ (builtins.map (currentDesktop: (config."${szy}".desktops.desktops."${currentDesktop}".configuration)) desktopValues.enabled);
 
 				};
-				globalConfiguration = {
-					imports = [ desktopValues.global.configuration ] ++ desktopValues.global.imports;
-				};
 			};
 		}) availableDesktops));
 
