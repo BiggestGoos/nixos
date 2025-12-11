@@ -49,6 +49,8 @@ theme:
 
 				"floorp.workspaces.enabled" = false;
 
+				"browser.tabs.closeWindowWithLastTab" = false;
+
 			};
 
 		};

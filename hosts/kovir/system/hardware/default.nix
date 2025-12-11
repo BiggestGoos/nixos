@@ -5,6 +5,7 @@
 		./storage
 		./networking
 		./graphics
+		./motherboard
 	];
 
 }
