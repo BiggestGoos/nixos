@@ -11,6 +11,8 @@
 
 		"${szy}".desktops = {
 
+			variants.enabled = [ "autologin" ];
+
 			components = {
 
 				displays = {
@@ -60,11 +62,6 @@
 				};
 
 			};
-
-			variants.enabled = [
-				"autologin"
-				"hibernateResume"
-			];
 				
 		};
 

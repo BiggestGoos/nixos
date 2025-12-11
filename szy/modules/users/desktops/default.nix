@@ -71,7 +71,23 @@ in
 
 		configuration = {
 
-			imports = [ ./components ] ++ (builtins.map (configuration: if (builtins.isFunction configuration) then (configuration { config = config.specialisation."${profilePrefixName}".configuration; }) else configuration) config."${szy}".desktops.configuration);
+			imports = [ ./components ] ++ 
+			(builtins.map 
+				(configuration:
+				let
+					config = config.specialisation."${profilePrefixName}".configuration;
+				in
+					if (builtins.isFunction configuration) 
+					then 
+						(configuration 
+						{ 
+							inherit config;
+							desktop = config."${szy}".desktops.desktopData;
+						}) 
+					else 
+						configuration
+				) 
+			config."${szy}".desktops.configuration);
 
 		};
 
