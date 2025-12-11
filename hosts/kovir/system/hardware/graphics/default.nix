@@ -1,0 +1,18 @@
+{ pkgs, ... }:
+{
+
+	hardware.graphics.extraPackages = with pkgs; [ 	
+		libvdpau-va-gl
+	];
+
+
+	environment.sessionVariables = { VDPAU_DRIVER = "radeonsi"; LIBVA_DRIVER_NAME = "radeonsi"; };
+
+	hardware.amdgpu = {
+
+		initrd.enable = true;
+		opencl.enable = true;
+
+	};
+
+}

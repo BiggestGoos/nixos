@@ -1,11 +1,10 @@
-{ szy, ... }:
+{ lib, pkgs, ... }:
 {
-	
+
 	imports = [
+		./users
 		./desktops
-		./themes
 		./programs
-		./misc
-	];
+	];	
 
 }

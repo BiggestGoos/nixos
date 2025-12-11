@@ -1,0 +1,10 @@
+{ ... }:
+{
+
+	imports = [
+		./generated
+		./hardware
+		./boot
+	];
+
+}

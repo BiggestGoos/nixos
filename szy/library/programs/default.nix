@@ -38,7 +38,7 @@ in
 			additionalValues) ++ (lib.lists.optional (guiAndCli) { name = "isGraphical"; value = lib.mkOption { type = lib.types.bool; }; })));
 
 		finalValues = config."${options}".programs."${name}".default.values;
-		enabled = config."${options}".programs."${name}".enabled;
+		enabled = if (builtins.hasAttr "instances" config."${options}".programs."${name}") then config."${options}".programs."${name}".enabled else false;
 
 	in
 	{

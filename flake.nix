@@ -11,16 +11,21 @@
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
 
+		disko = {
+			url = "github:nix-community/disko/latest";
+			inputs.nixpkgs.follows = "nixpkgs";
+		};
+
 	};
 
 	outputs = 
-	{ self, nixpkgs, home-manager }@inputs: 
+	{ self, nixpkgs, home-manager, disko }@inputs: 
 	let
 		szy = import ./szy/library { inherit inputs; };
 	in
 	{
 
-		nixosConfigurations = szy.flake.mkConfiguration {
+		nixosConfigurations = (szy.flake.mkConfiguration {
 			hostname = "vizima";
 			timeZone = {
 				default = "Europe/Stockholm";
@@ -30,7 +35,17 @@
 				console.keyMap = "sv-latin1";
 			};
 			rawRoot = "/etc/nixos";
-		};
+		}) // (szy.flake.mkConfiguration {
+			hostname = "kovir";
+			timeZone = {
+				default = "Europe/Stockholm";
+				automatic = true;
+			};
+			locale = {
+				console.keyMap = "sv-latin1";
+			};
+			rawRoot = "/etc/nixos";
+		});
 
 	};
 

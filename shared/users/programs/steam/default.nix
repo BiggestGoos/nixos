@@ -33,23 +33,31 @@ szy.programs.mkInstance
 
 		};
 
-		config.programs.steam = lib.mkIf (enabled) {
-	
-			enable = true;
-  	
-			remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-  			dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-	  		localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
-		
-			gamescopeSession.enable = (lib.attrsets.attrByPath optionKeys { gamescopeSession.enable = false; } config).gamescopeSession.enable;
+		config = {
 
-			protontricks.enable = true;
-			extest.enable = true;
+			programs.steam = lib.mkIf (enabled) {
+		
+				enable = true;
+  	
+				remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+  				dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+		  		localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+		
+				gamescopeSession.enable = (lib.attrsets.attrByPath optionKeys { gamescopeSession.enable = false; } config).gamescopeSession.enable;
+
+				protontricks.enable = true;
+				extest.enable = true;
+
+				extraCompatPackages = [
+					pkgs.proton-ge-bin
+				];
+
+			};
 
 		};
 
 		imports = [
-			((import "${szy.utils.fromShared "/users/misc/gaming/tools"}") enabled)
+			(import "${szy.utils.fromShared "/users/misc/gaming/tools"}" enabled)
 			(import "${szy.utils.fromShared "/users/misc/gaming/optimizations"}" enabled)
 		];
 

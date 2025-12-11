@@ -14,12 +14,12 @@
 
 			specialArgs = { inherit (self) inputs; inherit szy; };
 			modules = [ szy.utils.import.modules.path ] ++ [
+				self.inputs.disko.nixosModules.disko
 				(szy.utils.fromRoot "hosts/${hostname}")
 				self.inputs.home-manager.nixosModules.home-manager
 				{
 					home-manager = 
 					{
-						useGlobalPkgs = true;
 	    				useUserPackages = true;
 						backupFileExtension = "backup";
 	    				users = builtins.mapAttrs (name: value: (import value.path)) config."${szy}".users.homeManagerPaths;

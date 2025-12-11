@@ -1,4 +1,3 @@
-#path:
 { config, osConfig, szy, lib, ... }:
 {
 	

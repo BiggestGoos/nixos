@@ -75,6 +75,7 @@
 			inherit (value) guiAndCli;
 
 			setValues = values: 
+			lib.mkIf (values != null)
 			{
 				open = (lib.mkDefault
 				{

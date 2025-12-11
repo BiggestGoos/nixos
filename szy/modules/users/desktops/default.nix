@@ -1,14 +1,17 @@
 { szy, lib, config, ... }:
 let
 
+	profilePrefix = config."${szy}".desktops.profilePrefix;
+
 	resolvedProfilePrefix = 
 	let
-		profilePrefix = config."${szy}".desktops.profilePrefix;
 		branchList = builtins.map (name: "branches") profilePrefix;
 	in
-		lib.lists.flatten (lib.lists.zipListsWith (a: b: [ a b ]) profilePrefix branchList);
+		lib.lists.init (lib.lists.flatten (lib.lists.zipListsWith (a: b: [ a b ]) profilePrefix branchList));
 
 	availableDesktops = config."${szy}".desktops.available;
+
+	profilePrefixName = lib.strings.intersperse "-" profilePrefix;
 
 in
 {
@@ -16,8 +19,8 @@ in
 	options."${szy}".desktops = {
 
 		configuration = lib.mkOption {
-			type = lib.types.attrs;
-			default = {};
+			type = lib.types.listOf (lib.types.either (lib.types.attrs) (lib.types.functionTo lib.types.attrs));
+			default = [];
 		};
 
 		user.import = lib.mkOption {
@@ -64,13 +67,15 @@ in
 
 	};	
 
-	config."${szy}".profiles.base.branches = (lib.attrsets.setAttrByPath (lib.lists.init resolvedProfilePrefix) {
+	config."${szy}".profiles.base.branches = (lib.attrsets.setAttrByPath resolvedProfilePrefix {
 
-		configuration = szy.utils.mergeAll [ config."${szy}".desktops.configuration ({
+		configuration = {
 
-			imports = [ ./components ];
+			imports = [ ./components ] ++ (builtins.map (configuration: if (builtins.isFunction configuration) then (configuration { config = config.specialisation."${profilePrefixName}".configuration; }) else configuration) config."${szy}".desktops.configuration);
 
-		}) ];
+		};
+
+		resolveTo = true;
 
 		branches = (lib.listToAttrs (builtins.map (desktop:
 		let
