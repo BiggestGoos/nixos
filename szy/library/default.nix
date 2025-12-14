@@ -17,7 +17,7 @@ let
 		{ hostname, rawRoot }:
 		let
 
-			inherit (self.inputs.self.nixosConfigurations."${hostname}") config;
+			inherit (self.inputs.self.nixosConfigurations."${hostname}") config _module;
 
 		in
 		rec {

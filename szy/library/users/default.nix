@@ -7,7 +7,7 @@ in
 {
 
 	mkUser = 
-	{ name, userType, shell ? null, extraGroups ? [], homeDirectory ? "/home", homeConfig ? null }:
+	{ name, userType, shell ? null, extraGroups ? [], homeDirectory ? "/home", homeConfig ? null, configuration ? {}, imports ? [] }:
 	let
 
 		isNormalUser = assert (builtins.elem userType userTypes); if (userType == "normal" || userType == "guest") then true else false;
@@ -21,7 +21,15 @@ in
 
 	in
 	{
+	
+		imports = utils.propogateImports {
 
+			inherit name;
+
+			home = resolvedHomeDirectory;
+
+		} imports;
+	
 		config = {
 
 			users.users."${name}" = {

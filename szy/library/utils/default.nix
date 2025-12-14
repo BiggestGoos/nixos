@@ -1,4 +1,9 @@
 { root, rawRoot, lib, hostname }:
+let
+
+	propogateImports = object: imports: builtins.map (module: if (builtins.isFunction (import module)) then ((import module) (lib.attrsets.recursiveUpdate object { import = propogateImports object; __functor = self: propogateImports object; })) else (import module)) imports;
+
+in
 {
 
 	inherit root rawRoot hostname;
@@ -53,5 +58,7 @@
         	else
         		b;
     in builtins.foldl' f {} sets;
+
+	inherit propogateImports;
 
 }

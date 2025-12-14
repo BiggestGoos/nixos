@@ -26,7 +26,7 @@ in
 								type = "btrfs";
 								extraArgs = [ "-f" ]; # Not sure but the example uses it.
 					
-								mountpoint = "/partition-root";
+								mountpoint = "/partitions";
 
 								subvolumes = {
 

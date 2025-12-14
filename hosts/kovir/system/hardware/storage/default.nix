@@ -3,7 +3,6 @@
 
 	imports = [
 		./partitioning
-		./secondary
 	];
 
 }
