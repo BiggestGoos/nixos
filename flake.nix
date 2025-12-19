@@ -1,6 +1,7 @@
 {
   
-	inputs = {
+	inputs = 
+	{
 
 		nixpkgs = {
 			url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -16,10 +17,15 @@
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
 
+		steam-config-nix = {
+			url = "github:BiggestGoos/steam-config-nix";
+			inputs.nixpkgs.follows = "nixpkgs";
+		};
+
 	};
 
 	outputs = 
-	{ self, nixpkgs, home-manager, disko }@inputs: 
+	{ ... }@inputs: 
 	let
 		szy = import ./szy/library { inherit inputs; };
 	in
@@ -39,7 +45,6 @@
 			hostname = "kovir";
 			timeZone = {
 				default = "Europe/Stockholm";
-				automatic = true;
 			};
 			locale = {
 				console.keyMap = "sv-latin1";

@@ -1,6 +1,6 @@
 enabled:
 { lib, pkgs, ... }:
-lib.mkIf (enabled)
+enabled
 {
 
 	home.packages = [

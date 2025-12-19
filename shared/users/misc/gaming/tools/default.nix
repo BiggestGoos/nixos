@@ -1,6 +1,6 @@
 enabled:
 { szy, lib, pkgs, ... }:
-lib.mkIf (enabled)
+enabled
 {
 
 	programs = {

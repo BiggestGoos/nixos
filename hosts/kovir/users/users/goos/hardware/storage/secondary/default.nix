@@ -3,25 +3,20 @@ user:
 {
 
 	imports = [
-		(import ./disko.nix { root = user.home; })
+		(import ./disko.nix { root = user.value.home; })
 	];
 
-	options.test = lib.mkOption {
-		type = lib.types.attrs;
-		default = user;
-	};	
-
-	config.systemd.tmpfiles.settings."${user.name}-secondary-drive-permissions" = 
+	config.systemd.tmpfiles.settings."${user.value.name}-secondary-drive-permissions" = 
 	let
-		subvolumes = import ./subvolumes.nix user.home;
+		subvolumes = import ./subvolumes.nix user.value.home;
 	in
 	lib.attrsets.mapAttrs' (name: value:
 	{
 		name = value.mountpoint;
 		value.z = 
 		{
-			user = user.name;
-			group = config.users.users."${user.name}".group;
+			user = user.value.name;
+			group = config.users.users."${user.value.name}".group;
 			# Read-write-exec for user, read-exec for group and others. rwx/r-x/r-x.
 			# Leading tilde (~), "Optionally, if prefixed with "~", the access mode is masked based on the already set access bits for existing file or directories"
 			mode = "~0755";

@@ -2,7 +2,7 @@
 {
 
 	imports = [
-		"${szy.utils.import.internal.shared.from "themes"}"
+		"${szy.import.internal.shared.from "themes"}"
 	];
 
 }

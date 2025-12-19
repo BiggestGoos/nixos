@@ -2,7 +2,7 @@
 {
 
 	imports = [
-		(szy.utils.import.internal.shared.from "desktops/components/variables")
+		(szy.import.internal.shared.from "desktops/components/variables")
 	];
 
 }

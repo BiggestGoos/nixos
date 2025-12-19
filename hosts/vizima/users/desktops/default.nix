@@ -7,7 +7,7 @@
 		./hyprland
 	];
 
-	"${szy}".desktops.configuration = {
+	"${szy}".desktops.configuration = [ {
 
 		"${szy}".desktops = {
 
@@ -102,6 +102,6 @@
 				
 		};
 
-	};
+	} ];
 
 }

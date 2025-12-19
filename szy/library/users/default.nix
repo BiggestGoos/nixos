@@ -1,4 +1,4 @@
-{ config, options, lib, utils, ... }:
+{ config, options, lib, szy, ... }:
 let
 
 	userTypes = config."${options}".users.types.list;
@@ -22,7 +22,7 @@ in
 	in
 	{
 	
-		imports = utils.propogateImports {
+		imports = szy.import.propogate {
 
 			inherit name;
 

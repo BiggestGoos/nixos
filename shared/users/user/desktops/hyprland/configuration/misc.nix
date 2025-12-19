@@ -1,6 +1,10 @@
 { ... }:
 {
 
+	imports = [
+		./pip.nix
+	];
+
 	wayland.windowManager.hyprland.settings = {
 
 		misc = {
