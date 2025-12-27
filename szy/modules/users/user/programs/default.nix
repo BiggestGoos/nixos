@@ -17,6 +17,7 @@
 		./passwordManager
 		./musicPlayer
 		./notes
+		./lutris
 	];
 
 }

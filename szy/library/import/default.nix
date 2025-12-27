@@ -1,7 +1,9 @@
 { root, lib }:
 let
 
-	propogate = object: imports: builtins.map (module: if (builtins.isFunction (import module)) then ((import module) ({ value = object; import = propogate object.value; __functor = self: propogate object.value; })) else (import module)) imports;
+	_propogate = object: imports: builtins.map (module: if (builtins.isFunction (import module)) then ((import module) ({  inherit (object) value; import = _propogate object; __functor = self: _propogate object; })) else (import module)) imports;
+
+	propogate = object: imports: _propogate { value = object; } imports;
 
 	toggleableModule = enabled: module: lib.mkIf (enabled) module;
 

@@ -14,11 +14,9 @@ enabled:
 			enable = true;
 			closeSteam = true;
 
-			apps = {
+			defaultCompatTool = "GE-Proton";
 
-				"0" = {
-					compatTool = "GE-Proton";
-				};
+			apps = {
 
 	/*			"20900" = {
 					launchOptions = {
