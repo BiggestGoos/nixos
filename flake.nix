@@ -18,7 +18,7 @@
 		};
 
 		steam-config-nix = {
-			url = "github:different-name/steam-config-nix";
+			url = "/home/goos/Dev/steam-config-nix"; #"github:BiggestGoos/steam-config-nix";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
 

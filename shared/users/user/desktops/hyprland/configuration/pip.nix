@@ -25,14 +25,21 @@ windowrule = keepaspectratio, $pip
 
 
 		windowrule = [
-			"float, ${pip}"
-			"pin, ${pip}"
-			"content video, ${pip}"
-			"noinitialfocus, ${pip}"
-			"size 30% 30%, ${pip}"
-			"move 100%-w-0, ${pip}"
-			"bordersize 1, ${pip}"
-			"keepaspectratio, ${pip}"
+			{
+				name = "pip";
+
+				"match:title" = "^(Picture-in-Picture)$";
+
+				float = "on";
+				pin = "on";
+				content = "video";
+				no_initial_focus = "on";
+				size = "30% 30%";
+				move = "100%-w-0";
+				border_size = 1;
+				keep_aspect_ratio = "on";
+
+			}
 		];
 
 	};

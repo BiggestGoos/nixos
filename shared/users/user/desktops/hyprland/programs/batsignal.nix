@@ -3,7 +3,8 @@ lib.mkIf (desktop.isEnabledStrict [ "hyprland" ])
 {
 
 	services.batsignal = {
-		enable = true;
+	# Fails to build
+	#	enable = true;
 		extraArgs = [
 			# Warning 30%
 			"-w 30"

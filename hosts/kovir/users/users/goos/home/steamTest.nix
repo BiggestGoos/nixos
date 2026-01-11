@@ -1,27 +1,27 @@
-enabled:
-{ lib, config, osConfig, pkgs, szy, inputs, ... }:
+{ lib, pkgs, inputs, osConfig, ... }:
 {
 
-	/*imports = [
+	imports = [
 		inputs.steam-config-nix.homeModules.default
 	];
 
-	config = enabled
+	config =
 	{
 
 		programs.steam.config = {
 
 			enable = true;
-			steam.autoClose = {
+			/*steam.autoClose = {
 				enable = true;
 				#restart.enable = true;
-			};
+			};*/
 
-			shutdownBehavior = "close";
+			#closeSteam = true;
+			shutdownBehavior = "restart";
 
 			defaultCompatTool = "GE-Proton";
 
-			default = {
+			/*default = {
 				
 				compatTool = "GE-Protonn";
 				launchOptions = {
@@ -30,7 +30,7 @@ enabled:
 
 				};
 
-			};
+			};*/
 
 			apps = {
 
@@ -73,6 +73,6 @@ enabled:
 
 		};
 
-	};*/
+	};
 
 }
