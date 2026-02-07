@@ -35,7 +35,7 @@
 			hostname = "vizima";
 			timeZone = {
 				default = "Europe/Stockholm";
-				automatic = true;
+				#automatic = true; Work more on this, doesn't work currently (2026-01-24)
 			};
 			locale = {
 				console.keyMap = "sv-latin1";

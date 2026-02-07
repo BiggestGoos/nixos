@@ -5,6 +5,7 @@
 		./users
 		./desktops
 		./programs
+		./misc/stygga
 	];	
 
 }
