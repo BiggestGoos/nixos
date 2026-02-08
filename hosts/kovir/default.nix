@@ -8,7 +8,7 @@
 		#./steamTest.nix
 	];
 
-	services.sunshine = {
+	/*services.sunshine = {
 
 		enable = true;
 		capSysAdmin = true;
@@ -21,7 +21,7 @@
 	  0.0.0.0 overseauspider.yuanshen.com
 	  0.0.0.0 apm-log-upload-os.hoyoverse.com
 	  0.0.0.0 zzz-log-upload-os.hoyoverse.com
-    '';
+    '';*/
 
 	system.stateVersion = "26.05"; 
 

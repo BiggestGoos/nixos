@@ -8,7 +8,6 @@ let
 in
 {
 
-	# In the future, add some sort of thing that adds all users in the 'wheel' group to 'nixmgr' or something like that.
 	# Management group for nix(os) configuration
 	users.groups."${groupName}" = { };
 

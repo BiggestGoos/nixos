@@ -18,6 +18,7 @@
 		./musicPlayer
 		./notes
 		./lutris
+		./shellTheme
 	];
 
 }

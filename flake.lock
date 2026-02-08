@@ -49,11 +49,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1770476834,
-        "narHash": "sha256-cyxgVsNfHnJ4Zn6G1EOzfTXbjTy7Ds9zMOsZaX7VZWs=",
+        "lastModified": 1770491427,
+        "narHash": "sha256-8b+0vixdqGnIIcgsPhjdX7EGPdzcVQqYxF+ujjex654=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "6cee0821577643e0b34e2c5d9a90d0b1b5cdca70",
+        "rev": "cbd8a72e5fe6af19d40e2741dc440d9227836860",
         "type": "github"
       },
       "original": {
@@ -95,8 +95,8 @@
         "systems": "systems"
       },
       "locked": {
-        "lastModified": 1769289452,
-        "narHash": "sha256-YcKzPR7f6GEmUU4GK7D1cxmhLpoLIlnm2YobXu4GqLY=",
+        "lastModified": 1767698290,
+        "narHash": "sha256-Hq2BgIppthFT+VZF6o7cktNdZaE22c3JfBa/HWKZetI=",
         "path": "/home/goos/Dev/steam-config-nix",
         "type": "path"
       },

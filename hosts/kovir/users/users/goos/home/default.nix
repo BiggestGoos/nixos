@@ -4,11 +4,11 @@
 	imports = [
 		./desktops
 		./programs
-		./sync
+	#	./sync
 
-		./shells/Tilia-dev
+	#	./shells/Tilia-dev
 
-		./steamTest.nix
+	#	./steamTest.nix
 	];	
 	
 	home.stateVersion = "26.05";
