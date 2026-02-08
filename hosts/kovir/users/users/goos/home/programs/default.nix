@@ -3,6 +3,7 @@
 
 	imports = [
 		(szy.utils.fromShared "users/user/programs/terminalTools")
+		(szy.utils.fromShared "users/user/programs/shellTheme/starship")
 		./editor
 		./shell
 		./terminal
