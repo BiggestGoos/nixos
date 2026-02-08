@@ -20,10 +20,9 @@ szy.programs.mkInstance
 
 	configuration = 
 	{ enabled, optionKeys, ... }:
-	lib.mkIf enabled
 	{
 
-		programs.kitty = {
+		programs.kitty = lib.mkIf enabled {
 			enable = true;
 
 			themeFile = "adwaita_darker";
@@ -40,9 +39,11 @@ szy.programs.mkInstance
 
 				disable_ligatures = "cursor";
 
+				# In future, use global theme colors for styling (colors, opacity, etc...)
 				cursor = "#00cc00";
 				cursor_text_color = "background";
 
+				# Should follow the used desktops input values in some way
 				touch_scroll_multiplier = 5.0;
 
 				remember_window_size = false;
@@ -53,17 +54,16 @@ szy.programs.mkInstance
 				background = "#021117";
 				background_opacity = 0.9;
 
-				kitty_mod = "ctrl+shift";
-
-			};
-
-			keybindings = {
-
-				"kitty_mod+e" = "launch --type=tab --cwd=current yazi";
+				clear_all_shortcuts = true;	
 
 			};
 
 		};
+
+		imports = szy.import.toggleable enabled [
+			./tabs.nix
+			./clipboard.nix
+		];
 
 	};
 
