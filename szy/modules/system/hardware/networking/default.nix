@@ -32,7 +32,33 @@ in
 		networking = {
 
 			hostName = cfg.hostName;
-			networkmanager.enable = true;
+
+			wireless = {
+				
+				enable = false;
+
+				iwd = {
+
+					enable = true;
+
+					settings = {
+				
+						General.AddressRandomization = "network";
+						Settings.AutoConnect = true;
+
+					};
+	
+				};
+
+			};
+
+			networkmanager = {
+				
+				enable = true;
+
+				wifi.backend = "iwd";
+
+			};
 
 			useDHCP = lib.mkDefault true;
 
