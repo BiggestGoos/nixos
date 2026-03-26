@@ -27,6 +27,16 @@ szy.programs.mkInstance
 
 			enable = true;
 
+			/*
+				The default value of `programs.yazi.shellWrapperName` has changed from `yy` to `y`.
+                    You are currently using the legacy default (`yy`) because `home.stateVersion` is less than "26.05".
+                    To silence this warning and keep legacy behavior, set:
+                      programs.yazi.shellWrapperName = "yy";
+                    To adopt the new default behavior, set:
+                      programs.yazi.shellWrapperName = "y";
+			*/
+			shellWrapperName = "y";
+
 		};	
 
 	};

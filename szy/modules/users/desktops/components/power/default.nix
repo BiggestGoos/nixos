@@ -28,7 +28,11 @@
 	config = 
 	{
 
-		systemd.sleep.extraConfig = "HibernateDelaySec=${config."${szy}".desktops.components.power.hibernate.delay}";
+		systemd.sleep.settings.Sleep = {
+
+			HibernateDelaySec = "${config."${szy}".desktops.components.power.hibernate.delay}";
+
+		};
 
 		services.logind.settings.Login = { 
 			HandleLidSwitch = config."${szy}".desktops.components.power.lidSwitch.default;
