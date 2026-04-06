@@ -8,14 +8,14 @@
 		#./steamTest.nix
 	];
 
-	/*services.sunshine = {
+	services.sunshine = {
 
 		enable = true;
 		capSysAdmin = true;
 		openFirewall = true;
 
 	};
-
+/*
     networking.extraHosts = ''
       0.0.0.0 log-upload-os.hoyoverse.com
 	  0.0.0.0 overseauspider.yuanshen.com
