@@ -24,32 +24,32 @@ let
 
 				importFunc = import ./import { inherit root lib; };
 
-				utils = import ./utils { inherit root rawRoot hostname lib; };
-				desktops = import ./desktops { inherit config lib options utils; };
-				profiles = import ./profiles;
-				objects = import ./objects { inherit config lib options utils; };
-				users = import ./users { inherit config lib options szy; };
-				variants = import ./variants { inherit options lib utils; };
-				themes = import ./themes { inherit options lib utils variants; };
+				parts = rec {
 
-				options = "szy-" + utils.hostname;
+					meta = import ./meta { inherit lib; };
+
+					utils = import ./utils { inherit root rawRoot hostname lib; };
+					desktops = import ./desktops { inherit config lib utils; options = identifier; };
+					profiles = import ./profiles;
+
+					programs = import ./objects/programs { inherit config lib utils; options = identifier; };
+
+					users = import ./users { inherit config lib szy; options = identifier; };
+					variants = import ./variants { inherit lib utils; options = identifier; };
+					themes = import ./themes { inherit lib utils variants; options = identifier; };
+
+				};
+
+				identifier = "szy-" + parts.utils.hostname;
 
 			in
-			{
+			parts // {
 
 				inherit config;
 
-				inherit 
-					utils
-					desktops
-					profiles
-					programs
-					users
-					variants
-					themes;
 				import = importFunc;
 
-				__toString = self: options;
+				__toString = self: identifier;
 
 			};
 
