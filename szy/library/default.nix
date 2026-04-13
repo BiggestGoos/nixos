@@ -32,6 +32,7 @@ let
 					desktops = import ./desktops { inherit config lib utils; options = identifier; };
 					profiles = import ./profiles;
 
+					objects = import ./objects/test.nix { inherit identifier config lib meta; };
 					programs = import ./objects/programs { inherit config lib utils; options = identifier; };
 
 					users = import ./users { inherit config lib szy; options = identifier; };

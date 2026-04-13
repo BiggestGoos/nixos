@@ -1,4 +1,4 @@
-{ identifier, config, lib, meta, ... }@mInputs:
+{ identifier, config, lib, meta, ... }@gInputs:
 let
 
 	inherit
@@ -7,18 +7,32 @@ let
 		meta
 	;
 
+	
+
 in
 {
 
-	declare = 
+	declare =
 	{
+		name,
+		onlyTemplate ? false,
+	}:
+	{
+
+		options."${gInputs.identifier}".
+
+	};
+
+	/*declare = 
+	{
+		identifier,
 		callerData
 	}:
-	if (meta.callerDataAssert callerData) then null else
+	if !(meta.callerData { data = callerData; requiredFields = [ "" ]; }) then null else
 	{
 
 		
 
-	};
+	};*/
 
 }

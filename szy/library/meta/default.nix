@@ -31,61 +31,72 @@ let
 	in
 		if (lType == rType) then true else (if ((nestRemover lType) == (nestRemover rType)) then true else false);
 
-	_callerData = {
+in
+{
+
+# Maybe create an assert function and move all "callerData" things into one set called "callerData", call the "callerData" function "typeCheck" or something like that.
+
+	# Metadata about the "caller", e.g. data about the calling location or the "optionNamespace" of the caller.
+
+	callerData = 
+	let
 
 		dataValues = {
 			config = typeOf {};
 			path = typeOf ./.;
 			optionNamespace = typeOf [ "string" ];
 		};
+	
+	in
+	rec {
+
+		typeCheckData = 
+		data:
+			lib.attrsets.filterAttrs 
+			(name: value: 
+			let
+				result =
+					(lib.asserts.assertMsg 
+						(builtins.hasAttr name dataValues)
+						"callerData value \"${name}\" does not exist."
+					) && 
+					(lib.asserts.assertMsg 
+						(compareTypes dataValues."${name}" (typeOf value))
+						"callerData value of \"${name}\" { ${builtins.toJSON value} } is the wrong type. Correct type: \"${dataValues."${name}"}\", Used type: \"${typeOf value}\"."
+					);
+			in
+				result
+			) data;
+
+		testData = 
+		{
+			data,
+			requiredFields ? []
+		}:
+		let
+			resolvedData = typeCheckData data;
+		in
+			if (lib.lists.all 
+			(value: 
+				lib.asserts.assertMsg 
+				(builtins.elem value (builtins.attrNames dataValues)) 
+				"The required field \"${value}\" is not a real field."
+			) requiredFields) 
+			then 
+				(lib.lists.naturalSort (lib.lists.intersectLists (requiredFields) (builtins.attrNames resolvedData))) == (lib.lists.naturalSort (requiredFields))
+			else false;
+	
+		assertData =
+		{
+			data,
+			requiredFields ? []
+		}@inputs:
+			lib.asserts.assertMsg
+			(testData inputs)
+			"The callerData { ${builtins.toJSON data} } did not contain all the required fields { ${builtins.toJSON requiredFields} }.";
+
+		__functor = self: assertData;
 
 	};
-
-in
-rec {
-
-# Maybe create an assert function and move all "callerData" things into one set called "callerData", call the "callerData" function "typeCheck" or something like that.
-
-	# Metadata about the "caller", e.g. data about the calling location or the "optionNamespace" of the caller.
-	callerData = 
-	let
-
-		inherit (_callerData) dataValues;
-
-	in
-	data:
-		lib.attrsets.filterAttrs 
-		(name: value: 
-		let
-			result =
-				(lib.asserts.assertMsg 
-					(builtins.hasAttr name dataValues)
-					"callerData value \"${name}\" does not exist."
-				) && 
-				(lib.asserts.assertMsg 
-					(compareTypes dataValues."${name}" (typeOf value))
-					"callerData value of \"${name}\" { ${builtins.toJSON value} } is the wrong type. Correct type: \"${dataValues."${name}"}\", Used type: \"${typeOf value}\"."
-				);
-		in
-			result
-		) data;
-
-	callerDataTest = 
-	{
-		data,
-		requiredValues ? []
-	}:
-	let
-		resolvedData = callerData data;
-	in
-		if (lib.lists.all 
-		(value: 
-			lib.asserts.assertMsg 
-			(builtins.elem value (builtins.attrNames _callerData.dataValues)) 
-			"The required value \"${value}\" is not a real value."
-		) requiredValues) 
-		then 
-			(lib.lists.naturalSort (lib.lists.intersectLists (requiredValues) (builtins.attrNames resolvedData))) == (lib.lists.naturalSort (requiredValues))
-		else false;
 
 }

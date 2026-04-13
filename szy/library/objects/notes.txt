@@ -2,7 +2,8 @@ An object should be declared with a function that takes a set of arguments,
 the function should return a nix module.
 
 An object can be "declared" and "defined":
-	- Declared = template, e.g. programs
+	- Declared = template, e.g. programs.
+		- Declarations can be done as template-templates where you can't actually define things from that template but just declare new templates using it as a template.
 	- Defined = specific, e.g. specific program: steam, spotify, ...
 
 What can objects be used for:
