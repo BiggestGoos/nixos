@@ -56,7 +56,7 @@ szy.programs.mkInstance
 
 		};
 
-		imports = szy.import.toggleable enabled [
+		imports = szy.import.mkToggleable enabled [
 			"${szy.utils.fromShared "/users/misc/gaming/tools"}"
 			"${szy.utils.fromShared "/users/misc/gaming/optimizations"}"
 		];

@@ -5,9 +5,27 @@ let
 
 	propogate = object: imports: _propogate { value = object; } imports;
 
-	toggleableModule = enabled: module: lib.mkIf (enabled) module;
-
-	toggleable = enabled: imports: builtins.map (module: (import module) { value = enabled; import = toggleable enabled; __functor = self: module: toggleableModule enabled module; }) imports;
+	mkToggleable = 
+	enabled: imports: 
+	builtins.map 
+		(module:
+		let
+			importFunc = mkToggleable enabled;
+			evaluatedModule = if (builtins.isFunction module) then module else import module;
+		in
+		(evaluatedModule) 
+		rec { 
+			inherit enabled;
+			is = enabled;
+			import = importFunc;
+			enableIf = lib.mkIf enabled;
+			__functor = self: value: 
+			let
+				function = if (builtins.isList value) then importFunc else enableIf;
+			in
+				function value; 
+		}) 
+	imports;
 
 in
 rec {
@@ -40,6 +58,6 @@ rec {
 
 	inherit propogate;
 	
-	inherit toggleable;
+	inherit mkToggleable;
 
 }

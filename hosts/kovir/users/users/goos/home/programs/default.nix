@@ -18,7 +18,7 @@
 		./spotify
 		./passwordManager
 		./nh
-		./lutris
+	#	./lutris
 	];
 
 }

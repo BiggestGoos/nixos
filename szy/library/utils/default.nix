@@ -1,5 +1,5 @@
 { root, rawRoot, lib, hostname }:
-{
+rec {
 
 	inherit root rawRoot hostname;
 
@@ -51,5 +51,21 @@
         	else
         		b;
     in builtins.foldl' f {} sets;
+
+	
+
+	options = {
+
+		createFromKeys = { keys, value ? {} }: lib.attrsets.setAttrByPath keys value;
+
+		getFromKeys = { keys, object, default ? {}}: lib.attrsets.attrByPath keys default object;
+
+		constant = { type, value, extra ? {} }: mergeAll [ (lib.options.mkOption {
+			type = type;
+			readOnly = true;
+			default = value;
+		}) extra ];
+
+	};
 
 }

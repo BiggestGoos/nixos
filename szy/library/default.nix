@@ -22,7 +22,7 @@ let
 
 				inherit (self.inputs.self.nixosConfigurations."${hostname}") config _module;
 
-				importFunc = import ./import { inherit root lib; };
+				importLib = import ./import { inherit root lib; };
 
 				parts = rec {
 
@@ -32,7 +32,7 @@ let
 					desktops = import ./desktops { inherit config lib utils; options = identifier; };
 					profiles = import ./profiles;
 
-					objects = import ./objects/test.nix { inherit identifier config lib meta; };
+					objects = import ./objects/test.nix { inherit identifier config lib utils meta; import = importLib; };
 					programs = import ./objects/programs { inherit config lib utils; options = identifier; };
 
 					users = import ./users { inherit config lib szy; options = identifier; };
@@ -48,7 +48,7 @@ let
 
 				inherit config;
 
-				import = importFunc;
+				import = importLib;
 
 				__toString = self: identifier;
 

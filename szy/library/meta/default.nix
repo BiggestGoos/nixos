@@ -55,15 +55,15 @@ in
 			lib.attrsets.filterAttrs 
 			(name: value: 
 			let
-				result =
+				result = 
 					(lib.asserts.assertMsg 
 						(builtins.hasAttr name dataValues)
 						"callerData value \"${name}\" does not exist."
-					) && 
+					) && (if (name == "config") then true else # There is an infinite recursion if we try to check the type of config
 					(lib.asserts.assertMsg 
 						(compareTypes dataValues."${name}" (typeOf value))
 						"callerData value of \"${name}\" { ${builtins.toJSON value} } is the wrong type. Correct type: \"${dataValues."${name}"}\", Used type: \"${typeOf value}\"."
-					);
+					));
 			in
 				result
 			) data;
