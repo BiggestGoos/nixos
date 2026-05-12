@@ -27,7 +27,7 @@ in
 			configuration = 
 			{ enabled, ... }:
 			{
-				imports = szy.import.toggleable enabled [ 
+				imports = szy.import.mkToggleable enabled [ 
 					(szy.utils.fromShared "/users/user/misc/gaming/tools") 
 					./scale.nix
 					./config.nix

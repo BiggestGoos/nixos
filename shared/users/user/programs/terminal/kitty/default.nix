@@ -60,7 +60,7 @@ szy.programs.mkInstance
 
 		};
 
-		imports = szy.import.toggleable enabled [
+		imports = szy.import.mkToggleable enabled [
 			./tabs.nix
 			./clipboard.nix
 		];
