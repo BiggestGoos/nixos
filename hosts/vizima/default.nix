@@ -6,6 +6,7 @@
 		./system
 
 		./test.nix
+		./test1.1.nix
 		./test2.nix
 	];
 

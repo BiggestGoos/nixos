@@ -6,7 +6,7 @@ szy.objects.define
 		inherit config;
 	};
 
-	template = "program";
+	template = "program-gui";
 
 	name = "firefox";
 
@@ -14,7 +14,16 @@ szy.objects.define
 	{ final }:
 	{
 
-		test = "hello " + final.data.command;
+		
+
+	};
+	
+	configuration =
+	enabled:
+	{ final }:
+	{
+
+		programs."${final.data.command}".enable = enabled.is;
 
 	};
 

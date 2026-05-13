@@ -1,36 +1,74 @@
 { szy, config, lib, pkgs, ... }:
-szy.objects.declare
 {
 	
-	callerData = {
-		inherit config;
-	};
+	imports = [
 
-	name = "program";
-
-	parameters = 
-	{ final }:
+	(szy.objects.declare
 	{
-
-		command = lib.options.mkOption {
-			type = lib.types.str;
-			default = final.meta.name;
+	
+		callerData = {
+			inherit config;
 		};
 
-		test = lib.options.mkOption {
-			type = lib.types.str;
-			default = "test";
+		name = "thing";
+
+		parameters = 
+		{ final }:
+		{
+
+			thingy = lib.options.mkOption {
+
+				type = lib.types.int;
+				default = 5;
+
+			};
+
 		};
 
-	};
-
-	configuration =
-	enabled:
-	{ final }:
-	{
+		configuration =
+		enabled:
+		{ final }:
+		{
 
 		
 
-	};
+		};
+
+	})
+
+	(szy.objects.declare
+	{
+	
+		callerData = {
+			inherit config;
+		};
+
+		name = "program";
+
+		#extends = [ "thing" ];
+
+		parameters = 
+		{ final }:
+		{
+
+			command = lib.options.mkOption {
+				type = lib.types.str;
+				default = final.meta.name;
+			};
+
+		};
+
+		configuration =
+		enabled:
+		{ final }:
+		{
+
+		
+
+		};
+
+	})
+
+	];
 
 }

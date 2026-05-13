@@ -11,7 +11,7 @@
 		defaultEnabled ? true,
 		definable ? false,
 		options ? {},
-		configuration ? {},
+		configuration ? (enabled: {}),
 	}:
 	let
 		
@@ -38,9 +38,8 @@
 					type = lib.types.bool;
 					default = 
 					let
-						inherit (final) self;
-						hasDefinitions = self ? definitions && self.definitions != {};
-						hasEnabledDefinition = lib.lists.any (enabled: enabled == true) (lib.attrsets.mapAttrsToList (name: value: value.meta.enabled) self.definitions);
+						hasDefinitions = final ? definitions && final.definitions != {};
+						hasEnabledDefinition = lib.lists.any (enabled: enabled == true) (lib.attrsets.mapAttrsToList (name: value: value.meta.enabled) final.definitions);
 					in
 						defaultEnabled && hasDefinitions && hasEnabledDefinition;
 				};
@@ -48,12 +47,61 @@
 				keys = utils.options.constant { type = lib.types.listOf lib.types.str; value = baseKeys; };
 				definable = utils.options.constant { type = lib.types.bool; value = definable; };
 
+				extends = utils.options.constant {
+					type = lib.types.listOf lib.types.attrs;
+
+					value = builtins.map (template: helper.getTemplate { inherit callerData; id = template; }) extends;
+				};
+
+				extendsFull = utils.options.constant {
+					type = lib.types.listOf lib.types.attrs;
+
+					value = 
+					let
+
+						templates = 
+						let
+
+							getExtenders = template: 
+							let
+
+								extenders = template.meta.extends;
+
+								iterate = extenders ++ (builtins.map (template: if (template.meta.extends != []) then (getExtenders template) else []) extenders);
+
+							in
+								lib.lists.unique (lib.lists.flatten iterate);
+						in
+							getExtenders final;
+
+					in
+						templates;
+						
+				};
+
 			};
 
 			data = {
 
 				parameters = utils.options.constant { type = lib.types.either (lib.types.attrs) (lib.types.functionTo lib.types.attrs); value = parameters; };
 
+			};
+
+			definitions = utils.options.constant {
+				type = lib.types.anything;
+				value = 
+				let
+					
+					definitions = utils.options.getFromKeys { keys = helper.keys.definition; object = config; };
+
+					getTemplateIds = definition:
+					let
+						template = helper.getTemplate { inherit callerData; id = definition.meta.template; };
+					in
+						builtins.map (template: template.meta.id) ((lib.lists.toList template) ++ template.meta.extendsFull);
+
+				in
+					lib.attrsets.filterAttrs (name: value: (builtins.elem final.meta.id (getTemplateIds value))) definitions;
 			};
 
 		}; }) options ];

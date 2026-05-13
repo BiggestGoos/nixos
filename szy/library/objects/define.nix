@@ -10,7 +10,7 @@
 		arguments ? {},
 		defaultEnabled ? true,
 		options ? {},
-		configuration ? {},
+		configuration ? (enabled: {}),
 	}@inputs:
 	let
 
@@ -18,7 +18,9 @@
 
 		template = helper.getTemplate { inherit callerData; id = inputs.template; };
 
-		final = utils.options.getFromKeys { keys = baseKeys; object = callerData.config; };
+		templates = (lib.lists.toList template) ++ template.meta.extendsFull;
+
+		final = if (template.meta.definable) then utils.options.getFromKeys { keys = baseKeys; object = callerData.config; } else builtins.abort "Template ${template.meta.id} is not definable." null;
 
 	in
 	if !(meta.callerData { data = callerData; requiredFields = [ "config" ]; }) then null else
@@ -48,18 +50,40 @@
 				type = 
 				let
 
-					baseParameters = template.data.parameters;
+					parametersList = builtins.map 
+					(template: 
+					let
 
-					parameters = if (builtins.hasAttr "__functor" baseParameters) then (baseParameters { inherit final; }) else baseParameters;
+						baseParameters = template.data.parameters;
+
+						parameters = if (builtins.hasAttr "__functor" baseParameters) then (baseParameters { inherit final; }) else baseParameters;
+
+					in
+						parameters
+					) templates;
 
 				in
-					lib.types.submoduleWith { modules = lib.lists.toList { options = parameters; }; };
+					lib.types.submoduleWith { modules = builtins.map (parameters: { options = parameters; }) parametersList; };
 
 				default = arguments { inherit final; };
 
 			};
 
 		}; }) options ];
+
+		imports = 
+		let
+			toggledConfiguration = lib.lists.last (gInputs.importLib.mkToggleable (final.meta.enabled && template.meta.enabled) (lib.lists.toList configuration));
+			isFunction = builtins.isFunction toggledConfiguration;
+
+			arguments =
+			{
+				inherit final;
+			};
+
+			result = if isFunction then (toggledConfiguration arguments) else toggledConfiguration;
+		in
+			lib.lists.toList result;
 
 	};
 
