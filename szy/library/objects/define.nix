@@ -28,17 +28,25 @@
 
 		options = utils.mergeAll [ (utils.options.createFromKeys { keys = baseKeys; value = {
 
-			meta = {
+			meta = 
+			let
+
+				allTemplatesEnabled = lib.lists.all (template: template.meta.enabled) templates;
+
+			in
+			{
 
 				name = utils.options.constant { type = lib.types.str; value = name; };
 				template = utils.options.constant { type = lib.types.str; value = inputs.template; };
 				id = utils.options.constant { type = lib.types.str; value = id; };
 
 				defaultEnabled = utils.options.constant { type = lib.types.bool; value = defaultEnabled; };
-					
+				
+				# A definition can only be enabled if all of its templates are enabled.
 				enabled = lib.options.mkOption {
 					type = lib.types.bool;
-					default = defaultEnabled;
+					readOnly = allTemplatesEnabled;
+					default = defaultEnabled && allTemplatesEnabled;
 				};
 
 				keys = utils.options.constant { type = lib.types.listOf lib.types.str; value = baseKeys; };
@@ -73,7 +81,7 @@
 
 		imports = 
 		let
-			toggledConfiguration = lib.lists.last (gInputs.importLib.mkToggleable (final.meta.enabled && template.meta.enabled) (lib.lists.toList configuration));
+			toggledConfiguration = lib.lists.last (gInputs.importLib.mkToggleable (final.meta.enabled) (lib.lists.toList configuration));
 			isFunction = builtins.isFunction toggledConfiguration;
 
 			arguments =

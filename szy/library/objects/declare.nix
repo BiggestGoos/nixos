@@ -6,11 +6,12 @@
 		callerData,
 		name, # The name of the template
 		id ? name, # Id of template, default to the name
-		parameters, # A set of lib.options-style options
+		parameters ? {}, # A set of lib.options-style options
 		extends ? [], # A list of templates that this one extends, by id
 		defaultEnabled ? true,
 		definable ? false,
 		options ? {},
+		internalOptions ? {},
 		configuration ? (enabled: {}),
 	}:
 	let
@@ -25,7 +26,43 @@
 	if !(meta.callerData { data = callerData; requiredFields = [ "config" ]; }) then null else
 	{
 
-		options = utils.mergeAll [ (utils.options.createFromKeys { keys = baseKeys; value = {
+		options = 
+		let
+
+			allInternalOptions =
+			(
+				lib.attrsets.mapAttrsToList 
+				(name: value: 
+					if !(builtins.isFunction value.meta.internalOptions) then value.meta.internalOptions else value.meta.internalOptions { inherit final; }
+				) 
+				(lib.lists.toList final) ++ final.meta.extendsFull
+			);
+
+		in
+		utils.mergeAll ([ options (utils.options.createFromKeys { keys = baseKeys; value = 
+		{
+
+			options = lib.options.mkOption {
+
+				type = 
+				let
+
+					allInternalOptions = builtins.map 
+					(template: 
+					let
+
+						base = template.meta.internalOptions;
+
+						internalOptions = if (builtins.hasAttr "__functor" base) then (base { inherit final; }) else base;
+
+					in
+						internalOptions
+					) ((lib.lists.toList final) ++ final.meta.extendsFull);
+
+				in
+					lib.types.submoduleWith { modules = builtins.map (internalOptions: { options = internalOptions; }) allInternalOptions; };
+
+			};
 
 			meta = {
 
@@ -33,16 +70,17 @@
 				id = utils.options.constant { type = lib.types.str; value = id; };
 
 				defaultEnabled = utils.options.constant { type = lib.types.bool; value = defaultEnabled; };
-				# A declaration should be enabled only if it is used by an enabled definition
+				# A declaration should be enabled only if it is used by a definition
 				enabled = lib.options.mkOption {
 					type = lib.types.bool;
 					default = 
 					let
 						hasDefinitions = final ? definitions && final.definitions != {};
-						hasEnabledDefinition = lib.lists.any (enabled: enabled == true) (lib.attrsets.mapAttrsToList (name: value: value.meta.enabled) final.definitions);
 					in
-						defaultEnabled && hasDefinitions && hasEnabledDefinition;
+						defaultEnabled && hasDefinitions;
 				};
+
+				internalOptions = utils.options.constant { type = lib.types.either (lib.types.attrs) (lib.types.functionTo lib.types.attrs); value = internalOptions; };
 
 				keys = utils.options.constant { type = lib.types.listOf lib.types.str; value = baseKeys; };
 				definable = utils.options.constant { type = lib.types.bool; value = definable; };
@@ -88,7 +126,7 @@
 			};
 
 			definitions = utils.options.constant {
-				type = lib.types.anything;
+				type = lib.types.attrs;
 				value = 
 				let
 					
@@ -104,9 +142,7 @@
 					lib.attrsets.filterAttrs (name: value: (builtins.elem final.meta.id (getTemplateIds value))) definitions;
 			};
 
-		}; }) options ];
-
-		
+		}; }) ]);
 
 		imports = 
 		let

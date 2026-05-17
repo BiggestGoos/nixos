@@ -5,6 +5,7 @@
 		./system
 		./users
 		./profiles
+		./templates
 	];
 
 }
