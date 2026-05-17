@@ -8,6 +8,4 @@ szy.objects.define
 
 	template = "program";
 
-
-
 }

@@ -5,7 +5,6 @@
 		./users
 		./system
 
-		./test.nix
 		#./steamTest.nix
 	];
 

@@ -1,4 +1,4 @@
-{ identifier, lib, utils, meta, ... }:
+{ identifier, lib, utils, ... }:
 let
 
 	prefixes = {
@@ -9,30 +9,73 @@ let
 
 	};
 
-	keys = {
+	namespaces = {
 
-		template = with prefixes; [ identifier objects templates ];
-		definition = with prefixes; [ identifier objects definitions ];
+		templates = with prefixes; [ identifier objects templates ];
+		definitions = with prefixes; [ identifier objects definitions ];
 
 	};
 
-in
-{
-
-	inherit prefixes keys;
-
 	getTemplate =
 	{
-		callerData,
-		id,
+		config,
+		name,
 	}:
 	let
 		
-		fullKeys = keys.template ++ lib.lists.toList id;
+		baseNamespace = namespaces.templates ++ lib.lists.toList name;
+
+		base = utils.options.getFromKeys { keys = baseNamespace; object = config; };
+
+		namespace = base.namespace;
+
+		template = if (namespace == baseNamespace) then base else
+			utils.options.getFromKeys { keys = namespace; object = config; }
 
 	in
-	if !(meta.callerData { data = callerData; requiredFields = [ "config" ]; }) then null else
-		utils.options.getFromKeys { keys = fullKeys; object = callerData.config; };
+		template;
 		
+	getAllExtenders =
+	{
+		config,
+		name,
+	}:
+	let
+
+		template = getTemplate { inherit config name; };
+
+		getExtenders = template: 
+		let
+
+			extenders = template.meta.extends;
+
+			iterate = extenders ++ (builtins.map 
+			(name:
+			let
+				template = getTemplate { inherit config name; };
+			in
+				if (template.meta.extends != []) 
+				then 
+					(getExtenders template) 
+				else 
+					[]
+			) extenders);
+
+		in
+			lib.lists.unique (lib.lists.flatten iterate);
+
+	in
+		getExtenders template;
+in
+{
+
+	inherit 
+		prefixes 
+		namespaces
+		getTemplate
+		getAllExtenders
+	;
+
+
 
 }

@@ -1,31 +1,45 @@
-{ identifier, lib, utils, meta, importLib, helper, ... }@gInputs:
+{ identifier, lib, utils, importLib, helper, ... }@gInputs:
 {
 
 	define = 
 	{
-		callerData,
+		config,
 		template,
 		name,
-		id ? "${template}+${name}",
+		#id ? "${template}+${name}",
 		arguments ? {},
-		defaultEnabled ? true,
+		#defaultEnabled ? true,
 		options ? {},
 		configuration ? (enabled: {}),
 	}@inputs:
 	let
 
-		baseKeys = helper.keys.definition ++ lib.lists.toList id;
+		baseNamespace = helper.namespaces.definitions ++ lib.lists.toList name;
 
-		template = helper.getTemplate { inherit callerData; id = inputs.template; };
+		template = helper.getTemplate { inherit config; name = inputs.template; };
+		templates = (lib.lists.toList template) ++ (builtins.map (name: helper.getTemplate { inherit config name; }) template.meta.full.extends);
 
-		templates = (lib.lists.toList template) ++ template.meta.extendsFull;
-
-		final = if (template.meta.definable) then utils.options.getFromKeys { keys = baseKeys; object = callerData.config; } else builtins.abort "Template ${template.meta.id} is not definable." null;
+		final = utils.options.getFromKeys { keys = baseKeys; object = callerData.config; };
 
 	in
-	if !(meta.callerData { data = callerData; requiredFields = [ "config" ]; }) then null else
 	{
 
+		options = utils.mergeAll ([
+
+			(utils.options.createFromKeys { keys = baseNamespace; value =
+			{
+				
+				namespace = utils.options.constant 
+				{
+					type = lib.types.listOf lib.types.str;
+					value = namespace;
+				};
+
+			}; })
+
+		]);
+
+/*
 		options = utils.mergeAll [ (utils.options.createFromKeys { keys = baseKeys; value = {
 
 			meta = 
@@ -62,9 +76,9 @@
 					(template: 
 					let
 
-						baseParameters = template.data.parameters;
+						base = template.data.parameters;
 
-						parameters = if (builtins.hasAttr "__functor" baseParameters) then (baseParameters { inherit final; }) else baseParameters;
+						parameters = if (builtins.hasAttr "__functor" base) then (base { inherit final; }) else base;
 
 					in
 						parameters
@@ -73,12 +87,21 @@
 				in
 					lib.types.submoduleWith { modules = builtins.map (parameters: { options = parameters; }) parametersList; };
 
-				default = arguments { inherit final; };
+				default =
+				let
+						
+					base = arguments;
+
+					evalArguments = if (builtins.hasAttr "__functor" base) then (base { inherit final; }) else base;
+
+				in
+					evalArguments;
 
 			};
 
 		}; }) options ];
-
+*/
+/*
 		imports = 
 		let
 			toggledConfiguration = lib.lists.last (gInputs.importLib.mkToggleable (final.meta.enabled) (lib.lists.toList configuration));
@@ -94,5 +117,5 @@
 			lib.lists.toList result;
 
 	};
-
+*/
 }

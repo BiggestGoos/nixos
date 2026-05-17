@@ -36,7 +36,7 @@ in
 
 # Maybe create an assert function and move all "callerData" things into one set called "callerData", call the "callerData" function "typeCheck" or something like that.
 
-	# Metadata about the "caller", e.g. data about the calling location or the "optionNamespace" of the caller.
+	# Metadata about the "caller", e.g. data about the calling location or the "namespace" of the caller.
 
 	callerData = 
 	let
@@ -44,7 +44,7 @@ in
 		dataValues = {
 			config = typeOf {};
 			path = typeOf ./.;
-			optionNamespace = typeOf [ "string" ];
+			namespace = typeOf [ "string" ];
 		};
 	
 	in

@@ -7,5 +7,16 @@ szy.objects.declare
 	name = "program";
 
 	extends = [ "defaultDefinition" ];
+	
+	parameters = 
+	{ final }:
+	{
+
+		command = lib.options.mkOption {
+			type = lib.types.str;
+			default = final.meta.name;
+		};
+
+	};
 
 }
