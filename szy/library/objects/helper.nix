@@ -11,8 +11,8 @@ let
 
 	namespaces = {
 
-		templates = with prefixes; [ identifier objects templates ];
-		definitions = with prefixes; [ identifier objects definitions ];
+		templates = with prefixes; [ identifier objects ];
+		definitions = with prefixes; [ identifier objects ];
 
 	};
 
@@ -22,19 +22,37 @@ let
 		name,
 	}:
 	let
-		
-		baseNamespace = namespaces.templates ++ lib.lists.toList name;
+		namespace = namespaces.templates ++ lib.lists.toList name;
 
-		base = utils.options.getFromKeys { keys = baseNamespace; object = config; };
-
-		namespace = base.namespace;
-
-		template = if (namespace == baseNamespace) then base else
-			utils.options.getFromKeys { keys = namespace; object = config; }
-
+		template = utils.options.getFromKeys { keys = namespace; object = config; };
 	in
 		template;
-		
+	
+	getDefinition =
+	{
+		config,
+		name,
+		template,
+	}:
+	let
+		namespace = namespaces.definitions ++ [ template prefixes.definitions name ];
+
+		definition = utils.options.getFromKeys { keys = namespace; object = config; };
+	in
+		definition;
+
+	getAllDefinitions =
+	{
+		config,
+		template,
+	}:
+	let
+		namespace = namespaces.definitions ++ [ template prefixes.definitions ];
+
+		definitions = utils.options.getFromKeys { keys = namespace; object = config; };
+	in
+		definitions;
+
 	getAllExtenders =
 	{
 		config,
@@ -49,7 +67,7 @@ let
 
 			extenders = template.meta.extends;
 
-			iterate = extenders ++ (builtins.map 
+			iterate = (builtins.map (name: getTemplate { inherit config name; }) extenders) ++ (builtins.map 
 			(name:
 			let
 				template = getTemplate { inherit config name; };
@@ -74,8 +92,8 @@ in
 		namespaces
 		getTemplate
 		getAllExtenders
+		getDefinition
+		getAllDefinitions
 	;
-
-
 
 }

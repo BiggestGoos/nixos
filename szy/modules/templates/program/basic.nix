@@ -2,14 +2,14 @@
 szy.objects.declare
 {
 
-	callerData = { inherit config; };
+	inherit config;
 
 	name = "program";
-
+	
 	extends = [ "defaultDefinition" ];
 	
 	parameters = 
-	{ final }:
+	{ final, object }:
 	{
 
 		command = lib.options.mkOption {

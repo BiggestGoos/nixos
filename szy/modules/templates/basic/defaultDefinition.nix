@@ -1,18 +1,20 @@
 { szy, lib, config, ... }:
-let
-
-	callerData = { inherit config; };
-
-in
 szy.objects.declare
 {
 
-	inherit callerData;
+	inherit config;
 	
 	name = "defaultDefinition";
 
-	internalOptions = 
-	{ template, data }:
+	templateArguments = 
+	{
+
+		enable = true;
+
+	};
+	
+	templateParameters = 
+	{ final }:
 	{
 
 		default = lib.options.mkOption {
@@ -20,7 +22,7 @@ szy.objects.declare
 			default = 
 			let
 
-				definitions = data.definitions or {};
+				definitions = szy.objects.helper.getAllDefinitions { inherit config; template = final.meta.name; };
 
 				first = if (definitions == {}) then null else builtins.head (lib.attrsets.mapAttrsToList (name: value: value.meta.name) definitions);
 
@@ -31,7 +33,7 @@ szy.objects.declare
 	};
 
 	parameters =
-	{ final }:
+	{ final, object }:
 	{
 
 		isDefault = lib.options.mkOption {
@@ -39,9 +41,9 @@ szy.objects.declare
 			readOnly = true;
 			default = 
 			let
-				template = szy.objects.helper.getTemplate { inherit callerData; id = final.meta.template; };
+				template = szy.objects.helper.getTemplate { inherit config; name = final.meta.template; };
 			in
-				final.meta.name == template.options.default;
+				final.meta.name == template.data.default;
 		};
 
 	};

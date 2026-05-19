@@ -2,7 +2,7 @@
 szy.objects.define
 {
 
-	callerData = { inherit config; };
+	inherit config;
 
 	name = "firefox";
 

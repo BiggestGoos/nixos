@@ -1,16 +1,10 @@
 { identifier, lib, utils, importLib, helper, ... }@gInputs:
-let
-
-	defaultNamespace = name: helper.namespaces.templates ++ lib.lists.toList name;
-
-in
 {
 
 	declare =
 	{
 		config,
 		name, # Name of template
-		namespace ? (defaultNamespace name),
 		#dataKeys ? [], # The keys to the location where the declaration's data and its definitions' data should be stored
 		parameters ? {}, # A set of lib.options-style options
 		templateParameters ? {}, # A set of lib.options-style options
@@ -22,7 +16,7 @@ in
 	}:
 	let
 		
-		baseNamespace = defaultNamespace name;
+		namespace = helper.namespaces.templates ++ lib.lists.toList name;
 
 		final = helper.getTemplate { inherit config name; };
 
@@ -31,16 +25,7 @@ in
 
 		options = utils.mergeAll ([
 
-			(utils.options.createFromKeys { keys = baseNamespace; value =
-			{
-				
-				namespace = utils.options.constant 
-				{
-					type = lib.types.listOf lib.types.str;
-					value = namespace;
-				};
-
-			}; })
+			options
 
 			(utils.options.createFromKeys { keys = namespace; value =
 			{
@@ -53,7 +38,8 @@ in
 					#defaultEnabled = utils.options.constant { type = lib.types.bool; value = defaultEnabled; };
 
 					namespace = utils.options.constant { type = lib.types.listOf lib.types.str; value = namespace; };
-					baseNamespace = utils.options.constant { type = lib.types.listOf lib.types.str; value = baseNamespace; };
+
+					parameters = utils.options.constant { type = lib.types.either (lib.types.attrs) (lib.types.functionTo lib.types.attrs); value = parameters; };
 
 					template = 
 					{
@@ -80,58 +66,183 @@ in
 								allExtenders;
 						
 						};
-						# List of ids to the base of all definitions defining this template somehow
+						# List of the template and name of all definitions that define this template
 						definitions = utils.options.constant 
 						{
-							type = lib.types.listOf lib.types.str;
+							type = lib.types.listOf lib.types.attrs;
 							value = 
 							let
 					
-								definitions = #TODO: Update to get definitions properly. utils.options.getFromKeys { keys = helper.keys.definition; object = config; };
-
-								/*getTemplateIds = definition:
+								templates = 
 								let
-									template = helper.getTemplate { inherit callerData; id = definition.meta.template; };
+
+									allTemplates = utils.options.getFromKeys { keys = helper.namespaces.templates; object = config; };
+
+									filtered = lib.attrsets.filterAttrs (name: value: (builtins.elem final.meta.name value.meta.full.extends)) allTemplates;
+
+									others = lib.attrsets.mapAttrsToList (name: value: value) filtered;
+
 								in
-									builtins.map (template: template.meta.id) ((lib.lists.toList template) ++ template.meta.extendsFull);
-*/
+									(lib.lists.toList final) ++ others;
+
+								definitions = lib.lists.flatten (builtins.map (
+								template: 
+								let
+									definitions = lib.attrsets.mapAttrsToList (name: value: value) (template.definitions or {});
+								in
+									builtins.map (definition: { name = definition.meta.name; template = template.meta.name; }) definitions
+								) templates);
+
 							in
-								#lib.attrsets.filterAttrs (name: value: (builtins.elem final.meta.id (getTemplateIds value))) definitions;
+								definitions;
 						};
 					};
 
 				};
 
-				data = lib.options.mkOption {
+				data = 
+				let
+
+					allData = 
+					let
+						allTemplates = (lib.lists.toList final) ++ (helper.getAllExtenders { inherit config; inherit (final.meta) name; });
+					in
+						(builtins.map 
+						(template: 
+						let
+
+							baseParameters = template.meta.template.parameters;
+							baseArguments = template.meta.template.arguments;
+	
+							parameters = if (builtins.hasAttr "__functor" baseParameters) then (baseParameters { inherit final; }) else baseParameters;
+							arguments = if (builtins.hasAttr "__functor" baseArguments) then (baseArguments { inherit final; }) else baseArguments;
+
+						in
+							{
+								inherit parameters arguments;
+							}
+						) allTemplates);
+
+				in
+				lib.options.mkOption 
+				{
 
 					type = 
 					let
 
-						allParameters = builtins.map 
-						(template: 
-						let
+						allParameters = (lib.lists.toList builtinParameters) ++ (builtins.map (data: data.parameters) allData);
 
-							base = template.meta.template.parameters;
-	
-							internalOptions = if (builtins.hasAttr "__functor" base) then (base { template = final; data = finalData; }) else base;
+						builtinParameters =
+						{
 
-							allTemplates = (lib.lists.toList final) ++ #TODO: Get all templates with final.meta.full.extends;
+							enable = lib.options.mkOption {
+								type = lib.types.bool;
+								default = true;
+							};
 
-						in
-							internalOptions
-						) allTemplates;
+							enabled = 
+							let
+								hasDefinitions = final.meta.full.definitions != {};
+								allExtendersEnabled = lib.lists.all (template: template.data.enabled) (helper.getAllExtenders { inherit config; inherit (final.meta) name; });
+								combined = hasDefinitions && allExtendersEnabled;
+							in
+							lib.options.mkOption {
+								type = lib.types.bool;
+								readOnly = true;
+								default = final.data.enable && combined;
+							};
+
+						};
 	
 					in
-						lib.types.submoduleWith { modules = builtins.map (internalOptions: { options = internalOptions; }) allInternalOptions; }; #TODO: Add enabled as a "builtin" parameter with default value true.
+						lib.types.submoduleWith { modules = builtins.map (parameters: { options = parameters; }) allParameters; };
 
-					default = allTemplateArguments;
+					default = 
+					let
+						baseArguments = final.meta.template.arguments;
+						arguments = if (builtins.hasAttr "__functor" baseArguments) then (baseArguments { inherit final; }) else baseArguments;
+					in
+						arguments;
+
+					/*default = 
+					let
+						allArguments = builtins.map (data: data.arguments) allData;
+					in
+						utils.mergeAll allArguments;*/
 
 				};
 
 				# The place where all definitions defining this template live
-				definitions = {
+				/*definitions = lib.options.mkOption
+				{
 
-				};
+					type = 
+					let
+
+						options.options =
+						{
+
+							meta = 
+							{
+
+								name = lib.options.mkOption { type = lib.types.str; };
+								template = utils.options.constant { type = lib.types.str; value = final.meta.name; };
+
+								#	defaultEnabled = utils.options.constant { type = lib.types.bool; value = defaultEnabled; };
+				
+								# A definition can only be enabled if all of its templates are enabled.
+								#enabled = lib.options.mkOption {
+								#	type = lib.types.bool;
+								#	readOnly = allTemplatesEnabled;
+								#	default = defaultEnabled && allTemplatesEnabled;
+								#};
+
+								namespace = utils.options.constant { type = lib.types.listOf lib.types.str; value = final.meta.namespace ++ (lib.lists.toList helper.prefixes.definitions); };
+								baseNamespace = lib.options.mkOption { type = lib.types.listOf lib.types.str; };
+
+							};
+
+							data = lib.options.mkOption 
+							{
+
+								type = 
+								let
+
+									parametersList = builtins.map 
+									(template: 
+									let
+
+										base = final.meta.parameters;
+
+										parameters = if (builtins.hasAttr "__functor" base) then (base { inherit final; template = gTemplate; }) else base;
+
+									in
+										parameters
+									) templates;
+
+								in
+									lib.types.submoduleWith { modules = builtins.map (parameters: { options = parameters; }) parametersList; };
+
+								default =
+								let
+						
+									base = arguments;
+
+									evalArguments = if (builtins.hasAttr "__functor" base) then (base { inherit final; template = gTemplate; }) else base;
+
+								in
+									evalArguments;
+
+							};
+
+							# It might be that it isn't really possible to have the definitions automatically reside within the templates namespace, it might be so that we have to just store the definitions as a name and templateName and then to create helper functions or such to interact with the definition. Maybe, but I'd much rather get this to work somehow.
+
+						};
+
+					in
+						lib.types.attrsOf lib.types.submoduleWith { modules = lib.lists.toList options; };
+
+				};*/
 
 			}; })
 
