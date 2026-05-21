@@ -10,7 +10,7 @@
 		(szy.import.internal.shared.from "programs/steam")
 		(szy.import.internal.shared.from "programs/terminalTools")
 		(szy.import.internal.shared.from "programs/nh")
-		./browser
+	#	./browser
 		./discord
 		./fastfetch
 		./terminal

@@ -1,6 +1,7 @@
 {
 
-	imports = [
+	imports = 
+	[
 		./basic
 		./program
 	];

@@ -13,7 +13,7 @@
 		{
 
 			specialArgs = { inherit (self) inputs; inherit szy; };
-			modules = [ szy.import.modules.path ] ++ [
+			modules = [ szy.import.modules.path szy.import.modules.system szy.import.modules.shared ] ++ [
 				self.inputs.disko.nixosModules.disko
 				(szy.utils.fromRoot "hosts/${hostname}")
 				self.inputs.home-manager.nixosModules.home-manager
@@ -24,7 +24,7 @@
 						backupFileExtension = "backup";
 	    				users = builtins.mapAttrs (name: value: (import value.path)) config."${szy}".users.homeManagerPaths;
 						extraSpecialArgs = { inherit (self) inputs; inherit szy; };
-						sharedModules = [ szy.import.modules.users.user.path ];
+						sharedModules = [ szy.import.modules.users.user.path szy.import.modules.user szy.import.modules.shared ];
 					};
 				}
 			] ++ [ {

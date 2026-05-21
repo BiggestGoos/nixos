@@ -54,6 +54,10 @@ rec {
 
 		};
 
+		system = path + "/system";
+		user = path + "/user";
+		shared = path + "/shared";
+
 	};
 
 	inherit propogate;

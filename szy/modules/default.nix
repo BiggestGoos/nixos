@@ -2,10 +2,9 @@
 {
 	
 	imports = [
-		./system
+		./system_
 		./users
 		./profiles
-		./templates
 	];
 
 }
