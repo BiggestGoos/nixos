@@ -7,17 +7,44 @@ szy.objects.define
 	name = "floorp";
 	template = "browser";
 
+	extends = [ ];
+
 	arguments =
-	{ final, object }:
+	{ final, object, ... }:
 	{
 
 		application = {
 			type = "gui";
 		};
 
-		package = pkgs.floorp-bin;
+		package = config.programs.floorp.package;
 
 		commands.search = "${final.data.commands.exec} --search";
+
+	};
+
+	configuration =
+	enabled:
+	{ final, object, ... }:
+	{
+
+		programs.floorp = enabled {
+
+			enable = true;
+
+			profiles."${config.home.username}" = {
+
+				id = 0;
+				isDefault = true;
+
+			};
+
+		};
+
+		imports = enabled
+		[
+			./default
+		];
 
 	};
 

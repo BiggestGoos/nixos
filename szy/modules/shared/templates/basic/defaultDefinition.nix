@@ -32,7 +32,7 @@ szy.objects.declare
 			template = lib.options.mkOption
 			{
 				type = lib.types.nullOr (lib.types.enum (builtins.map (definition: definition.template) allDefinitions));
-				default = if (builtins.elem final.data.default.name definitions) then final.meta.name else null;
+				default = if (builtins.elem final.data.default.name definitions) then final.meta.name else "The template { ${final.meta.name} } does not have a definition called { ${final.meta.name} }.";
 			};
 
 		};

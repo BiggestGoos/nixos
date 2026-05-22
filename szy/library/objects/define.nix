@@ -5,6 +5,7 @@
 	{
 		config,
 		template,
+		extends ? [],
 		name,
 		enable ? false,
 		arguments ? {},
@@ -17,7 +18,8 @@
 		namespace = helper.namespaces.definitions ++ [ template helper.prefixes.definitions name ];
 	
 		gTemplate = helper.getTemplate { inherit config; name = template; };
-		templates = (lib.lists.toList gTemplate) ++ (helper.getAllExtenders { inherit config; name = inputs.template; });
+
+		templates = [ gTemplate ] ++ (builtins.map (name: helper.getTemplate { inherit config name; }) final.meta.full.extends);
 
 		final = helper.getDefinition { inherit config name template; };
 
@@ -39,6 +41,19 @@
 
 					namespace = utils.options.constant { type = lib.types.listOf lib.types.str; value = namespace; };
 	
+					extends = utils.options.constant { type = lib.types.listOf lib.types.str; value = extends ++ gTemplate.meta.extends; };
+
+					full.extends = utils.options.constant 
+					{
+						type = lib.types.listOf lib.types.str;
+						value =
+						let
+							templates = [ gTemplate ] ++ (builtins.map (name: helper.getTemplate { inherit config name; }) extends);
+							allExtends = lib.lists.unique (extends ++ (builtins.concatLists (builtins.map (template: template.meta.full.extends) templates)));
+						in
+							allExtends;
+					};
+
 				};
 
 				data = lib.options.mkOption 
@@ -63,7 +78,11 @@
 							enabled = lib.options.mkOption 
 							{
 								type = lib.types.bool;
-								default = final.data.enable && gTemplate.data.enabled;
+								default = 
+								let
+									allTemplatesEnabled = lib.lists.all (template: template.data.enabled) templates;
+								in
+									final.data.enable && allTemplatesEnabled;
 							};
 
 						};

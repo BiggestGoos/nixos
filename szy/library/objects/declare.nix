@@ -70,25 +70,39 @@
 							value = 
 							let
 					
-								templates = 
-								let
+								allTemplates = utils.options.getFromKeys { keys = helper.namespaces.templates; object = config; };
+								allDefinitions = 
+								lib.lists.flatten
+								(lib.attrsets.mapAttrsToList 
+								(
+									name: value: 
+									(
+										lib.attrsets.mapAttrsToList 
+										(
+											name: value: 
+											value
+										) 
+										(value.definitions or {})
+									)
+								) 
+								allTemplates);
 
-									allTemplates = utils.options.getFromKeys { keys = helper.namespaces.templates; object = config; };
-
-									filtered = lib.attrsets.filterAttrs (name: value: (builtins.elem final.meta.name value.meta.full.extends)) allTemplates;
-
-									others = lib.attrsets.mapAttrsToList (name: value: value) filtered;
-
-								in
-									(lib.lists.toList final) ++ others;
-
-								definitions = lib.lists.flatten (builtins.map (
-								template: 
-								let
-									definitions = lib.attrsets.mapAttrsToList (name: value: value) (template.definitions or {});
-								in
-									builtins.map (definition: { name = definition.meta.name; template = template.meta.name; }) definitions
-								) templates);
+								definitions = 
+								builtins.map 
+								(
+									definition: 
+									{ 
+										inherit (definition.meta) name template; 
+									}
+								) 
+								(
+									builtins.filter 
+									(
+										definition: 
+										(builtins.elem final.meta.name definition.meta.full.extends) || (definition.meta.template == final.meta.name)
+									) 
+									allDefinitions
+								);
 
 							in
 								definitions;

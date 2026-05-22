@@ -7,7 +7,7 @@
 		data =
 		{
 			enable = true;
-			#default.name = "floorp";
+			default.name = "floorp";
 		};
 
 		definitions =

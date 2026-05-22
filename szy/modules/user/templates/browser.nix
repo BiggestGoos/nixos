@@ -23,22 +23,13 @@ szy.objects.declare
 	enabled:
 	{ final }:
 	let
-
-		defaultValue = final.data.default;
-
-		default = 
-		let
-			easy = final.definitions."${final.data.default}";
-			hard = szy.objects.helper.getDefinition ({ inherit config; } // defaultValue);
-		in
-			if (builtins.isString defaultValue) then easy else hard;
+	
+		default = szy.objects.helper.getDefinition ({ inherit config; } // final.data.default);
 
 	in
 	enabled
 	{
-
-		programs.firefox.enable = true;
-
+	
 		xdg.mimeApps = {
 
 			enable = true;
