@@ -7,7 +7,7 @@ enabled:
 		./optimizations.nix
 		./styling.nix
 	];
-
+	
 	programs.floorp = enabled {
 
 		languagePacks = [

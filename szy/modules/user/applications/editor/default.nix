@@ -2,7 +2,7 @@
 
 	imports =
 	[
-		./applications
+		./neovim
 	];
 
 }

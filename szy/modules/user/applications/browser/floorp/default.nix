@@ -1,5 +1,21 @@
 { szy, lib, config, pkgs, ... }:
-szy.objects.define
+szy.objects.composable
+{
+	inherit config;
+
+	components = 
+	{
+		default =
+		{
+			path = "default";
+			enable = true;
+		};
+	};
+
+	componentPath = ./.;
+
+}
+(szy.objects.define
 {
 
 	inherit config;
@@ -7,15 +23,9 @@ szy.objects.define
 	name = "floorp";
 	template = "browser";
 
-	extends = [ ];
-
 	arguments =
 	{ final, object, ... }:
 	{
-
-		application = {
-			type = "gui";
-		};
 
 		package = config.programs.floorp.package;
 
@@ -41,11 +51,6 @@ szy.objects.define
 
 		};
 
-		imports = enabled
-		[
-			./default
-		];
-
 	};
 
-}
+})

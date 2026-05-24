@@ -4,6 +4,7 @@
 	[
 		./basic
 		./program
+		./editor
 	];
 
 }

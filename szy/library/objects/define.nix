@@ -33,26 +33,44 @@
 			(utils.options.createFromKeys { keys = namespace; value =
 			{
 				
-				meta = 
+				meta = lib.options.mkOption
 				{
 
-					name = utils.options.constant { type = lib.types.str; value = name; };
-					template = utils.options.constant { type = lib.types.str; value = inputs.template; };
+					type = 
+					let
 
-					namespace = utils.options.constant { type = lib.types.listOf lib.types.str; value = namespace; };
+						module =
+						{
+
+							options =
+							{
+
+								name = utils.options.constant { type = lib.types.str; value = name; };
+								template = utils.options.constant { type = lib.types.str; value = inputs.template; };
+
+								namespace = utils.options.constant { type = lib.types.listOf lib.types.str; value = namespace; };
 	
-					extends = utils.options.constant { type = lib.types.listOf lib.types.str; value = extends ++ gTemplate.meta.extends; };
+								extends = lib.options.mkOption { type = lib.types.listOf lib.types.str; };
+	
+								full.extends = utils.options.constant 
+								{
+									type = lib.types.listOf lib.types.str;
+									value =
+									let
+										templates = [ gTemplate ] ++ (builtins.map (name: helper.getTemplate { inherit config name; }) final.meta.extends);
+										allExtends = lib.lists.unique (final.meta.extends ++ (builtins.concatLists (builtins.map (template: template.meta.full.extends) templates)));
+									in
+										allExtends;
+								};
 
-					full.extends = utils.options.constant 
-					{
-						type = lib.types.listOf lib.types.str;
-						value =
-						let
-							templates = [ gTemplate ] ++ (builtins.map (name: helper.getTemplate { inherit config name; }) extends);
-							allExtends = lib.lists.unique (extends ++ (builtins.concatLists (builtins.map (template: template.meta.full.extends) templates)));
-						in
-							allExtends;
-					};
+							};
+
+							config.extends = extends;
+
+						};
+
+					in
+						lib.types.submoduleWith { modules = [ module ]; };
 
 				};
 
@@ -62,9 +80,10 @@
 					type = 
 					let
 
-						evaluateParameters = parameters: if (builtins.hasAttr "__functor" parameters) then (parameters { inherit final; object = gTemplate; }) else parameters;
+						evaluateOption = data: if (builtins.hasAttr "__functor" data) then (data { inherit final; object = gTemplate; }) else data;
+						evaluateRaw = data: if (builtins.isFunction data) then (data { inherit final; object = gTemplate; }) else data;
 
-						parametersList = builtins.map (template: evaluateParameters template.meta.parameters) templates;
+						parametersList = builtins.map (template: evaluateOption template.meta.parameters) templates;
 
 						builtinParameters =
 						{
@@ -87,12 +106,14 @@
 
 						};
 
-						allParameters = [ builtinParameters (evaluateParameters additionalParameters) ] ++ parametersList;
+						allParameters = [ builtinParameters (evaluateRaw additionalParameters) ] ++ parametersList;
 
-						evalArguments = if (builtins.isFunction arguments) then (arguments { inherit final; object = gTemplate; }) else arguments;
+						argumentsList = builtins.map (template: evaluateOption template.meta.defaultArguments) templates;
+
+						allArguments = [ (evaluateRaw arguments) ] ++ argumentsList;
 
 					in
-						lib.types.submoduleWith { modules = (builtins.map (parameters: { options = parameters; }) allParameters) ++ [ evalArguments ]; };
+						lib.types.submoduleWith { modules = (builtins.map (parameters: { options = parameters; }) allParameters) ++ allArguments; };
 
 				};
 

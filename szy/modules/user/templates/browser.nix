@@ -6,7 +6,7 @@ szy.objects.declare
 	
 	name = "browser";
 
-	extends = [ "application" "default" ];
+	extends = [ "defaultApplication" ];
 
 	parameters =
 	{ final, object }:
@@ -19,12 +19,20 @@ szy.objects.declare
 
 	};
 
+	defaultArguments =
+	{ final, object }:
+	{
+
+		application.type = lib.mkDefault "gui";
+
+	};
+
 	configuration =
 	enabled:
 	{ final }:
 	let
 	
-		default = szy.objects.helper.getDefinition ({ inherit config; } // final.data.default);
+		default = final.data.default.gui.value;
 
 	in
 	enabled
@@ -50,7 +58,7 @@ szy.objects.declare
 		};
 
 		home.sessionVariables = {
-			"BROWSER" = default.data.commands.exec;
+			"BROWSER" = default.data.commands.open;
 		};
 
 	};

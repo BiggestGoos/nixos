@@ -13,18 +13,35 @@ szy.objects.declare
 	{ final, object }:
 	{
 
+		commands =
+		{
+
+			open = lib.options.mkOption
+			{
+				type = lib.types.str;
+				default = final.data.commands.exec;
+			};
+
+		};
+
 		application = 
 		{
 
-			desktopEntry = lib.options.mkOption
+			desktopEntry = 
+			let
+				required = !(final.data.application.type == "terminal");
+				base = lib.types.strMatching ".*[.]desktop";
+			in
+			lib.options.mkOption
 			{
-				type = lib.types.strMatching ".*[.]desktop";
+				type = if !required then (lib.types.nullOr base) else base;
 				default = 
 				let
 					path = "${final.data.package}/share/applications/${final.meta.name}.desktop";
 					entryExists = builtins.pathExists path;
+					noneFound = if required then "No Desktop Entry was found for application { ${final.meta.name} }. Set a value manually." else null;
 				in
-					if entryExists then path else "Default Desktop Entry for { ${final.meta.name} } can't be found.";
+					if entryExists then path else noneFound;
 			};
 
 			type = lib.options.mkOption
@@ -34,24 +51,11 @@ szy.objects.declare
 					types = 
 					[
 						"gui"
-						"other"
-					];
-					terminalTypes =
-					[
 						"cli"
-						"tui"
+						"both"
 					];
 				in
-					lib.types.either 
-					(lib.types.enum (types ++ terminalTypes)) 
-					(lib.types.submodule 
-					{  
-						options = 
-						{
-							type = lib.options.mkOption { type = lib.types.enum terminalTypes; };
-							preferredTerminal = lib.options.mkOption { type = lib.types.str; };
-						};
-					});
+					lib.types.enum types;
 			};
 
 		};

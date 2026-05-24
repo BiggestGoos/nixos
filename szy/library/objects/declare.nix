@@ -7,6 +7,7 @@
 		name, # Name of template
 		enable ? false,
 		parameters ? {}, # A set of lib.options-style options
+		defaultArguments ? {},
 		templateParameters ? {}, # A set of lib.options-style options
 		templateArguments ? {},
 		extends ? [], # A list of templates that this one extends, by name
@@ -37,6 +38,7 @@
 					namespace = utils.options.constant { type = lib.types.listOf lib.types.str; value = namespace; };
 
 					parameters = utils.options.constant { type = lib.types.either (lib.types.attrs) (lib.types.functionTo lib.types.attrs); value = parameters; };
+					defaultArguments = utils.options.constant { type = lib.types.either (lib.types.attrs) (lib.types.functionTo lib.types.attrs); value = defaultArguments; };
 
 					template = 
 					{
@@ -165,11 +167,10 @@
 
 						};
 
-						baseArguments = final.meta.template.arguments;
-						arguments = if (builtins.hasAttr "__functor" baseArguments) then (baseArguments { inherit final; }) else baseArguments;
+						allArguments = (builtins.map (data: data.arguments) allData);
 	
 					in
-						lib.types.submoduleWith { modules = (builtins.map (parameters: { options = parameters; }) allParameters) ++ [ arguments ]; };
+						lib.types.submoduleWith { modules = (builtins.map (parameters: { options = parameters; }) allParameters) ++ allArguments; };
 
 				};
 

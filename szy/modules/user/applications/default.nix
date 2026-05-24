@@ -3,6 +3,8 @@
 	imports =
 	[
 		./browser
+		./terminal
+		./editor
 	];
 
 }

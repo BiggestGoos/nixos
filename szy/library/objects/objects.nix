@@ -6,6 +6,7 @@ let
 	declare = import ./declare.nix helperInputs;
 	define = import ./define.nix helperInputs;
 	helper = import ./helper.nix gInputs;
+	specialisations = import ./specialisations helperInputs;
 
 in
 {
@@ -13,5 +14,6 @@ in
 	inherit (declare) declare;
 	inherit (define) define;
 	inherit helper;
+	inherit (specialisations) composable;
 
 }
