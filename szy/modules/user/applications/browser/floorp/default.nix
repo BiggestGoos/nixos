@@ -1,27 +1,34 @@
 { szy, lib, config, pkgs, ... }:
-szy.objects.composable
-{
-	inherit config;
-
-	components = 
-	{
-		default =
-		{
-			path = "default";
-			enable = true;
-		};
-	};
-
-	componentPath = ./.;
-
-}
-(szy.objects.define
+szy.objects.define
 {
 
 	inherit config;
 
 	name = "floorp";
 	template = "browser";
+
+	qualifiers =
+	{
+
+		_meta.order = [ "composable" ];
+
+		composable =
+		{
+
+			components = 
+			{
+				default =
+				{
+					path = "default";
+					enable = true;
+				};
+			};
+
+			componentPath = ./.;
+
+		};
+
+	};
 
 	arguments =
 	{ final, object, ... }:
@@ -53,4 +60,4 @@ szy.objects.composable
 
 	};
 
-})
+}

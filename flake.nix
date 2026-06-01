@@ -33,6 +33,7 @@
 
 		nixosConfigurations = (szy.flake.mkConfiguration {
 			hostname = "vizima";
+			system = "x86_64-linux";
 			timeZone = {
 				default = "Europe/Stockholm";
 				#automatic = true; Work more on this, doesn't work currently (2026-01-24)
@@ -43,6 +44,7 @@
 			rawRoot = "/etc/nixos";
 		}) // (szy.flake.mkConfiguration {
 			hostname = "kovir";
+			system = "x86_64-linux";
 			timeZone = {
 				default = "Europe/Stockholm";
 			};

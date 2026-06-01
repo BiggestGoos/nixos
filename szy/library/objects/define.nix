@@ -1,11 +1,39 @@
-{ identifier, lib, utils, importLib, helper, ... }@gInputs:
-{
+{ identifier, lib, utils, importLib, helper, qualifiers, ... }@gInputs:
+rec {
 
-	define = 
+	define =
+	{ 
+		config,
+		template,
+		name,
+		qualifiers ? {}, # { <qualifier> = { <arguments> }; }
+		...
+	}@inputs:
+	let
+		output = _define inputs;
+
+		order = qualifiers._meta.order or (builtins.attrNames qualifiers);
+
+		qualifiersList = 
+		builtins.map
+		(
+			name: 
+				gInputs.qualifiers."${name}" (qualifiers."${name}")
+		)
+		order;
+
+		resolve = lib.lists.foldl (data: qualifier: (qualifier config) data) output;
+
+		result = resolve qualifiersList;
+	in
+		result;
+
+	_define = 
 	{
 		config,
 		template,
 		extends ? [],
+		qualifiers ? [],
 		name,
 		enable ? false,
 		arguments ? {},

@@ -32,7 +32,7 @@ szy.objects.declare
 	{ final }:
 	let
 	
-		default = final.data.default.gui.value;
+		default = final.data.default.any.value;
 
 	in
 	enabled
@@ -53,7 +53,7 @@ szy.objects.declare
 					"x-scheme-handler/unknown"
 				];
 			in
-				builtins.listToAttrs (builtins.map (mimetype: { name = mimetype; value = [ default.data.application.desktopEntry ]; }) mimetypes);
+				builtins.listToAttrs (builtins.map (mimetype: { name = mimetype; value = [ default.data.desktopEntry.final.path ]; }) mimetypes);
 
 		};
 

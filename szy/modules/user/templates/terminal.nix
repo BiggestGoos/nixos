@@ -27,7 +27,7 @@ szy.objects.declare
 	{ final, object }:
 	{
 
-		application.type = lib.mkForce "windowed";
+		application.type = lib.mkForce "gui";
 
 	};
 

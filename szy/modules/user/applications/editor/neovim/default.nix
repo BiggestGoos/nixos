@@ -4,6 +4,7 @@ szy.objects.define
 
 	inherit config;
 	template = "editor";
+	extends = [ "terminalApplication" ];
 
 	name = "neovim";
 
@@ -11,6 +12,14 @@ szy.objects.define
 	{ final, object }:
 	{
 		application.type = "cli";
+		application.terminal.name = "kitty";
+
+		desktopEntry =
+		{
+
+			base.path = "nvim";
+
+		};
 	};
 
 	configuration = 
@@ -18,6 +27,8 @@ szy.objects.define
 	{ final, object }:
 	enabled
 	{
+
+		
 
 		programs.neovim = {
 

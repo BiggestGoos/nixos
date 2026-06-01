@@ -2,17 +2,25 @@
 {
 
 	mkConfiguration =
-	{ hostname, timeZone, locale, rawRoot }:
+	{ hostname, system, timeZone, locale, rawRoot }:
 	let
 		szy = self { inherit hostname rawRoot; };
 		inherit (szy) config;
 	in
 	{
 
-		"${hostname}" = lib.nixosSystem 
+		"${hostname}" = 
+		let
+			sharedArgs =
+			{
+				inherit (self) inputs; 
+				inherit szy system;
+			};
+		in
+		lib.nixosSystem 
 		{
 
-			specialArgs = { inherit (self) inputs; inherit szy; systemConfig = true; };
+			specialArgs = sharedArgs // { systemConfig = true; };
 			modules = [ szy.import.modules.path szy.import.modules.system szy.import.modules.shared ] ++ [
 				self.inputs.disko.nixosModules.disko
 				(szy.utils.fromRoot "hosts/${hostname}")
@@ -23,7 +31,7 @@
 	    				useUserPackages = true;
 						backupFileExtension = "backup";
 	    				users = builtins.mapAttrs (name: value: (import value.path)) config."${szy}".users.homeManagerPaths;
-						extraSpecialArgs = { inherit (self) inputs; inherit szy; systemConfig = false; };
+						extraSpecialArgs = sharedArgs // { systemConfig = false; };
 						sharedModules = [ szy.import.modules.users.user.path szy.import.modules.user szy.import.modules.shared ];
 					};
 				}

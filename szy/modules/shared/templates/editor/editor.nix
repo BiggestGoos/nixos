@@ -6,6 +6,6 @@ szy.objects.declare
 	
 	name = "editor";
 
-	extends = [ "defaultApplication" ];
+	extends = [ "application" "defaultApplication" ];
 
 }

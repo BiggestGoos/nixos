@@ -1,19 +1,20 @@
 { identifier, lib, utils, meta, importLib, ... }@gInputs:
 let
 
-	helperInputs = lib.trivial.mergeAttrs gInputs { inherit helper; };
+	helperInputs = gInputs // { inherit helper; };
 
-	declare = import ./declare.nix helperInputs;
-	define = import ./define.nix helperInputs;
+	inputs = helperInputs // { inherit qualifiers; };
+
+	declare = import ./declare.nix inputs;
+	define = import ./define.nix inputs;
 	helper = import ./helper.nix gInputs;
-	specialisations = import ./specialisations helperInputs;
+	qualifiers = import ./qualifiers helperInputs;
 
 in
 {
 
 	inherit (declare) declare;
 	inherit (define) define;
-	inherit helper;
-	inherit (specialisations) composable;
+	inherit helper qualifiers;
 
 }

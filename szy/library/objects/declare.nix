@@ -1,4 +1,4 @@
-{ identifier, lib, utils, importLib, helper, ... }@gInputs:
+{ identifier, lib, utils, importLib, helper, qualifiers, ... }@gInputs:
 {
 
 	declare =

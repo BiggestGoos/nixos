@@ -1,12 +1,12 @@
 { identifier, lib, utils, importLib, helper, ... }@gInputs:
 {
 
-	composable =	
+	composable =
 	{
-		config,
 		components, # { <component-name> = { path (absolute or relative (componentPath needs to be set)), enable. }; }
 		componentPath ? null,
 	}:
+	config:
 	let
 
 		evaluatedComponents = 

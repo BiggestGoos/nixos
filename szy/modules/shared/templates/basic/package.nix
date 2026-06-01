@@ -17,9 +17,12 @@ szy.objects.declare
 			default = 
 			let
 				name = final.meta.name;
-				packageExists = builtins.hasAttr name pkgs;
+				program = config.programs."${name}" or {};
+				service = config.services."${name}" or {};
+
+				package = program.package or (service.package or (pkgs."${name}" or ("No package with name { ${name} }")));
 			in
-				if packageExists then pkgs."${name}" else "No package with name { ${name} }";
+				package;
 		};
 
 	};

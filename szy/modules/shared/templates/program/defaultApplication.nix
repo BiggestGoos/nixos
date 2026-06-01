@@ -16,9 +16,19 @@ szy.objects.declare
 		defaultTypes = 
 		lib.mkDefault
 		{
+			any = definition: true;
 			gui = definition: definition.data.application.type != "cli";
 			cli = definition: definition.data.application.type != "gui";
 		};
+
+		default.any =
+		let
+			inherit (final.data.default) gui cli;
+			hasGui = gui.value != null;
+			hasCli = cli.value != null;
+		in
+		(lib.mkIf (hasGui) { inherit (gui) name template; }) //
+		(lib.mkIf (!hasGui && hasCli) { inherit (cli) name template; });
 
 	};
 

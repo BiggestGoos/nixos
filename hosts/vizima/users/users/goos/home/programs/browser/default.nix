@@ -7,7 +7,7 @@
 		data =
 		{
 			enable = true;
-			default.name = "floorp";
+			default.gui.name = "floorp";
 		};
 
 		definitions =
