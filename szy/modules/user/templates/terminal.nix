@@ -28,6 +28,38 @@ szy.objects.declare
 	{
 
 		application.type = lib.mkForce "gui";
+		desktopEntry =
+		{
+
+			required = lib.mkForce true;
+
+			overrides.implements =
+			[
+				"org.freedesktop.Terminal1"
+			];
+
+		};
+
+	};
+
+	configuration =
+	enabled:
+	{ final }:
+	enabled
+	{
+
+		xdg.terminal-exec =
+		{
+			enable = true;
+			settings =
+			{
+				default = 
+				[
+					#"com.mitchellh.ghostty.desktop"
+					"${final.data.default.any.value.data.desktopEntry.final.values.name}.desktop"
+				];
+			};
+		};
 
 	};
 

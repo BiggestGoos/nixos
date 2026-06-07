@@ -7,7 +7,8 @@ let
 
 	menu = "rofi";
 	menuBin = "${pkgs.rofi}/bin/rofi";
-	appLauncher = "${menuBin} -show drun -show-icons -run-command '${launchPrefix} {cmd}' -run-shell-command '${launchPrefix} ${applications.default.terminal.gui.commands.runCommand "{cmd}"}'";
+	appLauncher = "${menuBin} -show drun -show-icons";
+	#appLauncher = "${menuBin} -show drun -show-icons -run-command '${launchPrefix} {cmd}' -run-shell-command '${launchPrefix} ${applications.default.terminal.gui.commands.runCommand "{cmd}"}'";
 
 	applications = config."${szy}".applications;
 

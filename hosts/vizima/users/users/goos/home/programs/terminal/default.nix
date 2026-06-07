@@ -8,19 +8,16 @@
 		{
 	
 			enable = true;
-			default.gui.name = "kitty";
+			default.gui.name = "ghostty";
 
 		};
 
 		definitions =
 		{
 			kitty.data.enable = true;
+			ghostty.data.enable = true;
 		};
 
 	};
-
-	/*imports = [
-		(szy.utils.fromShared "users/user/programs/terminal/kitty")
-	];*/
 
 }

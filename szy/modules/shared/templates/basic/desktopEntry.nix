@@ -29,6 +29,8 @@ szy.objects.declare
 				)
 				baseOverrides;
 
+				baseValues = base.values // overrides;
+
 				values = 
 				let
 					fullSet =
@@ -37,17 +39,17 @@ szy.objects.declare
 					fullActions = fullSet (base.values.actions or {}) (overrides.actions or {});
 					fullExtra = fullSet (base.values.extraConfig or {}) (overrides.extraConfig or {});
 				in
-				(base.values // overrides) //
+				baseValues //
 				{
-					name = "generated+${final.meta.template}-${final.meta.name}";
+					name = baseValues.name or "generated+${final.meta.template}-${final.meta.name}";
 					actions = fullActions;
 					extraConfig = fullExtra;
 				};
 
 				result = 
-				if (values == {})
-				then (lib.trivial.throwIfNot required "The required desktop entry for definition \"${final.meta.name}\" of template \"${final.meta.template}\" could not be created.") null
-				else "${pkgs.makeDesktopItem (values)}";
+				if (baseValues == {})
+				then (lib.trivial.throwIf required "The required desktop entry for definition \"${final.meta.name}\" of template \"${final.meta.template}\" could not be created.") null
+				else "${pkgs.makeDesktopItem (values)}/share/applications/${values.name}.desktop";
 
 			in
 			{		
@@ -90,6 +92,8 @@ szy.objects.declare
 						pathExists = if (base == null) then false else builtins.pathExists path;
 
 						raw = builtins.readFile path;
+
+						fileName = builtins.head (builtins.match ".*/([^/]*).desktop" path);
 
 						nameKeys =
 						{
@@ -174,7 +178,7 @@ szy.objects.declare
 						splitAction = action: data: builtins.filter (value: value != []) (builtins.split "\n[[]Desktop Action ${action}[]][ ]*\n" data);
 
 						rawActionSplits = 
-						lib.lists.drop 1
+						lib.lists.drop (if ((builtins.length actionNames) == 1) then 0 else 1)
 						(lib.lists.foldl
 						(
 							list: action: 
@@ -284,6 +288,7 @@ szy.objects.declare
 							then mappedKeys
 							else mappedKeys //
 							{
+								name = fileName;
 								extraConfig = extra;
 							};
 

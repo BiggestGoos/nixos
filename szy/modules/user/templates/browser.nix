@@ -24,6 +24,7 @@ szy.objects.declare
 	{
 
 		application.type = lib.mkDefault "gui";
+		desktopEntry.required = lib.mkForce true;
 
 	};
 

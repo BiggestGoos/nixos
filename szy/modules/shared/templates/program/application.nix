@@ -45,16 +45,4 @@ szy.objects.declare
 
 	};
 
-	configuration =
-	enabled:
-	{ final }:
-	{
-
-		imports =
-		[
-			./applicationsOption.nix
-		];
-
-	};
-
 }

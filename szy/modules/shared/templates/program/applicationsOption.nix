@@ -4,6 +4,16 @@
 	options."${szy}".applications = 
 	let
 
+		inheritApplication =
+		application:
+		application.data //
+		{
+			meta =
+			{
+				inherit (application.meta) name template;
+			};
+		};
+
 		getDefinitions = template: 
 		builtins.map 
 		(
@@ -33,7 +43,7 @@
 			default = lib.options.mkOption
 			{
 
-				type = lib.types.attrs;
+				type = lib.types.nullOr lib.types.attrs;
 				default =
 				builtins.listToAttrs
 				(
@@ -49,7 +59,7 @@
 							lib.attrsets.mapAttrs
 							(
 								name: value:
-									if (value == null) then null else value.value
+									if (value.value == null) then null else inheritApplication value.value
 							)
 							defaults;
 						}
@@ -75,7 +85,12 @@
 					let
 						definitions = template.definitions;
 					in
-						definitions;
+					lib.attrsets.mapAttrs
+					(
+						name: value:
+							inheritApplication value
+					)
+					definitions;
 				};
 
 			}
