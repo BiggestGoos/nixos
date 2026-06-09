@@ -1,7 +1,7 @@
 { szy, lib, config, pkgs, ... }:
 let
 	package = pkgs.yazi;
-	terminal.runCommand = config."${szy}".applications.default.terminal.gui.commands.runCommand;
+	terminal.runCommand = config."${szy}".applications.default.terminal.gui.commands.runCommand.relative;
 in
 szy.programs.mkInstance
 {
@@ -14,7 +14,7 @@ szy.programs.mkInstance
 	{ finalCommand, ... }:
 	{
 		inherit package;
-		commandGraphical = terminal.runCommand finalCommand;
+		commandGraphical = "${terminal.runCommand} ${finalCommand}";
 		isGraphical = false;
 	};
 

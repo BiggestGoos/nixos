@@ -4,8 +4,8 @@ szy.objects.declare
 
 	inherit config;
 	
-	name = "editor";
+	name = "fileManager";
 
-	extends = [ "application" "defaultApplication" ];
+	extends = [ "defaultApplication" ];
 
 }

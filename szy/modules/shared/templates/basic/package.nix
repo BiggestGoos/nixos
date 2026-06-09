@@ -20,7 +20,7 @@ szy.objects.declare
 				program = config.programs."${name}" or {};
 				service = config.services."${name}" or {};
 
-				package = program.package or (service.package or (pkgs."${name}" or ("No package with name { ${name} }")));
+				package = program.finalPackage or (program.package or (service.finalPackage or (service.package or (pkgs."${name}" or ("No package with name { ${name} }")))));
 			in
 				package;
 		};

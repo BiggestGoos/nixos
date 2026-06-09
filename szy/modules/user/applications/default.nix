@@ -5,6 +5,7 @@
 		./browser
 		./terminal
 		./editor
+		./fileManager
 	];
 
 }

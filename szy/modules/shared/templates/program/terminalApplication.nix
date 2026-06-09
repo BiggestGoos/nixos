@@ -67,30 +67,57 @@ szy.objects.declare
 	let
 		inherit (final) data;
 		inherit (data) application desktopEntry;
-		inherit (application) terminal;
+		inherit (application) terminal type;
 
-		runCommand = (szy.objects.helper.getDefinition ({ inherit config; } // terminal)).data.commands.runCommand;
+		runCommand = (szy.objects.helper.getDefinition ({ inherit config; } // terminal)).data.commands.runCommand.relative;
 	in
 	{
 
-		application.type = lib.mkDefault "cli";
+		application.type = 
+		if (terminal == null)
+		then lib.mkDefault "cli"
+		else lib.mkForce "both";
 
-		desktopEntry.overrides =
+		desktopEntry.default.overrides =
 		lib.mkIf (terminal != null)
 		{
 			terminal = lib.mkDefault false;
-			exec = lib.mkDefault (runCommand desktopEntry.base.values.exec);
+			exec = 
+			let
+				inherit (final.data.program.arguments.defaultDesktopEntry) args;
+
+				cmdline = lib.strings.concatStringsSep " " ([ runCommand final.data.program.bin."${final.data.program.arguments.open.exe}".name ] ++ args);
+			in
+			lib.mkOverride 999 cmdline;
 		};
 
 		commands.open =
-		lib.mkIf (terminal != null)
-		(lib.mkDefault (runCommand final.data.commands.exec));
+		let
+			inherit (final.data.program) arguments bin;
+
+			openExe = bin."${arguments.open.exe}";
+
+			generateCommand = exe: "${lib.strings.concatStringsSep " " ([ exe ] ++ openExe.defaultArgs ++ arguments.open.args)}";
+
+			defaultRunCommand = config."${szy}".applications.default.terminal.any.commands.runCommand.relative;
+		in
+		lib.mkIf (type != "cli")
+		(if (terminal != null)
+		then
+		{
+			absolute = lib.mkForce ("${runCommand} ${generateCommand openExe.path}");
+			relative = lib.mkForce ("${runCommand} ${generateCommand openExe.name}");
+		}
+		else
+		{
+			absolute = lib.mkForce ("${defaultRunCommand} ${generateCommand openExe.path}");
+			relative = lib.mkForce ("${defaultRunCommand} ${generateCommand openExe.name}");
+		});
 
 	};
 
 	configuration =
-	enabled:
-	{ final }:
+	{ enabled, final }:
 	{
 
 		assertions =
@@ -103,15 +130,20 @@ szy.objects.declare
 			)
 			final.meta.full.definitions;
 		in
-		builtins.map
+		lib.lists.flatten
 		(
-			definition:
-			{
-				assertion = builtins.elem definition.data.application.type [ "cli" "both" ];
-				message = "The definition \"${definition.meta.name}\" of the template \"${definition.meta.template}\" is marked as a terminalApplication and can't have the application type \"${definition.data.application.type}\".";
-			}
-		)
-		definitions;
+			builtins.map
+			(
+				definition:
+				[
+					{
+						assertion = builtins.elem definition.data.application.type [ "cli" "both" ];
+						message = "The definition \"${definition.meta.name}\" of the template \"${definition.meta.template}\" is marked as a terminalApplication and can't have the application type \"${definition.data.application.type}\".";
+					}
+				]
+			)
+			definitions
+		);
 
 	};
 

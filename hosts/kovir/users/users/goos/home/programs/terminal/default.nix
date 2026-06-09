@@ -12,9 +12,13 @@
 
 		};
 
-		definitions.kitty.data =
+		definitions =
 		{
-			enable = true;
+			kitty.data =
+			{
+				enable = true;
+			};
+			ghostty.data.enable = true;
 		};
 
 	};

@@ -12,7 +12,7 @@
 		templateArguments ? {},
 		extends ? [], # A list of templates that this one extends, by name
 		options ? {},
-		configuration ? (enabled: {}),
+		configuration ? {},
 	}:
 	let
 		
@@ -181,19 +181,22 @@
 		imports = 
 		let
 			anyDefinitionEnabled = lib.lists.any (definition: definition.data.enabled) (builtins.map (definition: helper.getDefinition ({ inherit config; } // definition)) final.meta.full.definitions);
-
-			toggledConfiguration = lib.lists.last (gInputs.importLib.mkToggleable (final.data.enabled && anyDefinitionEnabled) (lib.lists.toList configuration));
-			isFunction = builtins.isFunction toggledConfiguration;
+			enabled = final.data.enabled && anyDefinitionEnabled;
 
 			arguments =
 			{
-				inherit final;
+				inherit enabled final;
 			};
 
-			result = if isFunction then (toggledConfiguration arguments) else toggledConfiguration;
+			resolved = if (builtins.isFunction configuration) then (configuration arguments) else configuration;
+
+			imports = resolved.imports or [];
+			result = builtins.removeAttrs resolved [ "imports" ];
+
 		in
+		(gInputs.importLib.mkToggleable enabled imports) ++
 		[
-			result
+			(lib.mkIf (enabled) (result))
 		];
 
 	};

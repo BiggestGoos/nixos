@@ -10,18 +10,19 @@ szy.objects.define
 	arguments = 
 	{ final, object }:
 	{
-		commands =
-		{
-			open = "${final.data.commands.exec} --single-instance";
-		};
+
+		desktopEntry.default.base.path = "kitty";
+
+		program.bin.default.defaultArgs = [ "--single-instance" ];
+		program.arguments.runCommand.args = [ "--" ];
+
 	};
 
 	configuration = 
-	enabled:
-	{ final, object }:
+	{ enabled, final, object }:
 	{
 
-		programs.kitty = enabled {
+		programs.kitty = {
 			
 			enable = true;
 
@@ -60,7 +61,7 @@ szy.objects.define
 
 		};
 
-		imports = enabled [
+		imports = [
 			./tabs.nix
 			./clipboard.nix
 		];

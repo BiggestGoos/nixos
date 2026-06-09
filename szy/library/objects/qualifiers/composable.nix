@@ -51,7 +51,7 @@
 				toggledComponents = lib.attrsets.mapAttrsToList
 				(name: value:
 				let
-					enabled = definition.data.components."${name}".enable;
+					enabled = definition.data.enabled && definition.data.components."${name}".enable;
 				in
 					lib.lists.last (gInputs.importLib.mkToggleable enabled (lib.lists.toList value.path))
 				) evaluatedComponents;

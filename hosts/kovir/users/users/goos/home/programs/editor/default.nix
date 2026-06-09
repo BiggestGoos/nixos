@@ -7,15 +7,21 @@
 		data =
 		{
 			enable = true;
+			default.any.name = "neovim";
 			default.cli.name = "neovim";
 		};
 
-		definitions.neovim =
+		definitions =
 		{
 
-			data =
+			neovim.data =
 			{
 				enable = true;
+			};
+
+			helix.data =
+			{
+					enable = true;
 			};
 
 		};

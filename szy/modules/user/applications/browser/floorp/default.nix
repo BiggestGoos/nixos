@@ -31,21 +31,20 @@ szy.objects.define
 	};
 
 	arguments =
-	{ final, object, ... }:
+	{ final, object }:
 	{
 
-		package = config.programs.floorp.package;
+		package = config.programs.floorp.finalPackage;
 
-		commands.search = "${final.data.commands.exec} --search";
+		program.arguments.search.args = [ "--search" ];
 
 	};
 
 	configuration =
-	enabled:
-	{ final, object, ... }:
+	{ enabled, final, object }:
 	{
 
-		programs.floorp = enabled {
+		programs.floorp = {
 
 			enable = true;
 

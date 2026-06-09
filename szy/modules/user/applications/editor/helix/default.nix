@@ -6,39 +6,23 @@ szy.objects.define
 	template = "editor";
 	extends = [ "terminalApplication" ];
 
-	name = "neovim";
+	name = "helix";
 
-	arguments = 
+	arguments =
 	{ final, object }:
 	{
-		desktopEntry =
-		{
+	
+		desktopEntry.default.base.path = "Helix";
 
-			default.base.path = "nvim";
-
-		};
 	};
 
 	configuration = 
 	{ enabled, final, object }:
 	{
 
-		
-
-		programs.neovim = {
+		programs.helix = {
 
 			enable = true;
-
-			extraConfig = ''
-		
-				hi Normal ctermbg=none guibg=none
-
-				set number
-
-				set tabstop=4
-				set shiftwidth=4
-
-			'';
 
 			defaultEditor = { inherit (object.data.default.cli) name template; } == { inherit (final.meta) name template; };
 

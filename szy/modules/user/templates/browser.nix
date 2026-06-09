@@ -8,35 +8,23 @@ szy.objects.declare
 
 	extends = [ "defaultApplication" ];
 
-	parameters =
-	{ final, object }:
-	{
-
-		commands = 
-		{
-			search = lib.options.mkOption { type = lib.types.str; };
-		};
-
-	};
-
 	defaultArguments =
 	{ final, object }:
 	{
 
 		application.type = lib.mkDefault "gui";
-		desktopEntry.required = lib.mkForce true;
+		desktopEntry.default.required = lib.mkForce true;
+		program.arguments.search.required = lib.mkForce true;
 
 	};
 
 	configuration =
-	enabled:
-	{ final }:
+	{ enabled, final }:
 	let
 	
 		default = final.data.default.any.value;
 
 	in
-	enabled
 	{
 	
 		xdg.mimeApps = {
@@ -54,12 +42,12 @@ szy.objects.declare
 					"x-scheme-handler/unknown"
 				];
 			in
-				builtins.listToAttrs (builtins.map (mimetype: { name = mimetype; value = [ default.data.desktopEntry.final.path ]; }) mimetypes);
+				builtins.listToAttrs (builtins.map (mimetype: { name = mimetype; value = [ default.data.desktopEntry.default.final.path ]; }) mimetypes);
 
 		};
 
-		home.sessionVariables = {
-			"BROWSER" = default.data.commands.open;
+		"${szy}".variables = {
+			"BROWSER" = default.data.commands.open.relative;
 		};
 
 	};

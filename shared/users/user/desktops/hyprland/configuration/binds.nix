@@ -7,8 +7,7 @@ let
 
 	menu = "rofi";
 	menuBin = "${pkgs.rofi}/bin/rofi";
-	appLauncher = "${menuBin} -show drun -show-icons";
-	#appLauncher = "${menuBin} -show drun -show-icons -run-command '${launchPrefix} {cmd}' -run-shell-command '${launchPrefix} ${applications.default.terminal.gui.commands.runCommand "{cmd}"}'";
+	appLauncher = "${menuBin} -show drun -show-icons -run-command '${launchPrefix} {cmd}' -run-shell-command '${launchPrefix} ${applications.default.terminal.gui.commands.runCommand} {cmd}'";
 
 	applications = config."${szy}".applications;
 
@@ -41,8 +40,8 @@ in
 		(lib.lists.optionals (desktop.isEnabledStrict [ "hyprland" ])
 		([
 			"${mainMod}, Q, exec, ${launchPrefix} ${applications.default.terminal.gui.commands.open}"
-			"${mainMod}, E, exec, ${launchPrefix} ${actions.programs.default.fileManager.cli.openGraphical.command}"
-			"${mainMod}, R, exec, ${launchPrefix} ${actions.programs.default.fileManager.gui.openGraphical.command}"
+			"${mainMod}, E, exec, ${launchPrefix} ${(applications.default.fileManager.gui.commands or { open = ""; }).open}"
+			#"${mainMod}, R, exec, ${launchPrefix} ${actions.programs.default.fileManager.gui.openGraphical.command}"
 			"${mainMod}, D, exec, ${launchPrefix} ${applications.default.browser.gui.commands.open}"
 
 			"${mainMod}, B, togglefloating"

@@ -13,17 +13,6 @@ szy.objects.declare
 	{ final, object }:
 	{
 
-		commands =
-		{
-
-			open = lib.options.mkOption
-			{
-				type = lib.types.str;
-				default = final.data.commands.exec;
-			};
-
-		};
-
 		application = 
 		{
 
@@ -42,6 +31,91 @@ szy.objects.declare
 			};
 
 		};
+
+	};
+
+	defaultArguments =
+	{ final, object }:
+	let
+		inherit (final.data.application) type;
+	in
+	{
+
+		program.arguments.exec = lib.mkIf (type != "gui") {};
+		program.arguments.open = lib.mkIf (type != "cli") {};
+
+		program.arguments.defaultDesktopEntry =
+		{
+			generateCommand = false;
+			args = 
+			let
+
+				old = final.data.desktopEntry.default.base.values;
+
+				oldArgs = if (old ? exec) then lib.lists.drop 1 (lib.strings.splitString " " old.exec) else [];
+				newArgs = final.data.program.bin."${final.data.program.arguments.open.exe}".defaultArgs;
+				combined = lib.lists.unique (newArgs ++ oldArgs);
+
+			in
+				combined;
+		};
+		
+		desktopEntry.default.base.path = lib.mkIf (type != "cli") (lib.mkDefault final.meta.name);
+		desktopEntry.default.overrides =
+		let
+
+			inherit (final.data.program.arguments.defaultDesktopEntry) args;
+
+			cmdline = lib.strings.concatStringsSep " " ([ final.data.program.bin."${final.data.program.arguments.open.exe}".name ] ++ args);
+
+		in
+		lib.mkIf ((type != "cli") && (final.data.desktopEntry.default.base.values != {}))
+		{
+			exec = lib.mkDefault cmdline;
+		};
+
+	};
+
+	configuration =
+	{ enabled, final }:
+	{
+
+		imports =
+		[
+			./applications.nix
+		];
+
+		assertions =
+		let
+			definitions = 
+			builtins.map
+			(
+				{ name, template, }:
+					szy.objects.helper.getDefinition { inherit config name template; }
+			)
+			final.meta.full.definitions;
+		in
+		lib.lists.flatten
+		(
+			builtins.map
+			(
+				definition:
+				let
+					inherit (definition.data.application) type;
+				in
+				[
+					{
+						assertion = (type == "gui") || definition.data.commands ? exec;
+						message = "The cli definition \"${definition.meta.name}\" of the template \"${definition.meta.template}\" must have an exec command value!";
+					}
+					{
+						assertion = (type == "cli") || definition.data.commands ? open;
+						message = "The gui definition \"${definition.meta.name}\" of the template \"${definition.meta.template}\" must have an open command value!";
+					}
+				]
+			)
+			definitions
+		);
 
 	};
 

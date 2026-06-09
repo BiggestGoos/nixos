@@ -39,7 +39,7 @@ rec {
 		arguments ? {},
 		additionalParameters ? {},
 		options ? {},
-		configuration ? (enabled: {}),
+		configuration ? {},
 	}@inputs:
 	let
 
@@ -151,19 +151,23 @@ rec {
 
 		imports = 
 		let
-			toggledConfiguration = lib.lists.last (gInputs.importLib.mkToggleable final.data.enabled (lib.lists.toList configuration));
-			isFunction = builtins.isFunction toggledConfiguration;
+			enabled = final.data.enabled;
 
 			arguments =
 			{
-				inherit final;
+				inherit enabled final;
 				object = gTemplate;
 			};
 
-			result = if isFunction then (toggledConfiguration arguments) else toggledConfiguration;
+			resolved = if (builtins.isFunction configuration) then (configuration arguments) else configuration;
+
+			imports = resolved.imports or [];
+			result = builtins.removeAttrs resolved [ "imports" ];
+
 		in
+		(gInputs.importLib.mkToggleable enabled imports) ++
 		[
-			result
+			(lib.mkIf (enabled) (result))
 		];
 
 	};

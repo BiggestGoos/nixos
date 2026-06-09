@@ -2,7 +2,7 @@
 let
 	configDir = "${config.xdg.configHome}/uwsm";
 
-	resolvedDefault = szy.utils.mergeAll [ osConfig."${szy}".desktops.components.variables.default config."${szy}".desktops.components.variables.default ];
+	resolvedDefault = szy.utils.mergeAll [ osConfig."${szy}".variables osConfig."${szy}".desktops.components.variables.default config."${szy}".variables config."${szy}".desktops.components.variables.default ];
 	resolvedHyprland = szy.utils.mergeAll [ (osConfig."${szy}".desktops.components.variables.variables.hyprland or {}) (config."${szy}".desktops.components.variables.variables.hyprland or {}) ];
 in
 {

@@ -8,17 +8,14 @@ szy.objects.declare
 
 	extends = [ "defaultApplication" ];
 
-	parameters =
-	{ final, object }:
+	templateArguments =
+	{ final }:
 	{
 
-		commands = 
+		defaultTypes = 
 		{
-			runCommand = lib.options.mkOption
-			{
-				type = lib.types.functionTo lib.types.str;
-				default = command: "${final.data.commands.open} ${command}";
-			};
+			gui = definition: true;
+			any = definition: { inherit (definition.meta) name template; } == { inherit (final.data.default.gui) name template; };
 		};
 
 	};
@@ -28,24 +25,30 @@ szy.objects.declare
 	{
 
 		application.type = lib.mkForce "gui";
-		desktopEntry =
+		program.arguments.runCommand.required = lib.mkForce true;
+		desktopEntry.runCommand =
 		{
 
 			required = lib.mkForce true;
 
-			overrides.implements =
-			[
-				"org.freedesktop.Terminal1"
-			];
+			overrides = 
+			{
+				exec = lib.mkDefault final.data.commands.open.relative;
+				name = lib.mkDefault "${final.meta.name}RunCommand";
+				noDisplay = true;
+				desktopName = "${final.meta.name} runCommand";
+				extraConfig."X-TerminalArgExec" = lib.strings.concatStringsSep " " final.data.program.arguments.runCommand.args;
+			};
 
 		};
 
 	};
 
 	configuration =
-	enabled:
-	{ final }:
-	enabled
+	{ enabled, final }:
+	let
+		default = final.data.default.any.value;
+	in
 	{
 
 		xdg.terminal-exec =
@@ -55,8 +58,7 @@ szy.objects.declare
 			{
 				default = 
 				[
-					#"com.mitchellh.ghostty.desktop"
-					"${final.data.default.any.value.data.desktopEntry.final.values.name}.desktop"
+					default.data.desktopEntry.default.final.id
 				];
 			};
 		};

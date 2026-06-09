@@ -11,18 +11,18 @@ szy.objects.define
 	{ final, object }:
 	{
 
-		commands.runCommand = command: "${final.data.commands.open} -e ${command}";
+		program.bin.default.defaultArgs = [ "--gtk-single-instance=true" ];
+		program.arguments.runCommand.args = [ "-e" ];
 
-		desktopEntry.base.path = "com.mitchellh.ghostty";
-
+		desktopEntry.default.base.path = "com.mitchellh.ghostty";
+	
 	};
 
 	configuration = 
-	enabled:
-	{ final, object }:
+	{ enabled, final, object }:
 	{
 
-		programs.ghostty = enabled {
+		programs.ghostty = {
 			
 			enable = true;
 

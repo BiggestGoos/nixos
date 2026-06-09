@@ -4,7 +4,8 @@
 	[
 		./defaultDefinition.nix
 		./package.nix
-		./desktopEntry.nix
+		./desktopEntry
+		./commands.nix
 		./composable.nix
 	];
 

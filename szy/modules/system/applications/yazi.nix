@@ -3,9 +3,10 @@ szy.objects.define
 {
 
 	inherit config;
-	template = "editor";
+	template = "fileManager";
+	extends = [ "terminalApplication" ];
 
-	name = "neovim";
+	name = "yazi";
 
 	arguments = 
 	{ final, object }:
@@ -19,11 +20,9 @@ szy.objects.define
 	{ enabled, final, object }:
 	{
 
-		programs.neovim = {
+		programs.yazi = {
 
 			enable = true;
-
-			defaultEditor = { inherit (object.data.default.cli) name template; } == { inherit (final.meta) name template; };
 
 		};	
 

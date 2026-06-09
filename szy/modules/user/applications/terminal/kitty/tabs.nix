@@ -6,13 +6,13 @@ let
 	tabMod = "ctrl+";
 	moveMod = "alt+";
 
-	fileManager = config."${szy}".programs.fileManager.default.cli.values;
+	fileManager = config."${szy}".applications.default.fileManager.cli;
 
 	keybindings = {
 		"${tabMod}w" = "close_tab";
 		"${tabMod}t" = "launch --type=tab";
 		"${tabMod}d" = "launch --type=tab --cwd=current --copy-cmdline --copy-env --hold";
-		"${tabMod}e" = lib.mkIf (fileManager != null) "launch --type=tab --cwd=current ${fileManager.command}";
+		"${tabMod}e" = lib.mkIf (fileManager != null) "launch --type=tab --cwd=current ${fileManager.commands.exec}";
 		"${tabMod}left" = "previous_tab";
 		"${tabMod}right" = "next_tab";
 		"${tabMod}tab" = "next_tab";

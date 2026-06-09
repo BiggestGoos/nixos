@@ -2,8 +2,8 @@
 
 	imports =
 	[
-		./neovim.nix
 		./yazi.nix
+		./ranger.nix
 	];
 
 }
