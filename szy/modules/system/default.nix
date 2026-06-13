@@ -4,6 +4,7 @@
 	[
 		./applications
 		./hardware
+		./packages
 	];
 
 }

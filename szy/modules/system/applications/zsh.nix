@@ -3,9 +3,9 @@ szy.objects.define
 {
 
 	inherit config;
-	template = "fileManager";
+	template = "shell";
 
-	name = "yazi";
+	name = "zsh";
 
 	arguments = 
 	{ final, object }:
@@ -13,13 +13,19 @@ szy.objects.define
 
 		application.type = "cli";
 
+		program.arguments =
+		{
+			runCommand.args = [ "-c" ];
+			interactive.args = [ "-i" ];
+		};
+
 	};
 
 	configuration = 
 	{ enabled, final, object }:
 	{
 
-		programs.yazi = {
+		programs.zsh = {
 
 			enable = true;
 

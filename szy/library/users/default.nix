@@ -1,4 +1,4 @@
-{ config, options, lib, szy, ... }:
+{ config, options, lib, nixpkgs, szy, ... }:
 let
 
 	userTypes = config."${options}".users.types.list;
@@ -15,7 +15,19 @@ in
 		groups = config."${options}".users.types.groups."${userType}";
 		userGroups = config."${options}".users.declared."${name}".groups.extra;
 
-		resolvedShell = if (shell != null) then shell else config.home-manager.users."${name}"."${options}".programs.shell.default.values.package;
+		getDefaultShell = applications: ((applications.default or {}).shell or {}).cli or null;
+
+		systemDefault = getDefaultShell config."${options}".applications;
+		userDefault = getDefaultShell config.home-manager.users."${name}"."${options}".applications;
+
+		resolvedShell = 
+		if (shell != null) 
+		then shell 
+		else if (userDefault != null)
+		then userDefault.package
+		else if (systemDefault != null)
+		then systemDefault.package
+		else nixpkgs.runtimeShell;
 
 		resolvedHomeDirectory = "${homeDirectory}/${name}";
 

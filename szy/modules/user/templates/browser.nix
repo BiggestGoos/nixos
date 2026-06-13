@@ -23,18 +23,26 @@ szy.objects.declare
 	let
 	
 		default = final.data.default.any.value;
+		defaultOpen = default.data.commands.open.relative;
+		
+		scriptName = "${szy}+defaultBrowser";
+		script = pkgs.writeShellScriptBin scriptName
+''
+exec ${defaultOpen} "$@"
+'';
 
 	in
 	{
 	
-		xdg.mimeApps = {
+		xdg.mimeApps = 
+		{
 
 			enable = true;
 
 			defaultApplications = 
 			let
-				mimetypes = [
-					"default-web-browser"
+				mimetypes = 
+				[
 					"text/html"
 					"x-scheme-handler/http"
 					"x-scheme-handler/https"
@@ -42,12 +50,39 @@ szy.objects.declare
 					"x-scheme-handler/unknown"
 				];
 			in
-				builtins.listToAttrs (builtins.map (mimetype: { name = mimetype; value = [ default.data.desktopEntry.default.final.path ]; }) mimetypes);
+			builtins.listToAttrs 
+			(
+				builtins.map 
+				(
+					mimetype: 
+					{
+						name = mimetype; 
+						value = 
+						[ 
+							default.data.desktopEntry.default.final.id 
+						]; 
+					}
+				)
+				mimetypes
+			);
 
 		};
 
-		"${szy}".variables = {
-			"BROWSER" = default.data.commands.open.relative;
+		"${szy}" =
+		{
+			variables = {
+				BROWSER =
+				{
+					value = scriptName;
+					override = "force";
+				};
+				DEFAULT_BROWSER =
+				{
+					value = scriptName;
+					override = "force";
+				};
+			};
+			packages = [ script ];
 		};
 
 	};

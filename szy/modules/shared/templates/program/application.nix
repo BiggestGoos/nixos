@@ -38,6 +38,12 @@ szy.objects.declare
 	{ final, object }:
 	let
 		inherit (final.data.application) type;
+
+		defaultRun =
+		if (type == "cli")
+		then final.data.program.arguments.exec
+		else final.data.program.arguments.open;
+
 	in
 	{
 
@@ -53,7 +59,7 @@ szy.objects.declare
 				old = final.data.desktopEntry.default.base.values;
 
 				oldArgs = if (old ? exec) then lib.lists.drop 1 (lib.strings.splitString " " old.exec) else [];
-				newArgs = final.data.program.bin."${final.data.program.arguments.open.exe}".defaultArgs;
+				newArgs = final.data.program.bin."${defaultRun.exe}".defaultArgs;
 				combined = lib.lists.unique (newArgs ++ oldArgs);
 
 			in
@@ -66,7 +72,7 @@ szy.objects.declare
 
 			inherit (final.data.program.arguments.defaultDesktopEntry) args;
 
-			cmdline = lib.strings.concatStringsSep " " ([ final.data.program.bin."${final.data.program.arguments.open.exe}".name ] ++ args);
+			cmdline = lib.strings.concatStringsSep " " ([ final.data.program.bin."${defaultRun.exe}".name ] ++ args);
 
 		in
 		lib.mkIf ((type != "cli") && (final.data.desktopEntry.default.base.values != {}))

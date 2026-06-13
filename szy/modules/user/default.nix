@@ -1,4 +1,4 @@
-{ pkgs, lib, system, ... }:
+{ szy, lib, config, ... }:
 {
 
 	imports =

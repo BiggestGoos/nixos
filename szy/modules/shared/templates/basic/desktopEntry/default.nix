@@ -84,16 +84,8 @@ mkdir -p $out/share/applications
 		prioritizedPackage = lib.meta.setPrio (-999999999) package;
 
 	in
-	(
-		if (systemConfig)
-		then 
-		{
-			environment.systemPackages = [ prioritizedPackage ];
-		}
-		else
-		{
-			home.packages = [ prioritizedPackage ];
-		}
-	);
+	{
+		"${szy}".packages = [ prioritizedPackage ];
+	};
 
 }

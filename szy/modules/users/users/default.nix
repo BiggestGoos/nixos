@@ -70,10 +70,12 @@ in
 
 	config = {
 
-		users = {
-
-			defaultUserShell = config."${szy}".programs.shell.default.values.package;
-
+		users = 
+		let
+			systemDefault = ((config."${szy}".applications.default or {}).shell or {}).cli or null;
+		in
+		{
+			defaultUserShell = lib.mkIf (systemDefault != null) systemDefault.package;
 		};
 
 		"${szy}".users.types.groups = {

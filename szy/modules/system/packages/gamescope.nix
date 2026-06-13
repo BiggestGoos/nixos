@@ -3,28 +3,17 @@ szy.objects.define
 {
 
 	inherit config;
-	template = "fileManager";
+	template = "package";
+	extends = [ "gaming" ];
 
-	name = "yazi";
-
-	arguments = 
-	{ final, object }:
-	{
-
-		application.type = "cli";
-
-	};
+	name = "gamescope";
 
 	configuration = 
 	{ enabled, final, object }:
 	{
-
-		programs.yazi = {
-
+		programs.gamescope = {
 			enable = true;
-
 		};	
-
 	};
 
 }

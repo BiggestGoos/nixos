@@ -60,7 +60,7 @@ enabled:
 			default = lib.options.mkOption
 			{
 
-				type = lib.types.nullOr lib.types.attrs;
+				type = lib.types.attrs;
 				default =
 				builtins.listToAttrs
 				(

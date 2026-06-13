@@ -13,37 +13,61 @@ let
 			desktopEntry = config;
 			inherit (desktopEntry) required base;
 
-			baseOverrides = desktopEntry.overrides;
-			overrides = 
+			resolveOverrides = overrides:
 			lib.attrsets.filterAttrs 
 			(
 				name: value:
 					value != null
 			)
-			baseOverrides;
+			overrides;
 
-			baseValues = base.values // overrides;
+			baseDefaultOverrides = (final.data.desktopEntry._default or { overrides = {}; }).overrides;
+			defaultOverrides = resolveOverrides baseDefaultOverrides;
+
+			baseOverrides = desktopEntry.overrides;
+			overrides = resolveOverrides baseOverrides;
+
+			baseValues = base.values // defaultOverrides // overrides;
 
 			values = 
 			let
 				fullSet =
-				base: override: szy.utils.mergeAll [ base override ];
+				base: default: override: szy.utils.mergeAll [ base default override ];
 
-				fullActions = fullSet (base.values.actions or {}) (overrides.actions or {});
-				fullExtra = fullSet (base.values.extraConfig or {}) (overrides.extraConfig or {});
+				fullActions = fullSet (base.values.actions or {}) (defaultOverrides.actions or {}) (overrides.actions or {});
+				fullExtra = fullSet (base.values.extraConfig or {}) (defaultOverrides.extraConfig or {}) (overrides.extraConfig or {});
 			in
 			baseValues //
 			{
-				name = baseValues.name or "generated+${final.meta.template}-${final.meta.name}";
 				actions = fullActions;
 				extraConfig = fullExtra;
 			};
 
 			desktopEntryPackage = pkgs.makeDesktopItem (values);
 
+			requiredKeys =
+			[
+				"name"
+				"desktopName"
+			];
+			notComplete =
+			lib.lists.any			
+			(
+				value:
+					value == false
+			)
+			(
+				builtins.map
+				(
+					key:
+						builtins.elem key (builtins.attrNames values)
+				)
+				requiredKeys
+			);
+
 			result = 
-			if (baseValues == {})
-			then (lib.trivial.throwIf required "The required desktop entry for definition \"${final.meta.name}\" of template \"${final.meta.template}\" could not be created.") null
+			if (notComplete)
+			then (lib.trivial.throwIf required "The required desktop entry for definition \"${final.meta.name}\" of template \"${final.meta.template}\" could not be created. It is missing either name or desktopName.") null
 			else "${desktopEntryPackage}/share/applications/${values.name}.desktop";
 
 			strType = if (required) then lib.types.str else lib.types.nullOr lib.types.str;
@@ -62,7 +86,7 @@ let
 			{
 				type = strType;
 				readOnly = true;
-				default = "${builtins.replaceStrings [ "/" ] [ "-" ] values.name}.desktop";
+				default = if (notComplete) then null else "${builtins.replaceStrings [ "/" ] [ "-" ] values.name}.desktop";
 			};
 
 			values = lib.options.mkOption

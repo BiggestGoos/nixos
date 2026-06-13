@@ -12,7 +12,15 @@ szy.objects.define
 	{
 
 		program.bin.default.defaultArgs = [ "--gtk-single-instance=true" ];
-		program.arguments.runCommand.args = [ "-e" ];
+
+		program.arguments =
+		{
+			runCommand.args = [ "-e" ];
+			remainOpen.args = [ "--wait-after-command" ];
+			setDirectory.args = [ "--working-directory=" ];
+			setAppID.args = [ "--class=" ];
+			setTitle.args = [ "--tile=" ];
+		};
 
 		desktopEntry.default.base.path = "com.mitchellh.ghostty";
 	

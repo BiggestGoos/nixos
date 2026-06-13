@@ -1,4 +1,4 @@
-{ szy, lib, config, pkgs, ... }:
+{ szy, lib, config, pkgs, system, systemConfig, ... }:
 szy.objects.declare
 {
 
@@ -15,12 +15,30 @@ szy.objects.declare
 		default = final.data.default.any.value;
 		defaultOpen = (default.data.commands.exec or default.data.commands.open).relative;
 
+		scriptName = "${szy}+defaultEditor";
+		script = pkgs.writeShellScriptBin scriptName
+''
+exec ${defaultOpen} "$@"
+'';
+
 	in
 	{
-		"${szy}".variables =
+		"${szy}" =
 		{
-			EDITOR = lib.mkDefault defaultOpen;
-			VISUAL = lib.mkDefault defaultOpen;
+			variables =
+			{
+				EDITOR = lib.mkDefault
+				{
+					value = scriptName;
+					override = "force";
+				};
+				VISUAL = lib.mkDefault
+				{
+					value = scriptName;
+					override = "force";
+				};
+			};
+			packages = [ script ];
 		};
 	};
 

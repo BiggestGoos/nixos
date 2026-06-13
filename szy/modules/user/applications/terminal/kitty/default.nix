@@ -14,7 +14,14 @@ szy.objects.define
 		desktopEntry.default.base.path = "kitty";
 
 		program.bin.default.defaultArgs = [ "--single-instance" ];
-		program.arguments.runCommand.args = [ "--" ];
+		program.arguments =
+		{
+			runCommand.args = [ "--" ];
+			remainOpen.args = [ "--hold" ];
+			setDirectory.args = [ "--directory" ];
+			setAppID.args = [ "--class" ];
+			setTitle.args = [ "--title" ];
+		};
 
 	};
 

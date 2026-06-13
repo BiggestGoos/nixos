@@ -1,99 +1,84 @@
 { identifier, lib, utils, ... }:
 let
 
-	prefixes = {
+	exported =
+	rec {
 
-		objects = "objects";
-		templates = "templates";
-		definitions = "definitions";
+		prefixes = 
+		{
 
-	};
+			objects = "objects";
+			templates = "templates";
+			definitions = "definitions";
 
-	namespaces = {
+		};
 
-		templates = with prefixes; [ identifier objects ];
-		definitions = with prefixes; [ identifier objects ];
+		namespaces = 
+		{
 
-	};
+			templates = with prefixes; [ identifier objects ];
+			definitions = with prefixes; [ identifier objects ];
 
-	getTemplate =
-	{
-		config,
-		name,
-	}:
-	let
-		namespace = namespaces.templates ++ lib.lists.toList name;
+		};
 
-		template = utils.options.getFromKeys { keys = namespace; object = config; };
-	in
-		template;
-	
-	getDefinition =
-	{
-		config,
-		name,
-		template,
-	}:
-	let
-		namespace = namespaces.definitions ++ [ template prefixes.definitions name ];
+		getTemplate =
+		{
+			config,
+			name,
+		}:
+		let
+			namespace = namespaces.templates ++ lib.lists.toList name;
 
-		definition = utils.options.getFromKeys { keys = namespace; object = config; };
-	in
-		definition;
+			template = utils.options.getFromKeys { keys = namespace; object = config; };
+		in
+			template;
+		
+		getDefinition =
+		{
+			config,
+			name,
+			template,
+		}:
+		let
+			namespace = namespaces.definitions ++ [ template prefixes.definitions name ];
 
-	getAllDefinitions =
-	{
-		config,
-		template,
-	}:
-	let
-		namespace = namespaces.definitions ++ [ template prefixes.definitions ];
+			definition = utils.options.getFromKeys { keys = namespace; object = config; };
+		in
+			definition;
 
-		definitions = utils.options.getFromKeys { keys = namespace; object = config; };
-	in
-		definitions;
-
-	getAllExtenders =
-	{
-		config,
-		name,
-	}:
-	let
-
-		template = getTemplate { inherit config name; };
-
-		getExtenders = template: 
+		getAllExtenders =
+		{
+			config,
+			name,
+		}:
 		let
 
-			extenders = template.meta.extends;
+			template = getTemplate { inherit config name; };
 
-			iterate = (builtins.map (name: getTemplate { inherit config name; }) extenders) ++ (builtins.map 
-			(name:
+			getExtenders = template: 
 			let
-				template = getTemplate { inherit config name; };
+
+				extenders = template.meta.extends;
+
+				iterate = (builtins.map (name: getTemplate { inherit config name; }) extenders) ++ (builtins.map 
+				(name:
+				let
+					template = getTemplate { inherit config name; };
+				in
+					if (template.meta.extends != []) 
+					then 
+						(getExtenders template) 
+					else 
+						[]
+				) extenders);
+
 			in
-				if (template.meta.extends != []) 
-				then 
-					(getExtenders template) 
-				else 
-					[]
-			) extenders);
+				lib.lists.unique (lib.lists.flatten iterate);
 
 		in
-			lib.lists.unique (lib.lists.flatten iterate);
+			getExtenders template;
 
-	in
-		getExtenders template;
+	 };
+
 in
-{
-
-	inherit 
-		prefixes 
-		namespaces
-		getTemplate
-		getAllExtenders
-		getDefinition
-		getAllDefinitions
-	;
-
-}
+	exported

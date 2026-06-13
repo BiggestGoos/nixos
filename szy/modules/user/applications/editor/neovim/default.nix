@@ -14,7 +14,11 @@ szy.objects.define
 		desktopEntry =
 		{
 
-			default.base.path = "nvim";
+			default =
+			{
+				base.path = "nvim";
+				overrides.desktopName = "Neovim";
+			};
 
 		};
 	};

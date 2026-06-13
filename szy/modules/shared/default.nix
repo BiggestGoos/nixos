@@ -4,6 +4,7 @@
 	[
 		./templates
 		./variables
+		./packages
 	];
 
 }

@@ -21,4 +21,16 @@
 	#	./lutris
 	];
 
+	"${szy}".objects =
+	{
+
+		application.definitions =
+		{
+
+			anki.data.enable = true;
+
+		};
+
+	};
+
 }

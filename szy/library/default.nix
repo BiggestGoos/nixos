@@ -3,7 +3,8 @@ let
 	flake = inputs.self;
 	root = "${flake}";
 
-	inherit (inputs.nixpkgs) lib;
+	inherit (inputs) nixpkgs;
+	inherit (nixpkgs) lib;
 
 	self = 
 	rec {
@@ -35,7 +36,7 @@ let
 					objects = import ./objects/objects.nix { inherit identifier config lib utils meta importLib; };
 					programs = import ./objects/programs { inherit config lib utils; options = identifier; };
 
-					users = import ./users { inherit config lib szy; options = identifier; };
+					users = import ./users { inherit config lib nixpkgs szy; options = identifier; };
 					variants = import ./variants { inherit lib utils; options = identifier; };
 					themes = import ./themes { inherit lib utils variants; options = identifier; };
 

@@ -1,8 +1,23 @@
 { lib, config, szy, ... }:
 {
 
-	imports = [
+	"${szy}".objects.shell =
+	{
+
+		data =
+		{
+			enable = true;
+		};
+
+		definitions =
+		{
+			zsh.data.enable = true;
+		};
+
+	};
+
+	/*imports = [
 		(szy.utils.fromShared "users/user/programs/shell/zsh")
-	];
+	];*/
 
 }

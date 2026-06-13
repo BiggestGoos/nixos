@@ -3,7 +3,8 @@ let
 	package = pkgs.starship;
 	terminal = config."${szy}".programs.terminal.default.values.runProgram;
 
-	shell = config."${szy}".programs.shell;
+	shells = config."${szy}".applications.shell or {};
+	
 in
 szy.programs.mkInstance
 {
@@ -26,7 +27,7 @@ szy.programs.mkInstance
 		programs.starship = 
 		let
 
-			shellAvailable = name: (builtins.elem name shell.available);
+			shellEnabled = shell: (shells."${shell}" or { enabled = false; }).enabled;
 
 		in
 		{
@@ -35,7 +36,7 @@ szy.programs.mkInstance
 
 			settings = import ./settings.nix { inherit lib; };
 
-			enableZshIntegration = shellAvailable "zsh";
+			enableZshIntegration = shellEnabled "zsh";
 
 		};
 
