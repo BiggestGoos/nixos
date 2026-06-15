@@ -9,7 +9,7 @@ szy.objects.define
 	name = "steam";
 
 	arguments = 
-	{ final, object }:
+	{ final, template }:
 	{
 
 		package = config.programs.steam.package;
@@ -18,7 +18,7 @@ szy.objects.define
 	};
 
 	configuration = 
-	{ enabled, final, object }:
+	{ enabled, final, template }:
 	{
 
 		programs.steam = 

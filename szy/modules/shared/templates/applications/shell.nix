@@ -9,7 +9,7 @@ szy.objects.declare
 	extends = [ "defaultApplication" "terminalApplication" ];
 
 	defaultArguments =
-	{ final, object }:
+	{ final, template }:
 	{
 
 		program.arguments =

@@ -9,7 +9,7 @@ szy.objects.define
 	name = "neovim";
 
 	arguments = 
-	{ final, object }:
+	{ final, template }:
 	{
 		desktopEntry =
 		{
@@ -24,7 +24,7 @@ szy.objects.define
 	};
 
 	configuration = 
-	{ enabled, final, object }:
+	{ enabled, final, template }:
 	{
 
 		
@@ -44,7 +44,7 @@ szy.objects.define
 
 			'';
 
-			defaultEditor = { inherit (object.data.default.cli) name template; } == { inherit (final.meta) name template; };
+			defaultEditor = template.data.default.cli.identifier == final.meta.identifier;
 
 		};
 

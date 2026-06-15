@@ -5,12 +5,11 @@ szy.objects.declare
 	inherit config;
 	
 	name = "program";
-	enable = true;
 
 	extends = [ "package" "commands" ];
 
 	parameters =
-	{ final, object }:
+	{ final, template }:
 	{
 
 		program =
@@ -112,7 +111,7 @@ szy.objects.declare
 	};
 
 	defaultArguments =
-	{ final, object }:
+	{ final, template }:
 	{
 
 		program.bin.default.name = lib.mkDefault (final.data.package or { meta = {}; }).meta.mainProgram or null;

@@ -15,13 +15,13 @@ szy.objects.declare
 		defaultTypes = 
 		{
 			gui = definition: true;
-			any = definition: { inherit (definition.meta) name template; } == { inherit (final.data.default.gui) name template; };
+			any = definition: definition.meta.identifier == final.data.default.gui.identifier;
 		};
 
 	};
 
 	defaultArguments =
-	{ final, object }:
+	{ final, template }:
 	{
 
 		application.type = lib.mkForce "gui";

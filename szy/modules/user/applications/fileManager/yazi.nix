@@ -9,7 +9,6 @@ szy.objects.define
 	name = "yazi";
 
 	arguments = 
-	{ final, object }:
 	{
 
 		application.type = "both";
@@ -17,7 +16,6 @@ szy.objects.define
 	};
 
 	configuration = 
-	{ enabled, final, object }:
 	{
 
 		programs.yazi = {

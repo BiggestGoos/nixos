@@ -8,7 +8,7 @@ szy.objects.define
 	name = "zsh";
 
 	arguments = 
-	{ final, object }:
+	{ final, template }:
 	{
 
 		application.type = "cli";
@@ -22,7 +22,7 @@ szy.objects.define
 	};
 
 	configuration = 
-	{ enabled, final, object }:
+	{ enabled, final, template }:
 	{
 
 		programs.zsh = {

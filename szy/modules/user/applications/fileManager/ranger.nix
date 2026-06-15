@@ -9,7 +9,7 @@ szy.objects.define
 	name = "ranger";
 
 	arguments = 
-	{ final, object }:
+	{ final, template }:
 	{
 
 		application.type = "both";
@@ -17,7 +17,7 @@ szy.objects.define
 	};
 
 	configuration = 
-	{ enabled, final, object }:
+	{ enabled, final, template }:
 	{
 
 		programs.ranger = {

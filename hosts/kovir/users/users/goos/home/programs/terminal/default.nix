@@ -6,10 +6,7 @@
 
 		data =
 		{
-
-			enable = true;
-			default.gui.name = "kitty";
-
+			default.gui.identifier.name = "kitty";
 		};
 
 		definitions =

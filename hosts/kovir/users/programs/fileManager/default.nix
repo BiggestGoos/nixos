@@ -4,11 +4,6 @@
 	"${szy}".objects.fileManager =
 	{
 
-		data =
-		{
-			enable = true;
-		};
-
 		definitions =
 		{
 			yazi.data.enable = true;

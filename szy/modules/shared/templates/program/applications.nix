@@ -11,22 +11,22 @@ enabled:
 		{
 			meta =
 			{
-				inherit (application.meta) name template;
+				inherit (application.meta) identifier;
 			};
 		};
 
 		getDefinitions = template: 
 		let
+			meta = szy.objects.helper.template.getMeta { inherit config; identifier = template; };
 			all = builtins.map 
 			(
-				meta: 
-				szy.objects.helper.getDefinition 
+				identifier: 
+				szy.objects.helper.definition.get 
 				{ 
-					inherit config; 
-					inherit (meta) name template; 
+					inherit config identifier; 
 				}
 			) 
-			config."${szy}".objects."${template}".meta.full.definitions;
+			meta.full.definitions;
 		in
 		builtins.filter
 		(
@@ -37,17 +37,17 @@ enabled:
 
 		getTemplates = definitions:
 		let
-			names = lib.lists.unique (builtins.map (definition: definition.meta.template) definitions);
+			identifiers = lib.lists.unique (builtins.map (definition: definition.meta.template) definitions);
 		in
 		builtins.map 
 		(
-			name: 
-			szy.objects.helper.getTemplate 
+			identifier: 
+			szy.objects.helper.template.get 
 			{ 
-				inherit config name; 
+				inherit config identifier;
 			}
 		) 
-		names;
+		identifiers;
 	
 		defaultApplications = getDefinitions "defaultApplication";
 		defaultTemplates = getTemplates defaultApplications;

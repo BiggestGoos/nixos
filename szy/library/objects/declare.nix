@@ -1,93 +1,146 @@
-{ identifier, lib, utils, importLib, helper, qualifiers, ... }@gInputs:
+{ identifier, lib, utils, importLib, helper, internal, qualifiers, ... }@moduleInput:
 {
 
 	declare =
 	{
-		config,
-		name, # Name of template
-		enable ? false,
-		parameters ? {}, # A set of lib.options-style options
+		config, # The config object of the caller
+
+		# The name of the template, must be unique
+		name,
+		# A list of templates, by identifier, to extend
+		extends ? [],
+		# The default enable value of the template, defaults to true
+		enable ? true,
+
+		/*
+			Definition data functions, can either be sets or functions to sets. They all take the arguments:
+			- final: The final value (gotten from config) of the definition
+			- template: The final value (gotten from config) of the definition's template
+		*/
+
+		# Data parameters applied to all definitions defining this template
+		parameters ? {},
+		# Default arguments applied to the parameters of all definitions defining this template
 		defaultArguments ? {},
+
+		/*
+			Templat data functions, can either be sets or functions to sets. They all take the argument:
+			- final: The final value (gotten from config) of the template
+		*/
+
 		templateParameters ? {}, # A set of lib.options-style options
 		templateArguments ? {},
-		extends ? [], # A list of templates that this one extends, by name
-		options ? {},
-		configuration ? {},
-	}:
-	let
 		
-		namespace = helper.namespaces.templates ++ lib.lists.toList name;
+		# Arbitrary options
+		options ? {},
+		# Arbitrary configuration, is automatically enabled/disabled based on the template's enabled-value, 
+		# also recieves the additional argument 'enabled'.
+		configuration ? {},
 
-		final = helper.getTemplate { inherit config name; };
+	}@input:
+	let
+		global =
+		{
+			identifier = input.name;
 
+			namespace = helper.template.namespace global.identifier;
+
+			final = helper.template.get { inherit config; inherit (global) identifier; };
+
+			resolveSet = internal.resolveSet { inherit (global) final; };
+		};
 	in
 	{
 
-		options = utils.mergeAll ([
-
-			options
-
-			(utils.options.createFromKeys { keys = namespace; value =
+		options = utils.mergeAll 
+		[
+			(global.resolveSet options)
+			(utils.options.createFromKeys { keys = global.namespace; value =
 			{
 				
+				# Metadata about the template
 				meta =
 				{
 
-					name = utils.options.constant { type = lib.types.str; value = name; };
-	
-					namespace = utils.options.constant { type = lib.types.listOf lib.types.str; value = namespace; };
+					# All templates have an identifier which equals the template's name, this is what makes a template unique
+					identifier = utils.options.constant { type = lib.types.str; value = global.identifier; };
 
+					# The name of the template
+					name = utils.options.constant { type = lib.types.str; value = input.name; };
+	
+					# The namespace (under "${szy}".objects) in which the template lies
+					namespace = utils.options.constant { type = lib.types.listOf lib.types.str; value = global.namespace; };
+
+					/*
+						Definition data:
+						Data used directly by definitions defining this template
+					*/
+					
 					parameters = utils.options.constant { type = lib.types.either (lib.types.attrs) (lib.types.functionTo lib.types.attrs); value = parameters; };
 					defaultArguments = utils.options.constant { type = lib.types.either (lib.types.attrs) (lib.types.functionTo lib.types.attrs); value = defaultArguments; };
 
+					# Template data:
 					template = 
 					{
 						parameters = utils.options.constant { type = lib.types.either (lib.types.attrs) (lib.types.functionTo lib.types.attrs); value = templateParameters; };
 						arguments = utils.options.constant { type = lib.types.either (lib.types.attrs) (lib.types.functionTo lib.types.attrs); value = templateArguments; };
 					};
 
-					extends = utils.options.constant {
-						type = lib.types.listOf lib.types.str;
+					/*
+						A list of templates this template extends, by identifier.
+						All definition and template data such as parameters and arguments are inherited and combined from the extended templates.
+					*/
+					extends = utils.options.constant { type = lib.types.listOf lib.types.str; value = extends; };
 
-						value = extends;
+					# A list of all definitions directly defining this template, by identifier.
+					definitions = 
+					let
+						identifiers = 
+						lib.attrsets.mapAttrsToList
+						(
+							name: value:
+								value.meta.identifier
+						)
+						global.final.definitions or {};
+					in
+					utils.options.constant
+					{
+						type = lib.types.listOf (lib.types.enum identifiers);
+						value = identifiers;
 					};
 
+					# Data in 'full' is meant to be e.g. _all_ extends, recursively getting this template's extend's extends, etc...
 					full = 
 					{
+						# A list of all templates this extends, directly and indirectly, by identifier
 						extends = utils.options.constant 
 						{
 							type = lib.types.listOf lib.types.str;
-
-							value = 
-							let
-								allExtenders = builtins.map (template: template.meta.name) (helper.getAllExtenders { inherit config name; });
-							in
-								allExtenders;
-						
+							value = helper.template.getFullExtends { inherit (input) config name; };
 						};
-						# List of the template and name of all definitions that define this template
+						# A list of all definitions that definie this template, directly and indirectly, by identifier
 						definitions = utils.options.constant 
 						{
 							type = lib.types.listOf lib.types.attrs;
 							value = 
 							let
 					
-								allTemplates = utils.options.getFromKeys { keys = helper.namespaces.templates; object = config; };
+								allTemplates = helper.template.getAll { inherit (input) config; };
 								allDefinitions = 
 								lib.lists.flatten
-								(lib.attrsets.mapAttrsToList 
 								(
-									name: value: 
+									lib.attrsets.mapAttrsToList 
 									(
-										lib.attrsets.mapAttrsToList 
+										name: value: 
 										(
-											name: value: 
-											value
-										) 
-										(value.definitions or {})
-									)
-								) 
-								allTemplates);
+											lib.attrsets.mapAttrsToList 
+											(
+												name: value: 
+													value
+											) (value.definitions or {})
+										)
+									) allTemplates
+								);
 
 								definitions = 
 								builtins.map 
@@ -101,7 +154,7 @@
 									builtins.filter 
 									(
 										definition: 
-										(builtins.elem final.meta.name definition.meta.full.extends) || (definition.meta.template == final.meta.name)
+											builtins.elem global.final.meta.identifier definition.meta.full.extends
 									) 
 									allDefinitions
 								);
@@ -113,88 +166,125 @@
 
 				};
 
-				data = 
-				let
-
-					allData = 
-					let
-						allTemplates = (lib.lists.toList final) ++ (helper.getAllExtenders { inherit config; inherit (final.meta) name; });
-					in
-						(builtins.map 
-						(template: 
-						let
-
-							baseParameters = template.meta.template.parameters;
-							baseArguments = template.meta.template.arguments;
-	
-							parameters = if (builtins.hasAttr "__functor" baseParameters) then (baseParameters { inherit final; }) else baseParameters;
-							arguments = if (builtins.hasAttr "__functor" baseArguments) then (baseArguments { inherit final; }) else baseArguments;
-
-						in
-							{
-								inherit parameters arguments;
-							}
-						) allTemplates);
-
-				in
-				lib.options.mkOption 
+				# Data of the template
+				data = lib.options.mkOption 
 				{
 
 					type = 
 					let
 
-						allParameters = (lib.lists.toList builtinParameters) ++ (builtins.map (data: data.parameters) allData);
+						allTemplates = 
+						[
+							global.final
+						] ++
+						(
+							builtins.map
+							(
+								identifier: helper.template.get { inherit (input) config; inherit identifier; }
+							) global.final.meta.full.extends
+						);
 
 						builtinParameters =
 						{
 
-							enable = lib.options.mkOption {
+							enable = lib.options.mkOption
+							{
 								type = lib.types.bool;
 								default = enable;
 							};
 
 							enabled = 
 							let
-								hasDefinitions = final.meta.full.definitions != {};
-								allExtendersEnabled = lib.lists.all (template: template.data.enabled) (helper.getAllExtenders { inherit config; inherit (final.meta) name; });
-								combined = hasDefinitions && allExtendersEnabled;
+								hasDefinitions = global.final.meta.full.definitions != {};
+								allExtendsEnabled = 
+								lib.lists.all 
+								(
+									identifier: (helper.template.get { inherit (input) config; inherit identifier; }).data.enabled
+								) global.final.meta.full.extends;
+								combined = hasDefinitions && allExtendsEnabled;
 							in
-							lib.options.mkOption {
+							lib.options.mkOption 
+							{
 								type = lib.types.bool;
 								readOnly = true;
-								default = final.data.enable && combined;
+								default = global.final.data.enable && combined;
 							};
 
 						};
 
-						allArguments = (builtins.map (data: data.arguments) allData);
-	
+						parameters =
+						builtins.map
+						(
+							parameters:
+							{
+								options = global.resolveSet parameters;
+							}
+						)
+						(
+							[
+								builtinParameters
+							] ++
+							(
+								builtins.map
+								(
+									template: template.meta.template.parameters
+								) allTemplates
+							)
+						);
+
+						arguments =
+						builtins.map
+						(
+							arguments:
+								global.resolveSet arguments
+						)
+						(
+							builtins.map 
+							(
+								template: template.meta.template.arguments
+							) allTemplates
+						);
+							
 					in
-						lib.types.submoduleWith { modules = (builtins.map (parameters: { options = parameters; }) allParameters) ++ allArguments; };
+						lib.types.submoduleWith { modules = parameters ++ arguments; };
 
 				};
 
 			}; })
 
-		]);
+		];
 
+		/*
+			We make the configuration toggled depending on the enabled value of the template,
+			all imports in the configuration are also toggled seperately.
+		*/
 		imports = 
 		let
-			anyDefinitionEnabled = lib.lists.any (definition: definition.data.enabled) (builtins.map (definition: helper.getDefinition ({ inherit config; } // definition)) final.meta.full.definitions);
-			enabled = final.data.enabled && anyDefinitionEnabled;
+			anyDefinitionEnabled = 
+			lib.lists.any 
+			(
+				definition: definition.data.enabled
+			) 
+			(
+				builtins.map 
+				(
+					identifier: helper.definition.get { inherit (input) config; inherit identifier; }
+				) global.final.meta.full.definitions
+			);
+			enabled = global.final.data.enabled && anyDefinitionEnabled;
 
 			arguments =
 			{
-				inherit enabled final;
+				inherit (global) final;
+				inherit enabled;
 			};
 
-			resolved = if (builtins.isFunction configuration) then (configuration arguments) else configuration;
+			resolved = internal.resolveSet arguments configuration;
 
 			imports = resolved.imports or [];
 			result = builtins.removeAttrs resolved [ "imports" ];
-
 		in
-		(gInputs.importLib.mkToggleable enabled imports) ++
+		(moduleInput.importLib.mkToggleable enabled imports) ++
 		[
 			(lib.mkIf (enabled) (result))
 		];

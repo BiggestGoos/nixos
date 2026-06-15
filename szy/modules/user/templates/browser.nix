@@ -9,7 +9,7 @@ szy.objects.declare
 	extends = [ "defaultApplication" ];
 
 	defaultArguments =
-	{ final, object }:
+	{ final, template }:
 	{
 
 		application.type = lib.mkDefault "gui";

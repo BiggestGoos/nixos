@@ -9,7 +9,7 @@ szy.objects.define
 	name = "gamemode";
 
 	configuration = 
-	{ enabled, final, object }:
+	{ enabled, final, template }:
 	{
 		programs.gamemode = {
 			enable = true;

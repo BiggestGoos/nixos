@@ -8,7 +8,7 @@ szy.objects.define
 	name = "yazi";
 
 	arguments = 
-	{ final, object }:
+	{ final, template }:
 	{
 
 		application.type = "cli";
@@ -16,7 +16,7 @@ szy.objects.define
 	};
 
 	configuration = 
-	{ enabled, final, object }:
+	{ enabled, final, template }:
 	{
 
 		programs.yazi = {

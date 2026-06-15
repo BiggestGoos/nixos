@@ -26,9 +26,7 @@
 
 		application.definitions =
 		{
-
 			anki.data.enable = true;
-
 		};
 
 	};

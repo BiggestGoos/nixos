@@ -5,7 +5,6 @@ szy.objects.declare
 	inherit config;
 	
 	name = "desktopEntry";
-	enable = true;
 
 	parameters = import ./parameters.nix { inherit szy lib pkgs; };
 
@@ -13,7 +12,7 @@ szy.objects.declare
 	{ enabled, final }:
 	let
 
-		definitions = builtins.map (meta: szy.objects.helper.getDefinition ({ inherit config; } // meta)) final.meta.full.definitions;
+		definitions = builtins.map (identifier: szy.objects.helper.definition.get ({ inherit config identifier; })) final.meta.full.definitions;
 		enabledDefinitions = builtins.filter
 		(
 			definition:

@@ -6,8 +6,7 @@
 
 		data =
 		{
-			enable = true;
-			default.cli.name = "neovim";
+			default.cli.identifier.name = "neovim";
 		};
 
 		definitions =

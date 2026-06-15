@@ -8,10 +8,9 @@ szy.objects.define
 	name = "steam";
 
 	arguments = 
-	{ final, object }:
 	let
 
-		systemSteam = szy.objects.helper.getDefinition { config = osConfig; name = "steam"; template = "application"; };
+		systemSteam = szy.objects.helper.definition.get { config = osConfig; identifier = { name = "steam"; template = "application"; }; };
 
 	in
 	{
@@ -24,7 +23,7 @@ szy.objects.define
 	};
 
 	configuration = 
-	{ enabled, final, object }:
+	{ enabled, final, template }:
 	{
 
 		home.packages = [ final.data.package ];

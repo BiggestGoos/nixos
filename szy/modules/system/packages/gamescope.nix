@@ -9,7 +9,7 @@ szy.objects.define
 	name = "gamescope";
 
 	configuration = 
-	{ enabled, final, object }:
+	{ enabled, final, template }:
 	{
 		programs.gamescope = {
 			enable = true;

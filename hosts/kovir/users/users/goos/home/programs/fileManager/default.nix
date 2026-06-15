@@ -6,9 +6,8 @@
 
 		data =
 		{
-			enable = true;
-			default.gui.name = "yazi";
-			default.cli.name = "yazi";
+			default.gui.identifier.name = "yazi";
+			default.cli.identifier.name = "yazi";
 		};
 
 		definitions =

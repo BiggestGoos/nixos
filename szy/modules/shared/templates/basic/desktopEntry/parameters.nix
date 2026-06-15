@@ -1,5 +1,5 @@
 { lib, szy, pkgs }:
-{ final, object }:
+{ final, template }:
 let
 
 	desktopEntry =

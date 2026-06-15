@@ -8,7 +8,6 @@ szy.objects.define
 	name = "ghostty";
 
 	arguments =
-	{ final, object }:
 	{
 
 		program.bin.default.defaultArgs = [ "--gtk-single-instance=true" ];
@@ -27,7 +26,6 @@ szy.objects.define
 	};
 
 	configuration = 
-	{ enabled, final, object }:
 	{
 
 		programs.ghostty = {

@@ -5,10 +5,9 @@ szy.objects.declare
 	inherit config;
 	
 	name = "commands";
-	enable = true;
 
 	parameters =
-	{ final, object }:
+	{ final, template }:
 	{
 
 		commands = lib.options.mkOption

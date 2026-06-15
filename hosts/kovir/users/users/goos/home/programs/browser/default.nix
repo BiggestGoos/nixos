@@ -6,8 +6,7 @@
 
 		data =
 		{
-			enable = true;
-			default.gui.name = "floorp";
+			default.gui.identifier.name = "floorp";
 		};
 
 		definitions =
@@ -21,7 +20,7 @@
 
 					enable = true;
 
-					components.default.enable = true;
+	#				components.default.enable = true;
 
 				};
 

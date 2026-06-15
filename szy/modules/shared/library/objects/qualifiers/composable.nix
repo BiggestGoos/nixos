@@ -5,20 +5,18 @@ szy.objects.declare
 	inherit config;
 	
 	name = "composable";
-	enable = true;
 
 	parameters =
-	{ final, object }:
+	{ final, template }:
 	{
 
 		components = lib.options.mkOption
 		{
-			type = lib.types.attrsOf (lib.types.submoduleWith { modules = 
-			[ {
+			type = 
+			let
 
-				options = 
+				module.options =
 				{
-			
 					path = lib.options.mkOption
 					{
 						type = lib.types.path;
@@ -28,10 +26,10 @@ szy.objects.declare
 					{ 
 						type = lib.types.bool;
 					};
-
 				};
 
-			} ]; });
+			in
+			lib.types.attrsOf (lib.types.submoduleWith { modules = [ module ]; });
 		};
 
 	};

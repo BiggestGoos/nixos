@@ -9,7 +9,7 @@ szy.objects.define
 	name = "helix";
 
 	arguments =
-	{ final, object }:
+	{ final, template }:
 	{
 	
 		desktopEntry.default.base.path = "Helix";
@@ -17,14 +17,14 @@ szy.objects.define
 	};
 
 	configuration = 
-	{ enabled, final, object }:
+	{ enabled, final, template }:
 	{
 
 		programs.helix = {
 
 			enable = true;
 
-			defaultEditor = { inherit (object.data.default.cli) name template; } == { inherit (final.meta) name template; };
+			defaultEditor = template.data.default.cli.identifier == final.meta.identifier;
 
 		};
 

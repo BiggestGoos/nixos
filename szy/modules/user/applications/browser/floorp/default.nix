@@ -31,7 +31,7 @@ szy.objects.define
 	};
 
 	arguments =
-	{ final, object }:
+	{ final, template }:
 	{
 
 		package = config.programs.floorp.finalPackage;
@@ -41,7 +41,7 @@ szy.objects.define
 	};
 
 	configuration =
-	{ enabled, final, object }:
+	{ enabled, final, template }:
 	{
 
 		programs.floorp = {

@@ -3,7 +3,6 @@
 
 	"${szy}".objects =
 	{
-		gaming.data.enable = true;
 		application.definitions.steam =
 		{
 			data.enable = true;

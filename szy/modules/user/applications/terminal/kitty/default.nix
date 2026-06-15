@@ -8,7 +8,6 @@ szy.objects.define
 	name = "kitty";
 
 	arguments = 
-	{ final, object }:
 	{
 
 		desktopEntry.default.base.path = "kitty";
@@ -26,7 +25,6 @@ szy.objects.define
 	};
 
 	configuration = 
-	{ enabled, final, object }:
 	{
 
 		programs.kitty = {

@@ -5,10 +5,9 @@ szy.objects.declare
 	inherit config;
 	
 	name = "terminalApplication";
-	enable = true;
 
 	parameters =
-	{ final, object }:
+	{ final, template }:
 	{
 
 		application =
@@ -17,13 +16,11 @@ szy.objects.declare
 			terminal =
 			let
 				terminals = (szy.objects.helper.getTemplate { inherit config; name = "terminal"; }).meta.full.definitions;
-				names = builtins.map (terminal: terminal.name) terminals;
-				templates = builtins.map (terminal: terminal.template) terminals;
+
+				names = builtins.map (identifier: identifier.name) terminals;
+				templates = builtins.map (identifier: identifier.template) terminals;
 
 				inherit (final.data.application) terminal;
-				name = terminal.name or null;
-				template = terminal.template or null;
-
 			in
 			lib.options.mkOption
 			{
@@ -44,9 +41,25 @@ szy.objects.declare
 							type = lib.types.enum templates;
 							default =
 							let
-								defaults = builtins.filter (terminal: terminal.name == name) terminals;
+								inherit (terminal) name;
+
+								possibleDefinitions =
+								builtins.filter 
+								(
+									identifier: identifier.name == name
+								) terminals;
+
+								template =
+								lib.trivial.throwIfNot
+								(
+									(builtins.length possibleDefinitions) == 1
+								)
+								"Either there is no terminal with name ${name} or you also need to specify which template it defines"
+								(
+									(builtins.head possibleDefinitions).template
+								);
 							in
-								if ((builtins.length defaults) != 1) then "There are multiple terminals with the name \"${name}\" under different templates, specify template." else (builtins.head defaults).template;
+								template;
 						};
 
 					};
@@ -63,13 +76,13 @@ szy.objects.declare
 	};
 
 	defaultArguments =
-	{ final, object }:
+	{ final, template }:
 	let
 		inherit (final) data;
 		inherit (data) application desktopEntry;
 		inherit (application) terminal type;
 
-		runCommand = (szy.objects.helper.getDefinition ({ inherit config; } // terminal)).data.commands.runCommand.relative;
+		runCommand = (szy.objects.helper.definition.get ({ inherit config; identifier = terminal; })).data.commands.runCommand.relative;
 	in
 	{
 
@@ -125,8 +138,8 @@ szy.objects.declare
 			definitions = 
 			builtins.map
 			(
-				{ name, template, }:
-					szy.objects.helper.getDefinition { inherit config name template; }
+				identifier:
+					szy.objects.helper.definition.get { inherit config identifier; }
 			)
 			final.meta.full.definitions;
 		in

@@ -8,13 +8,12 @@ szy.objects.define
 	name = "anki";
 
 	arguments = 
-	{ final, object }:
 	{
 		application.type = "gui";
 	};
 
 	configuration = 
-	{ enabled, final, object }:
+	{ enabled, final, template }:
 	{
 		home.packages = [ final.data.package ];
 	};

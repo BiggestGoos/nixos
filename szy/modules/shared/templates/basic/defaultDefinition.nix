@@ -6,8 +6,6 @@ szy.objects.declare
 	
 	name = "default";
 
-	enable = true;
-
 	templateParameters = 
 	{ final }:
 	{
@@ -23,57 +21,83 @@ szy.objects.declare
 
 			types = final.data.defaultTypes;
 
-			definitionsBase = lib.attrsets.mapAttrsToList (name: value: { inherit (value.meta) name template; }) (final.definitions or {});
+			definitionsBase = final.meta.definitions;
 			allDefinitionsBase = final.meta.full.definitions;
 
-			gDefinitions = builtins.filter (definition: final.definitions."${definition.name}".data.enabled) definitionsBase;
-			gAllDefinitions = builtins.filter (definition: (szy.objects.helper.getDefinition ({ inherit config; inherit (definition) name template; })).data.enabled) allDefinitionsBase;
+			gDefinitions = builtins.filter (identifier: (szy.objects.helper.definition.get ({ inherit config identifier; })).data.enabled) definitionsBase;
+			gAllDefinitions = builtins.filter (identifier: (szy.objects.helper.definition.get ({ inherit config identifier; })).data.enabled) allDefinitionsBase;
 
 			base = 
 			{ typeName, filterFunc }:
 			let
 
-				definitions = builtins.filter filterFunc (builtins.map (definition: szy.objects.helper.getDefinition { inherit config; inherit (definition) name template; }) gDefinitions);
-				allDefinitions = builtins.filter filterFunc (builtins.map (definition: szy.objects.helper.getDefinition { inherit config; inherit (definition) name template; }) gAllDefinitions);
+				definitions = builtins.filter filterFunc (builtins.map (identifier: szy.objects.helper.definition.get { inherit config identifier; }) gDefinitions);
+				allDefinitions = builtins.filter filterFunc (builtins.map (identifier: szy.objects.helper.definition.get { inherit config identifier; }) gAllDefinitions);
 
 				defaultDefinition = if (allDefinitions == []) then null else (builtins.head allDefinitions);
-				defaultName = if (defaultDefinition == null) then null else defaultDefinition.meta.name;
-				defaultTemplate = if (defaultDefinition == null) then null else defaultDefinition.meta.template;
+				defaultIdentifier = if (defaultDefinition == null) then null else defaultDefinition.meta.identifier;
 
-				name = final.data.default.name or final.data.default."${typeName}".name;
-				template = final.data.default.template or final.data.default."${typeName}".template;
+				identifier = final.data.default.identifier or final.data.default."${typeName}".identifier;
 
 			in
 			{
 
-				name = lib.options.mkOption
+				identifier = lib.options.mkOption
 				{
-					type = lib.types.nullOr (lib.types.enum (builtins.map (definition: definition.meta.name) allDefinitions));
-					default = defaultName;
-				};
 
-				template = lib.options.mkOption
-				{
-					type = lib.types.nullOr (lib.types.enum (builtins.map (definition: definition.meta.template) allDefinitions));
-					default = 
-					if (name == null) 
-					then null 
-					else 
-					(
-						if (name == defaultName) 
-						then defaultTemplate 
-						else 
-						(
-							if (builtins.elem name (builtins.map (definition: definition.meta.name) definitions)) 
-							then final.meta.name 
-							else "The template { ${final.meta.name} } does not have a definition called { ${name} }."));
+					type = 
+					let
+
+						module.options =
+						{
+							name = lib.options.mkOption
+							{
+								type = lib.types.enum (builtins.map (definition: definition.meta.identifier.name) allDefinitions);
+							};
+
+							template = lib.options.mkOption
+							{
+								type = lib.types.enum (builtins.map (definition: definition.meta.identifier.template) allDefinitions);
+								default = 
+								let
+									inherit (identifier) name;
+
+									possibleDefinitions =
+									builtins.filter
+									(
+										definition:
+											definition.meta.identifier.name == name
+									) allDefinitions;
+
+									template = 
+									lib.trivial.throwIfNot
+									(
+										(builtins.length possibleDefinitions) == 1
+									)
+									"Either there is no definition with name ${name} or you also need to specify which template it defines"
+									(
+										(builtins.head possibleDefinitions).meta.identifier.template
+									);
+								in
+									template;
+							};
+						};
+
+					in
+						lib.types.nullOr (lib.types.submoduleWith { modules = [ module ]; });
+
+					default = defaultIdentifier;
+
 				};
 
 				value = lib.options.mkOption
 				{
-					type = lib.types.nullOr lib.types.attrs;
+					type = lib.types.attrs;
 					readOnly = true;
-					default = if (name == null || template == null) then null else szy.objects.helper.getDefinition { inherit config name template; };
+					default = 
+					if (identifier == null) 
+					then {} 
+					else szy.objects.helper.definition.get { inherit config identifier; };
 				};
 
 			};

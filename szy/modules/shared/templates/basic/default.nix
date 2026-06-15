@@ -6,7 +6,6 @@
 		./package.nix
 		./desktopEntry
 		./commands.nix
-		./composable.nix
 	];
 
 }

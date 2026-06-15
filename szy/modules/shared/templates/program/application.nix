@@ -5,12 +5,11 @@ szy.objects.declare
 	inherit config;
 	
 	name = "application";
-	enable = true;
 
 	extends = [ "program" "desktopEntry" ];
 
 	parameters =
-	{ final, object }:
+	{ final, template }:
 	{
 
 		application = 
@@ -35,7 +34,7 @@ szy.objects.declare
 	};
 
 	defaultArguments =
-	{ final, object }:
+	{ final, template }:
 	let
 		inherit (final.data.application) type;
 
@@ -96,8 +95,8 @@ szy.objects.declare
 			definitions = 
 			builtins.map
 			(
-				{ name, template, }:
-					szy.objects.helper.getDefinition { inherit config name template; }
+				identifier:
+					szy.objects.helper.definition.get { inherit config identifier; }
 			)
 			final.meta.full.definitions;
 		in

@@ -1,84 +1,135 @@
 { identifier, lib, utils, ... }:
 let
 
-	exported =
+	getFromKeys = utils.options.getFromKeys;
+
+	global =
 	rec {
 
-		prefixes = 
+		namespace = [ identifier "objects" ];
+
+		template.namespace = identifier: global.namespace ++ [ identifier ];
+
+		definition.namespace = 
 		{
-
-			objects = "objects";
-			templates = "templates";
-			definitions = "definitions";
-
-		};
-
-		namespaces = 
-		{
-
-			templates = with prefixes; [ identifier objects ];
-			definitions = with prefixes; [ identifier objects ];
-
-		};
-
-		getTemplate =
-		{
-			config,
-			name,
-		}:
-		let
-			namespace = namespaces.templates ++ lib.lists.toList name;
-
-			template = utils.options.getFromKeys { keys = namespace; object = config; };
-		in
-			template;
-		
-		getDefinition =
-		{
-			config,
 			name,
 			template,
-		}:
-		let
-			namespace = namespaces.definitions ++ [ template prefixes.definitions name ];
+		}@identifier: (global.template.namespace identifier.template) ++ [ "definitions" identifier.name ];
 
-			definition = utils.options.getFromKeys { keys = namespace; object = config; };
-		in
-			definition;
+		/*
+			Metadata getters:
 
-		getAllExtenders =
+			All templates and objects have metadata stored in "${szy}".objects.<template-name>.meta and *.<template-name>.definitions.<definition-name>.meta respectively.
+			One of the major points of interest in this metadata is the 'namespace' value which holds the keys pointing to where the actual data is.
+		*/
+
+		template.getMeta =
 		{
 			config,
-			name,
+			name ? lib.trivial.throwIf (identifier == null) "No name was supplied." identifier,
+			identifier ? null,
 		}:
+			(getFromKeys { keys = global.template.namespace name; object = config; }).meta or {};
+		
+		definition.getMeta =
+		{
+			config,
+			name ? identifier.name,
+			template ? identifier.template,
+			identifier ? {},
+		}:
+			(getFromKeys { keys = global.definition.namespace { inherit name template; }; object = config; }).meta or {};
+
+		/*
+			Data getters:
+
+			First we get metadata containing a namespace value that points to where the real data is.
+
+			All templates are currently (20260613) stored in "${szy}".templates.<template-name> but we still first 
+			get their namespace from the metadata and get the data that way to make it more easily changeable.
+		*/
+
+		template.get =
+		{
+			config,
+			name ? lib.trivial.throwIf (meta == {} && identifier == null) "No name was supplied." identifier,
+			identifier ? null,
+			meta ? {},
+		}@inputs:
+		let
+			# If we already have metadata we skip getting it again.
+			meta = inputs.meta or (template.getMeta { inherit config name; });
+		in
+			if (!meta ? namespace) then {} else (getFromKeys { keys = meta.namespace; object = config; });
+
+		definition.get =
+		{
+			config,
+			name ? identifier.name,
+			template ? identifier.template,
+			identifier ? {},
+			meta ? {},
+		}@inputs:
+		let
+			# If we already have metadata we skip getting it again.
+			meta = inputs.meta or (definition.getMeta { inherit config name template; });
+		in
+			if (!meta ? namespace) then {} else (getFromKeys { keys = meta.namespace; object = config; });
+
+		/*
+			Misc:
+		*/
+
+		template.getAll =
+		{
+			config,
+		}:
+			getFromKeys { keys = global.namespace; object = config; };
+
+		template.getFullExtends =
+		{
+			config,
+			name ? lib.trivial.throwIf (identifier == null) "No name was supplied." identifier,
+			identifier ? null,
+		}@inputs:
 		let
 
-			template = getTemplate { inherit config name; };
+			template = global.template.getMeta { inherit config name; };
 
-			getExtenders = template: 
+			getFullExtends = template: 
 			let
 
-				extenders = template.meta.extends;
+				extends = template.extends;
 
-				iterate = (builtins.map (name: getTemplate { inherit config name; }) extenders) ++ (builtins.map 
-				(name:
-				let
-					template = getTemplate { inherit config name; };
-				in
-					if (template.meta.extends != []) 
-					then 
-						(getExtenders template) 
-					else 
-						[]
-				) extenders);
+				iterate = 
+				(
+					(
+						extends
+					) ++ 
+					(
+						builtins.map 
+						(
+							name:
+							let
+								template = global.template.getMeta { inherit (inputs) config; inherit name; };
+							in
+							(
+								if (template.extends != []) 
+								then (getFullExtends template) 
+								else []
+							)
+						) 
+						extends
+					)
+				);
 
 			in
 				lib.lists.unique (lib.lists.flatten iterate);
 
 		in
-			getExtenders template;
+			getFullExtends template;
 
 	 };
 
 in
-	exported
+	global

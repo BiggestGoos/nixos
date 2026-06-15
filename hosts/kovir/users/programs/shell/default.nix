@@ -4,11 +4,6 @@
 	"${szy}".objects.shell =
 	{
 
-		data =
-		{
-			enable = true;
-		};
-
 		definitions =
 		{
 			zsh.data.enable = true;

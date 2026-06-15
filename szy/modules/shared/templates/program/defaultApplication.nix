@@ -5,7 +5,6 @@ szy.objects.declare
 	inherit config;
 	
 	name = "defaultApplication";
-	enable = true;
 
 	extends = [ "application" "default" ];
 
@@ -18,12 +17,11 @@ szy.objects.declare
 		{
 			any = definition:
 			let
-				getMeta = object: { inherit (object) name template; };
-				meta = getMeta definition.meta;
-				guiMeta = getMeta final.data.default.gui;
-				cliMeta = getMeta final.data.default.cli;
+				inherit (definition.meta) identifier;
+				guiIdentifier = final.data.default.gui.identifier;
+				cliIdentifier = final.data.default.cli.identifier;
 			in
-				(meta == guiMeta) || (meta == cliMeta);
+				(identifier == guiIdentifier) || (identifier == cliIdentifier);
 			gui = definition: definition.data.application.type != "cli";
 			cli = definition: definition.data.application.type != "gui";
 		};
