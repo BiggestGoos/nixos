@@ -1,8 +1,10 @@
 { lib, config, szy, ... }:
 {
 
-	imports = [
+	"${szy}".objects.package.definitions.git.data.enable = true;
+
+	/*imports = [
 		(szy.utils.fromShared "users/user/programs/git")
-	];
+	];*/
 
 }

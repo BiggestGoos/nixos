@@ -149,7 +149,7 @@ let
 						global.final.meta.full.extends;
 
 						templateParameters = builtins.map (template: template.meta.parameters) templates;
-						definitionParameters = input.parameters or {};
+						definitionParameters = input.additionalParameters or {};
 
 						builtinParameters =
 						{

@@ -5,13 +5,14 @@
 	[
 		./templates
 		./applications
-		./test.nix
+		./packages
+	#	./test.nix
 	];
 
-	"${szy}".test.nested =
+	/*"${szy}".test.nested =
 	{
 
-		/*foo =
+		foo =
 		{
 
 			x.y.data.x = 5;
@@ -20,7 +21,7 @@
 
 			str = "hello";
 
-		};*/
+		};
 
 		foo =
 		{
@@ -35,7 +36,7 @@
 
 			#int = config."${szy}".test.nested.foo.data.y * 4 + config."${szy}".test.nested.foo.tree.bar.data.x;
 			#data = { y = lib.mkIf (config."${szy}".test.nested.foo.tree.bar.data.x >= 2) 11; x = 3; };
-			/*tree =
+			tree =
 			{
 
 				bar =
@@ -50,7 +51,7 @@
 					};
 				};
 
-			};*/
+			};
 		};
 
 		bar =
@@ -60,6 +61,6 @@
 
 		};
 
-	};
+	};*/
 
 }
