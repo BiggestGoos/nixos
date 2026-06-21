@@ -1,0 +1,10 @@
+{
+
+	imports =
+	[
+		./applications
+		./hardware
+		./packages
+	];
+
+}
