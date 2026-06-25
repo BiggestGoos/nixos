@@ -18,7 +18,7 @@
 	else if (szy.data.configType == "user")
 	then
 	let
-		systemFinal = szy.objects.helper.template.get { config = moduleInput.osConfig; meta = final.meta; };
+		systemFinal = szy.objects.utils.template.get { config = moduleInput.osConfig; meta = final.meta; };
 	in
 	{
 

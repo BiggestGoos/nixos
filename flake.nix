@@ -29,7 +29,7 @@
 	outputs = 
 	{ ... }@inputs: 
 	let
-		#szy = import ./szy/library { inherit inputs; };
+
 
 		inherit (inputs) nixpkgs;
 		inherit (nixpkgs) lib;
@@ -56,7 +56,6 @@
 						name = "kovir";
 						system = "x86_64-linux";
 						path = ./hosts/kovir;
-						stateVersion = "26.05";
 					};
 				};
 
@@ -105,7 +104,10 @@
 										in
 										{
 											name = user.data.username;
-											value = user.data.path;
+											value =
+											{
+												imports = szy.lib.imports.recursive user.data.path;
+											};
 										}
 									) homeManagedUserMeta.full.definitions;
 

@@ -8,7 +8,12 @@
 	{
 
 		path = ./home;	
+	
+	};
 
+	configuration =
+	{	
+		imports = szy.lib.imports.recursive ./mounts;
 	};
 
 }

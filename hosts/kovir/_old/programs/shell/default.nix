@@ -6,7 +6,7 @@
 
 		definitions =
 		{
-			zsh.data.enable = true;
+			#zsh.data.enable = true;
 		};
 
 	};
