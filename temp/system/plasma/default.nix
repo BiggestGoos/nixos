@@ -6,6 +6,7 @@
 	imports = 
 	[
 		./config.nix
+		./disableBaloo.nix
 	];
 
 }

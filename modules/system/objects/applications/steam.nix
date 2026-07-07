@@ -25,6 +25,8 @@
 		
 			enable = true;
 			
+			remotePlay.openFirewall = true;
+
 			extest.enable = true;
 
 			extraCompatPackages = [

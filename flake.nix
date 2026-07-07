@@ -4,7 +4,7 @@
 	{
 
 		nixpkgs = {
-			url = "github:NixOS/nixpkgs/nixos-unstable";
+			url = "github:BiggestGoos/nixpkgs-globalRules/pam-globalRules"; #"github:NixOS/nixpkgs/nixos-unstable";
 		};
 
 		home-manager = {
@@ -23,6 +23,8 @@
 		};
 
 		szy.url = "/home/goos/Dev/szy-nixos";
+
+		nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
 
 	};
 
@@ -82,6 +84,7 @@
 				[
 
 					inputs.disko.nixosModules.disko
+					inputs.nixpkgs-xr.nixosModules.nixpkgs-xr
 
 					inputs.home-manager.nixosModules.home-manager
 					(

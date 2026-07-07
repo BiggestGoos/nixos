@@ -3,9 +3,17 @@
 
 	boot.initrd.kernelModules = [ "amdgpu" ];
 
-	hardware.graphics.extraPackages = with pkgs; [ 	
-		libvdpau-va-gl
-	];
+	hardware.graphics =
+	{
+		extraPackages =
+		[ 	
+			pkgs.libvdpau-va-gl
+		];
+		extraPackages32 =
+		[
+			pkgs.driversi686Linux.libvdpau-va-gl
+		];
+	};
 
 	environment.sessionVariables = { VDPAU_DRIVER = "radeonsi"; LIBVA_DRIVER_NAME = "radeonsi"; };
 
@@ -16,7 +24,7 @@
 
 		overdrive = {
 			enable = true;
-			ppfeaturemask = "0xfffd3fff";
+			#ppfeaturemask = "0xfffd3fff";
 		};
 
 	};
