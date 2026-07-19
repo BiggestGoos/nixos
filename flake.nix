@@ -25,13 +25,13 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixpkgs.url = "github:NixOS/nixpkgs/unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    szy.url = "/home/goos/Dev/szy-nixos";
+    szy.url = "github:BiggestGoos/szy-nixos";
     xrizer-inputFix = {
       url = "github:nokichan/xrizer/fix/input-action-origins-binding-info";
       flake = false;
