@@ -28,7 +28,7 @@
 				};
 				safe = 
 				{
-					directory = szy.data.flake.root;
+					directory = szy.data.flake.root + "/*";
 				};
 			};
 		};

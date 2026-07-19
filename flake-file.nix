@@ -4,6 +4,8 @@
 	inputs = 
 	{
 
+		nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
 		flake-file.url = "github:vic/flake-file";
 
 		home-manager = 
@@ -12,7 +14,7 @@
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
 
-		szy.url = "/home/goos/Dev/szy-nixos";
+		szy.url = "github:BiggestGoos/szy-nixos";
 
 	};
 
@@ -26,15 +28,9 @@
 			let
 				fileStr = builtins.toString file;
 				isFlakeFile = lib.strings.hasSuffix ".flake" fileStr;
-				# We can use different flake inputs based on "profiles". Currently only one at a time is supported but we can easily add support for multiple (One profile per line, easy parsing.)
-				profile = builtins.replaceStrings ["\n"] [""] 
-				(
-					builtins.readFile "./profile"
-				);
-				isProfileFlakeFile = lib.strings.hasSuffix ".flake.${profile}" fileStr;
 				notUnderscorePrefix = !(lib.strings.hasPrefix "${builtins.dirOf fileStr}/_" fileStr);
 			in
-				(isFlakeFile || isProfileFlakeFile) && notUnderscorePrefix
+				isFlakeFile && notUnderscorePrefix
 		) allFiles;
 	in
 		flakeFiles;
@@ -46,14 +42,16 @@
 
 		inherit (inputs) nixpkgs;
 		inherit (nixpkgs) lib;
-
-	in
-	{	
 		
-		nixosConfigurations =
-		{
+		configurations = 
+		{ 
+			root, 
+			system, 
+			modules ? [],
+		}:
+		let
 
-			kovir =
+			mkHost = name: path:
 			let
 				sharedArgs =
 				{
@@ -63,12 +61,17 @@
 				szy = (inputs.szy.library).addArguments
 				{ 
 					root = inputs.self.outPath;
-					flake.root = "/etc/nixos";
+					flake =
+					{
+						inherit root;
+					};
 					host =
 					{
-						name = "kovir";
-						system = "x86_64-linux";
-						path = ./hosts/kovir;
+						inherit
+							system
+							name
+							path
+						;
 					};
 				};
 
@@ -89,6 +92,7 @@
 				};
 
 				modules =
+				(modules) ++
 				(szyModules.system) ++
 				(szy.lib.imports.recursive szy.data.root.modules.system) ++
 				(szy.lib.imports.recursive szy.data.host.path) ++
@@ -102,7 +106,10 @@
 							home-manager = 
 							{
 		    					useUserPackages = true;
+								useGlobalPkgs = true;
+
 								backupFileExtension = "backup";
+								overwriteBackup = true;
 
 		    					users = 
 								let
@@ -154,6 +161,31 @@
 
 			};
 
+			hostFolder = ./hosts;
+
+			# An attrs of the names of all host-folders in `hostFolder`.
+			hosts =
+			let
+				allFiles = builtins.readDir hostFolder;
+			in
+			lib.attrsets.filterAttrs
+			(
+				name: value:
+					value == "directory"
+			) allFiles;
+
+		in
+		lib.attrsets.mapAttrs
+		(
+			name: _: mkHost name (hostFolder + "/${name}")
+		) hosts;
+
+	in
+	{
+
+		call = inputs:
+		{
+			nixosConfigurations = configurations inputs;
 		};
 
 	};
