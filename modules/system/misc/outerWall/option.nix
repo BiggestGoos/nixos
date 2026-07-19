@@ -7,7 +7,7 @@
 		enable = lib.options.mkOption
 		{
 			type = lib.types.bool;
-			default = true;
+			default = false;
 		};
 
 		username = lib.options.mkOption

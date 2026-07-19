@@ -1,0 +1,14 @@
+{
+
+	inputs =
+	{
+		nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
+
+		xrizer-inputFix =
+		{
+			flake = false;
+			url = github:nokichan/xrizer/fix/input-action-origins-binding-info;
+		};
+	};
+
+}

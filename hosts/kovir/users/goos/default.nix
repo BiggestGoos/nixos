@@ -7,7 +7,10 @@
 	arguments =
 	{
 
-		path = ./home;	
+		paths = 
+		[
+			./home
+		];
 	
 	};
 

@@ -16,7 +16,7 @@ let
 in
 {
 
-	environment.systemPackages =
+	environment.systemPackages = lib.mkIf (config.outerWall.enable)
 	[
 		lockOuterWall
 		unlockOuterWall

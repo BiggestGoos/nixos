@@ -1,0 +1,3 @@
+{
+	inputs.nixpkgs.url = "github:BiggestGoos/nixpkgs-globalRules/pam-globalRules";
+}

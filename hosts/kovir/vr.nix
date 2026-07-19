@@ -1,5 +1,26 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 {
+
+	imports =
+	[
+		inputs.nixpkgs-xr.nixosModules.nixpkgs-xr
+	];
+
+	nixpkgs.overlays =
+	[
+		(
+			final: prev:
+			{
+				xrizer = prev.xrizer.overrideAttrs
+				(
+					old:
+					{
+						src = inputs.xrizer-inputFix.outPath;
+					}
+				);
+			}
+		)
+	];
 
 	services.wivrn =
 	{
@@ -41,7 +62,7 @@
 		steam =
 		{
 			#enable = false;
-			importOXRRuntimes = true;
+			#importOXRRuntimes = true;
 			#package = config.programs.steam.package;
 		};
 
@@ -61,18 +82,18 @@
 	environment =
 	{
 
-		sessionVariables = 
+		/*sessionVariables = 
 		{
 			PRESSURE_VESSEL_IMPORT_OPENXR_1_RUNTIMES = "1";
 			PRESSURE_VESSEL_FILESYSTEMS_RW = "$XDG_RUNTIME_DIR/wivrn/comp_ipc";
-		};
+		};*/
 
 		systemPackages = 
 		[ 
 			pkgs.android-tools
 			pkgs.wayvr 
-			pkgs.vapor
-			pkgs.xr-chaperone
+			#pkgs.vapor
+			#pkgs.xr-chaperone
 		];
 
 	};

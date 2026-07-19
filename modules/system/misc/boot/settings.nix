@@ -6,58 +6,65 @@ let
 in
 {
 
-	options."${szy}".boot = {
+	options."${szy}".boot = 
+	{
 
-		silent.enable = lib.mkOption {
+		silent.enable = lib.mkOption 
+		{
 			type = lib.types.bool;
 			default = true;
 		};
 
-		timeout.enable = lib.mkOption {
+		timeout.enable = lib.mkOption 
+		{
 			type = lib.types.bool;
 			default = true;
 		};
 
 	};
 
-  	config.boot = szy.lib.attrsets.deepMergeList [ {
+  	config.boot = szy.lib.attrsets.deepMergeList 
+	[ 
+		{
 
-		initrd.systemd.services = lib.mkIf (cfg.timeout.enable) {
-
-			boot-timeout = {
-				wantedBy = [ "initrd.target" ];
-				before = [ "cryptsetup.target" ];
+			initrd.systemd.services = lib.mkIf (cfg.timeout.enable) 
+			{
+				boot-timeout = {
+					wantedBy = [ "initrd.target" ];
+					before = [ "cryptsetup.target" ];
 		
-				# In seconds, 300 = 5 Minutes
-				script = "(sleep 300 && shutdown now) & disown";
+					# In seconds, 300 = 5 Minutes
+					script = "(sleep 300 && shutdown now) & disown";
 
-				unitConfig.DefaultDependencies = "no";
-				serviceConfig.Type = "forking";
+					unitConfig.DefaultDependencies = "no";
+					serviceConfig.Type = "forking";
+				};
 			};
-		};
 
-	} 
-	(
-	lib.mkIf (cfg.silent.enable)
-	{ 
+		} 
+		(
+			lib.mkIf (cfg.silent.enable)
+			{ 
 
-		loader.timeout = 0;
+				loader.timeout = 0;
 
-   		consoleLogLevel = 3;
+   				consoleLogLevel = 3;
 
-   		initrd = {
-			verbose = false;
-   			systemd.enable = true;
-		};
+		   		initrd = {
+					verbose = false;
+		   			systemd.enable = true;
+				};
 
-   		kernelParams = [
-       		"quiet"
-       		"splash"
-       		"intremap=on"
-       		"rd.udev.log_priority=3"
-       		"rd.systemd.show_status=auto"
-   		];
+		   		kernelParams = [
+       				"quiet"
+		       		"splash"
+       				"intremap=on"
+		       		"rd.udev.log_priority=3"
+       				"rd.systemd.show_status=auto"
+		   		];
 
-	}) ];
+			}
+		) 
+	];
 
 }

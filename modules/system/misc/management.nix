@@ -28,4 +28,10 @@ in
 	
 	};
 
+	# Gives users of nixmgr additional rights when using nix
+	nix.settings.trusted-users = 
+	[
+		"@${groupName}"
+	];
+
 }
