@@ -62,7 +62,7 @@
 		steam =
 		{
 			#enable = false;
-			#importOXRRuntimes = true;
+			importOXRRuntimes = true;
 			#package = config.programs.steam.package;
 		};
 
@@ -82,11 +82,11 @@
 	environment =
 	{
 
-		/*sessionVariables = 
+		sessionVariables = 
 		{
 			PRESSURE_VESSEL_IMPORT_OPENXR_1_RUNTIMES = "1";
 			PRESSURE_VESSEL_FILESYSTEMS_RW = "$XDG_RUNTIME_DIR/wivrn/comp_ipc";
-		};*/
+		};
 
 		systemPackages = 
 		[ 

@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ szy, config, lib, ... }:
 {
 
 
@@ -16,26 +16,20 @@
 
 				kovir =
 				{
-					id = "DF6ZAIJ-5P63WJR-QDVFXU7-WLJL3IY-E4HLXKV-244HJOV-PODKGDN-6WVQNQN";
-				};
-
-				novigrad =
-				{
-					id = "DZLTEPC-V5XO3FT-OHF7BI4-YKGLOUR-SMNHBZT-5RMBGSR-BOGLC3N-Q6HPZAS";
+					id = config."${szy}".secrets.public.syncthing.kovir.goos;
 				};
 
 			};
 
 			folders =
 			{
-				Test =
+				test =
 				{
 					devices =
 					[
 						"kovir"
-						"novigrad"
 					];
-					id = "yqqvb-2vuce";
+					id = "test";
 					path = "~/Test";
 				};
 
