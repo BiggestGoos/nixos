@@ -1,33 +1,23 @@
 { szy, lib, config, pkgs, ... }:
 {
 
-	"${szy}".objects.user.definitions.goos.data =
+	"${szy}".objects.user.definitions."${username}".data =
 	{
 		enable = true;
 
-		arguments =
+		paths =
+		[
+			./home
+		];
+
+		settings =
 		{
-			paths =
+			# Public keys allowed to authorize
+			openssh.authorizedKeys.keys =
 			[
-				./home
+				config."${szy}".secrets.public.ssh.kovir.goos
 			];
-
-			settings =
-			{
-				# Public keys allowed to authorize
-				openssh.authorizedKeys.keys =
-				[
-					config."${szy}".secrets.public.ssh.kovir.goos
-				];
-			};
 		};
-
-		configuration =
-		{ final, ... }:
-		{
-			services.openssh.settings.AllowUsers = [ final.data.username ];
-		};
-
 	};
 
 }
