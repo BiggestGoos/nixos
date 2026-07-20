@@ -1,7 +1,7 @@
 keys:
   - &system age1c2m7ztn9v0g3zwmvz0l6x3ttsq9g3d7y6zzyp5h9rqzjutjfngps0rcffy
 creation_rules:
-  - path_regex: .*/[^/]+\.secret\.(yaml|json|env|ini)$ # <...>/<name>.secret.<yaml|json|env|ini>
+  - path_regex: .*[^/]+\.secret\.(yaml|json|env|ini)$ # <...>/<name>.secret.<yaml|json|env|ini>
     key_groups:
     - age:
       - *system

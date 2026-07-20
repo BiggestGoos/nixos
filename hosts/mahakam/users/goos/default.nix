@@ -17,7 +17,11 @@
 			[
 				config."${szy}".secrets.public.ssh.kovir.goos
 			];
+
+			hashedPasswordFile = config.sops.secrets."users/goos/password".path;
 		};
 	};
+
+	imports = szy.lib.imports.recursive ./password;
 
 }
