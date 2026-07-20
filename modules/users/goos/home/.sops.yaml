@@ -1,0 +1,7 @@
+keys:
+  - &goos age1k74tthmayd2pjdfrahujc9k8rpplfjx6g0lanffwpnqea229rftqyhal5d
+creation_rules:
+  - path_regex: .*/[^/]+\.secret\.(yaml|json|env|ini)$ # <...>/<name>.secret.<yaml|json|env|ini>
+    key_groups:
+    - age:
+      - *goos

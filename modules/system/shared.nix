@@ -1,6 +1,4 @@
 { szy, ... }:
 {
-
-	imports = szy.lib.imports.recursive ../shared;
-
+	imports = szy.lib.imports.recursive szy.data.root.modules.shared;
 }

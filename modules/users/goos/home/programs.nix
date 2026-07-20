@@ -3,17 +3,15 @@
 
 	"${szy}".catalog.applications =
 	{
-	
+
 		editor =
 		{
 			neovim.enable = true;
-			helix.enable = true;
 		};
 
 		fileManager =
 		{
 			yazi.enable = true;
-			ranger.enable = true;
 		};
 
 		shell =

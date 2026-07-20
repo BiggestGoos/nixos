@@ -3,7 +3,7 @@
 
 	"${szy}".objects.package.definitions =
 	{
-		starship.data.enable = true;
+		nh.data.enable = true;
 	};
 
 }
