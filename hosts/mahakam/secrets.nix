@@ -10,8 +10,8 @@ in
 	};
 
 	environment.sessionVariables =
-	[
+	{
 		SOPS_AGE_KEY_FILE = path;
-	];
+	};
 
 }
