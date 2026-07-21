@@ -24,6 +24,16 @@
 					path = "~/Documents";
 				};
 
+				Media =
+				{
+					devices =
+					[
+						"mahakam"
+					];
+					id = "media";
+					path = "~/Media";
+				};
+
 			};
 
 		};

@@ -33,6 +33,36 @@
 					path = "~/Documents";
 				};
 
+				Media =
+				{
+					devices =
+					[
+						"kovir"
+					];
+					id = "media";
+					path = "~/Media";
+				};
+
+				Media_Camera =
+				{
+					devices =
+					[
+						"novigrad"
+					];
+					id = "media_camera";
+					path = "~/Media/Camera";
+				};
+
+				Media_Downloads =
+				{
+					devices =
+					[
+						"novigrad"
+					];
+					id = "media_downloads";
+					path = "~/Media/Downloads";
+				};
+
 			};
 
 		};
