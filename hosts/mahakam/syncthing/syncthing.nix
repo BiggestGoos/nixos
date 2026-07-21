@@ -41,7 +41,6 @@
 					];
 					id = "personal";
 					path = "~/Personal";
-					type = "receiveencrypted";
 				};
 
 				Media =

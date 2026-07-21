@@ -28,10 +28,7 @@
 				{
 					devices =
 					[
-						{
-							name = "mahakam";
-							encryptionPasswordFile = config.sops.secrets."syncthing/encryption_password".path;
-						}
+						"mahakam"
 					];
 					id = "personal";
 					path = "~/Personal";
