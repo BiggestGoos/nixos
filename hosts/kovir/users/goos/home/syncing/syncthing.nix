@@ -24,6 +24,19 @@
 					path = "~/Documents";
 				};
 
+				Personal =
+				{
+					devices =
+					[
+						{
+							name = "mahakam";
+							encryptionPasswordFile = config.sops.secrets."syncthing/encryption_password".path;
+						}
+					];
+					id = "personal";
+					path = "~/Personal";
+				};
+
 				Media =
 				{
 					devices =

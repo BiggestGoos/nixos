@@ -33,6 +33,17 @@
 					path = "~/Documents";
 				};
 
+				Personal =
+				{
+					devices =
+					[
+						"kovir"
+					];
+					id = "personal";
+					path = "~/Personal";
+					type = "receiveencrypted";
+				};
+
 				Media =
 				{
 					devices =
@@ -42,6 +53,8 @@
 					id = "media";
 					path = "~/Media";
 				};
+
+				# TODO: Make a new Media folder that ignores Camera folder such that we don't need to add new media subfolders
 
 				Media_Camera =
 				{
