@@ -14,24 +14,15 @@
 			devices =
 			{
 
-				kovir =
-				{
-					id = config."${szy}".secrets.public.syncthing.kovir.goos;
-				};
+				kovir.id = config."${szy}".secrets.public.syncthing.kovir.goos;
+				novigrad.id = config."${szy}".secrets.public.syncthing.novigrad.goos;
 
 			};
 
 			folders =
 			{
-				test =
-				{
-					devices =
-					[
-						"kovir"
-					];
-					id = "test";
-					path = "~/Test";
-				};
+
+				
 
 			};
 
