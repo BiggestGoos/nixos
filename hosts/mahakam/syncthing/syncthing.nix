@@ -22,7 +22,16 @@
 			folders =
 			{
 
-				
+				Documents =
+				{
+					devices =
+					[
+						"kovir"
+						"novigrad"
+					];
+					id = "documents";
+					path = "~/Documents";
+				};
 
 			};
 

@@ -12,10 +12,17 @@
 			devices.mahakam.id = config."${szy}".secrets.public.syncthing.mahakam.system;
 
 			folders =
-			let
-				devices = [ "mahakam" ];
-			in
 			{
+				
+				Documents =
+				{
+					devices =
+					[
+						"mahakam"
+					];
+					id = "documents";
+					path = "~/Documents";
+				};
 
 			};
 
