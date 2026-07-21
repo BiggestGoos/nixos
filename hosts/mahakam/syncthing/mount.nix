@@ -15,6 +15,11 @@ in
 		];
 	};
 
+	systemd.services.syncthing.unitConfig.RequiresMountsFor = 
+	[
+		dataDir
+	];
+
 	systemd.tmpfiles.settings."syncthing-home" = 
 	{
 		"${dataDir}"."z" = 
