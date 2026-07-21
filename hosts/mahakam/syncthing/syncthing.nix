@@ -48,13 +48,13 @@
 					devices =
 					[
 						"kovir"
+						"novigrad"
 					];
 					id = "media";
 					path = "~/Media";
 				};
 
-				# TODO: Make a new Media folder that ignores Camera folder such that we don't need to add new media subfolders
-
+				# Only the camera part of media
 				Media_Camera =
 				{
 					devices =
@@ -63,16 +63,6 @@
 					];
 					id = "media_camera";
 					path = "~/Media/Camera";
-				};
-
-				Media_Downloads =
-				{
-					devices =
-					[
-						"novigrad"
-					];
-					id = "media_downloads";
-					path = "~/Media/Downloads";
 				};
 
 			};
