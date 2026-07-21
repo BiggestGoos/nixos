@@ -1,5 +1,9 @@
 {
 
-	sops.secrets."users/goos/password".sopsFile = ./password.secret.yaml;
+	sops.secrets."users/goos/password" =
+	{
+		sopsFile = ./password.secret.yaml;
+		neededForUsers = true;
+	};
 
 }
