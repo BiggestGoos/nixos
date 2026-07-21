@@ -45,14 +45,17 @@
 		
 		configurations = 
 		{ 
-			root, 
-			system, 
+			metaData ? {},
 			modules ? [],
 		}:
 		let
 
 			mkHost = name: path:
 			let
+				defaultMetaData = lib.trivial.importJSON (path + "/data.meta");
+
+				finalMetaData = defaultMetaData // metaData;
+
 				sharedArgs =
 				{
 					inherit inputs;
@@ -63,15 +66,12 @@
 					root = inputs.self.outPath;
 					flake =
 					{
-						inherit root;
+						inherit (finalMetaData) root;
 					};
 					host =
 					{
-						inherit
-							system
-							name
-							path
-						;
+						inherit	name path;
+						inherit (finalMetaData) system;
 					};
 				};
 
@@ -182,6 +182,8 @@
 
 	in
 	{
+
+		nixosConfigurations = configurations {};
 
 		call = inputs:
 		{
