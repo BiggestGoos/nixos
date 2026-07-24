@@ -1,13 +1,13 @@
 { config, ... }:
 let
 
-  inherit (config.services.syncthing) dataDir;
+	directory = config.sync.baseDirectory;
 
 in
 {
 	disko.devices.disk.main.content.partitions.storage.content =
 	{
-		mountpoint = dataDir;
+		mountpoint = directory;
 		mountOptions =
 		[
 			"defaults"
@@ -17,18 +17,19 @@ in
 
 	systemd.services.syncthing.unitConfig.RequiresMountsFor = 
 	[
-		dataDir
+		directory
 	];
 
-	systemd.tmpfiles.settings."syncthing-home" = 
+	systemd.tmpfiles.settings."sync-storage" = 
 	{
-		"${dataDir}"."z" = 
+		"${directory}"."z" = 
 		let
-			user = config.services.syncthing.user;
+			user = config.sync.user;
 		in
 		{
 			inherit user;
 			group = config.users.users."${user}".group;
+			mode = "0770";
 		};
 	};
 

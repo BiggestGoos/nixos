@@ -1,12 +1,42 @@
 { szy, config, lib, ... }:
+let
+
+	unrestricted = config.sync.baseDirectory + "/Unrestricted";
+	restricted = config.sync.baseDirectory + "/Restricted";
+
+	inherit (config.sync) user;
+	inherit (config.users.users."${user}") group;
+
+in
 {
 
+	systemd.tmpfiles.settings."syncthing-directories" =
+	let
+		own = 
+		{
+			inherit user group;
+			mode = "0770";
+		};
+		value =
+		{
+			"d" = own;
+			"z" = own;
+		};
+	in
+	{
+		"${unrestricted}" = value;
+		"${restricted}" = value;
+	};
 
 	services.syncthing =
 	{
 
 		enable = true;
 		openDefaultPorts = true;
+
+		inherit user group;
+		
+		dataDir = config.users.users."${user}".home;
 
 		settings =
 		{
@@ -30,7 +60,7 @@
 						"novigrad"
 					];
 					id = "documents";
-					path = "~/Documents";
+					path = "${unrestricted}/Documents";
 				};
 
 				Personal =
@@ -40,7 +70,7 @@
 						"kovir"
 					];
 					id = "personal";
-					path = "~/Personal";
+					path = "${restricted}/Personal";
 				};
 
 				Media =
@@ -51,7 +81,7 @@
 						"novigrad"
 					];
 					id = "media";
-					path = "~/Media";
+					path = "${unrestricted}/Media";
 				};
 
 				# Only the camera part of media
@@ -62,7 +92,7 @@
 						"novigrad"
 					];
 					id = "media_camera";
-					path = "~/Media/Camera";
+					path = "${unrestricted}/Media/Camera";
 				};
 
 			};

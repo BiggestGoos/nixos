@@ -5,10 +5,7 @@
 	{
 		enable = true;
 
-		paths =
-		[
-			./home
-		];
+		modules = szy.lib.imports.recursive ./home;
 
 		settings =
 		{

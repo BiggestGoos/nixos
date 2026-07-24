@@ -5,10 +5,7 @@
 	arguments =
 	{
 
-		paths = 
-		[
-			./home
-		];
+		modules = szy.lib.imports.recursive ./home;
 	
 	};
 

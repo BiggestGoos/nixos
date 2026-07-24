@@ -125,15 +125,7 @@
 											name = user.data.username;
 											value =
 											{
-												imports = 
-												builtins.concatLists
-												(
-													builtins.map
-													(
-														path:
-															szy.lib.imports.recursive path
-													) user.data.paths
-												);
+												imports = user.data.modules;
 											};
 										}
 									) homeManagedUserMeta.full.definitions;

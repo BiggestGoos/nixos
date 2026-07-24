@@ -11,10 +11,7 @@ in
 
 		enable = true;
 
-		paths =
-		[
-			./home
-		];
+		modules = szy.lib.imports.recursive ./home;
 
 		settings.hashedPasswordFile = config.sops.secrets."users/goos/password".path;
 	};
