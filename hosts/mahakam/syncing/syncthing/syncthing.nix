@@ -95,6 +95,16 @@ in
 					path = "${unrestricted}/Media/Camera";
 				};
 
+				Devices =
+				{
+					devices =
+					[
+						"novigrad"
+					];
+					id = "devices";
+					path = "${unrestricted}/Devices";
+				};
+
 			};
 
 		};
