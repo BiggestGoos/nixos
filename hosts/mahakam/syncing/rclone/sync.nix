@@ -35,9 +35,9 @@ in
 		services.rclone-bisync =
 		{
 			serviceConfig = 
-			{
+			{	
 				Type = "oneshot";
-				ExecStart = "${pkgs.util-linux}/bin/flock -n /run/rclone-bisync.lock ${lib.getExe runSync}";
+				ExecStart = lib.getExe runSync;
 
 				User = user;
 				Group = group;
