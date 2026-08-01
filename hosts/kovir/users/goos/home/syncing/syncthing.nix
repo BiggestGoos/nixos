@@ -44,6 +44,16 @@
 					path = "~/Media";
 				};
 
+				Games_Emulation_GBA =
+				{
+					devices =
+					[
+						"mahakam"
+					];
+					id = "games_emulation_gba";
+					path = "~/Games/Emulation/GBA";
+				};
+
 			};
 
 		};

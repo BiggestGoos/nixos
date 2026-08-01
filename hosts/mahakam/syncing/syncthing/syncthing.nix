@@ -105,6 +105,17 @@ in
 					path = "${unrestricted}/Devices";
 				};
 
+				Games_Emulation_GBA =
+				{
+					devices =
+					[
+						"novigrad"
+						"kovir"
+					];
+					id = "games_emulation_gba";
+					path = "${unrestricted}/Games/Emulation/GBA";
+				};
+
 			};
 
 		};
