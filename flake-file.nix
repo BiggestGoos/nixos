@@ -6,6 +6,8 @@
 
 		nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+		flake-parts.url = "github:hercules-ci/flake-parts";
+
 		flake-file.url = "github:vic/flake-file";
 
 		home-manager = 
@@ -173,13 +175,34 @@
 		) hosts;
 
 	in
+	inputs.flake-parts.lib.mkFlake { inherit inputs; }
 	{
 
-		nixosConfigurations = configurations {};
-
-		call = inputs:
+		flake =
 		{
-			nixosConfigurations = configurations inputs;
+
+			nixosConfigurations = configurations {};
+
+			call = inputs:
+			{
+				nixosConfigurations = configurations inputs;
+			};
+
+		};
+
+		systems =
+		[
+			"x86_64-linux"
+		];
+
+		perSystem = 
+		{ 
+			pkgs,
+			inputs',
+			...
+		}:
+		{
+			devShells.default = pkgs.callPackage ./develop { };
 		};
 
 	};
