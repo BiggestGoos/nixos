@@ -21,6 +21,11 @@ in
 		directory
 	];
 
+	systemd.services."systemd-tmpfiles-setup".unitConfig.RequiresMountsFor = 
+	[
+		directory
+	];
+
 	systemd.tmpfiles.settings."sync-storage" = 
 	{
 		"${directory}"."z" = 
