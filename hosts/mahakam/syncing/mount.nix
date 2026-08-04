@@ -5,13 +5,14 @@ let
 
 in
 {
-	disko.devices.disk.main.content.partitions.storage.content =
+	disko.devices.disk.storage.content.partitions.root.content.subvolumes."@root" =
 	{
 		mountpoint = directory;
 		mountOptions =
 		[
 			"defaults"
 			"nofail"
+			"compress=zstd"
 		];
 	};
 
