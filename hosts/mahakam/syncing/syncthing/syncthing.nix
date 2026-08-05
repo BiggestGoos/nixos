@@ -45,6 +45,7 @@ in
 			{
 
 				kovir.id = config."${szy}".secrets.public.syncthing.kovir.goos;
+				vizima.id = config."${szy}".secrets.public.syncthing.vizima.goos;
 				novigrad.id = config."${szy}".secrets.public.syncthing.novigrad.goos;
 
 			};
@@ -58,6 +59,7 @@ in
 					[
 						"kovir"
 						"novigrad"
+						"vizima"
 					];
 					id = "documents";
 					path = "${unrestricted}/Documents";
@@ -68,6 +70,7 @@ in
 					devices =
 					[
 						"kovir"
+						"vizima"
 					];
 					id = "personal";
 					path = "${restricted}/Personal";
@@ -79,6 +82,7 @@ in
 					[
 						"kovir"
 						"novigrad"
+						"vizima"
 					];
 					id = "media";
 					path = "${unrestricted}/Media";
