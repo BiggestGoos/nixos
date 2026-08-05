@@ -13,6 +13,7 @@
 			openssh.authorizedKeys.keys =
 			[
 				config."${szy}".secrets.public.ssh.kovir.goos
+				config."${szy}".secrets.public.ssh.vizima.goos
 				config."${szy}".secrets.public.ssh.novigrad.goos
 			];
 
