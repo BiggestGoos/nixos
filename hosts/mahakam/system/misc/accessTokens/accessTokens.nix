@@ -3,7 +3,7 @@
 
 	nix.extraOptions =
 	''
-		!include ${config.sops.secrets.accessTokens.github}
+		!include ${config.sops.secrets."accessTokens/github".path}
 	'';
 
 	sops.secrets."accessTokens/github" =
