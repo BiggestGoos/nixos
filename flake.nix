@@ -17,7 +17,7 @@
 	in
 	{
 
-		__functor = self: hostname: inputs': data:
+		__functor = self: hostname: inputs': { metaData ? {}, modules ? [] }:
 		let
 
 			finalInputs = inputs // inputs';
@@ -30,7 +30,7 @@
 			hostPath = hostFolder + "/${hostname}";
 
 			defaultMetaData = lib.trivial.importJSON (hostPath + "/data.meta");
-			finalMetaData = defaultMetaData // (data.metaData or {});
+			finalMetaData = defaultMetaData // (metaData);
 
 			szy = (inputs.szy.library).addArguments
 			{ 
@@ -54,8 +54,7 @@
 			flake = mkFlake
 			{
 				inputs = finalInputs;
-				inherit szy hostname;
-				inherit (data) modules;
+				inherit szy hostname modules;
 			};
 
 			systems =
