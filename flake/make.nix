@@ -42,13 +42,6 @@ in
 				{ config, pkgs, ... }:
 				{
 
-					environment.systemPackages =
-					lib.attrsets.mapAttrsToList
-					(
-						name: value:
-							value
-					) (import ./packages.nix { inherit szy pkgs; });
-
 					home-manager = 
 					{
 			    		useUserPackages = true;

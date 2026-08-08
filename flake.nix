@@ -2,10 +2,9 @@
 
 	inputs = 
 	{
-
+		nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 		flake-parts.url = "github:hercules-ci/flake-parts";
 		szy.url = "github:BiggestGoos/szy-nixos";
-
 	};
 
 	outputs = 
@@ -14,7 +13,33 @@
 
 		mkFlake = import ./flake/make.nix;
 
+		szy = (inputs.szy.library).addArguments
+		{ 
+			root = inputs.self.outPath;
+		};
+
 	in
+	szy.lib.attrsets.deepMerge
+	(
+		inputs.flake-parts.lib.mkFlake { inherit inputs; }
+		{
+
+			systems =
+			[
+				"x86_64-linux"
+			];
+
+			perSystem = 
+			{ 
+				pkgs,
+				...
+			}:
+			{
+				packages = import ./flake/packages.nix { inherit pkgs szy; };
+			};
+
+		}
+	)
 	{
 
 		__functor = self: hostname: inputs': { metaData ? {}, modules ? [] }:
@@ -32,9 +57,12 @@
 			defaultMetaData = lib.trivial.importJSON (hostPath + "/data.meta");
 			finalMetaData = defaultMetaData // (metaData);
 
-			szy = (inputs.szy.library).addArguments
+		in
+		mkFlake
+		{
+			inputs = finalInputs;
+			szy = szy.addArguments
 			{ 
-				root = inputs.self.outPath;
 				flake =
 				{
 					inherit (finalMetaData) root;
@@ -46,31 +74,7 @@
 					inherit (finalMetaData) system;
 				};
 			};
-
-		in
-		inputs.flake-parts.lib.mkFlake { inputs = inputs'; }
-		{
-
-			flake = mkFlake
-			{
-				inputs = finalInputs;
-				inherit szy hostname modules;
-			};
-
-			systems =
-			[
-				finalMetaData.system
-			];
-
-			perSystem = 
-			{ 
-				pkgs,
-				...
-			}:
-			{
-				packages = import ./flake/packages.nix { inherit pkgs szy; };
-			};
-
+			inherit hostname modules;
 		};
 
 	};
