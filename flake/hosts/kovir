@@ -1,0 +1,6 @@
+{
+	modules =
+	[
+		inputs.outerWall.module
+	];
+}

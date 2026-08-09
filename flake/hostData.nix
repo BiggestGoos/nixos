@@ -95,7 +95,7 @@ let
 ''
 if [[ "$hostname" == "${name}" ]]
 then
-	root="${value.root}"
+	root="$baseRoot${value.root}"
 	inputs='${builtins.toJSON value.inputs}'
 	partitionsDisklessSet='${builtins.toJSON value.partitioning.disklessSet}'
 	declare -A partitionDisks
@@ -107,6 +107,7 @@ fi
 in
 ''
 hostname=$HOSTNAME
+baseRoot=$ROOTDIR
 
 ${lib.strings.concatStrings setups}
 ''
