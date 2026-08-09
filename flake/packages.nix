@@ -14,7 +14,7 @@ let
 
 		generateFlake = pkgs.callPackage ./generateFlake.nix { inherit hostData generateInputs; };
 
-		partition = pkgs.callPackage ./partition.nix { inherit hostData; };
+		partition = pkgs.callPackage ./partition { inherit hostData; };
 
 		bootstrap = pkgs.mkShell
 		{

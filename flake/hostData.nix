@@ -68,11 +68,22 @@ let
 					) diskoFiles
 				);
 
-				disklessSet.disko.devices = builtins.removeAttrs set.disko.devices [ "disk" ];
+				disklessSet.disko.devices = builtins.removeAttrs (set.disko.devices) [ "disk" ];
 			in
+			if (set != {})
+			then
 			{
 				inherit disklessSet;
-				disks = 
+				disks = lib.attrsets.mapAttrsToList
+				(
+					name: value:
+						"partitionDisks[\"${value.device}\"]='${builtins.toJSON { "${name}" = value; }}'"
+				) set.disko.devices.disk;
+			}
+			else
+			{
+				disklessSet = builtins.toJSON {};
+				disks = [];
 			};
 		}
 	) hosts';
@@ -86,19 +97,16 @@ if [[ "$hostname" == "${name}" ]]
 then
 	root="${value.root}"
 	inputs='${builtins.toJSON value.inputs}'
-	partitionsFile="{ }"
+	partitionsDisklessSet='${builtins.toJSON value.partitioning.disklessSet}'
+	declare -A partitionDisks
+${lib.strings.concatStringsSep "\n" value.partitioning.disks}
 fi
 ''
 	) hosts;
 
 in
 ''
-hostname=$1
-
-if [ -z "$1" ]
-then
-	hostname=$HOSTNAME
-fi
+hostname=$HOSTNAME
 
 ${lib.strings.concatStrings setups}
 ''
