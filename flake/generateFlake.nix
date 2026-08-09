@@ -2,15 +2,16 @@
 	writeShellScriptBin,
 	pkgs, 
 	lib,
-	szy,
+	hostData,
+	generateInputs,
 	... 
-}@inputs:
-let
-	generateInputs = pkgs.callPackage ./generateInputs.nix inputs;
-in
+}:
 writeShellScriptBin "generateFlake"
+(
+	hostData +
 ''
-cd "${szy.data.flake.root}"
 ${lib.meta.getExe generateInputs}
+cd $root
 ${lib.meta.getExe' pkgs.nix "nix-shell"} https://github.com/denful/flake-file/archive/main.zip -A flake-file.sh --run bootstrap
 ''
+)
