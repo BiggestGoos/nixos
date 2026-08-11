@@ -52,7 +52,14 @@ let
 				builtins.map
 				(
 					file:
-						import file
+					let
+						input' = import file;
+						input =
+						if (builtins.isFunction input')
+						then input' szy
+						else input';
+					in
+						input
 				) flakeFiles
 			);
 			partitioning =
