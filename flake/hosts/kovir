@@ -1,6 +1,13 @@
+inputs:
 {
 	modules =
 	[
 		inputs.outerWall.module
 	];
+
+	metaData =
+	{
+		system = "x86_64-linux";
+		root = "/etc/nixos";
+	};
 }

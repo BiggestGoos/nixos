@@ -42,7 +42,7 @@
 	)
 	{
 
-		__functor = self: hostname: inputs': { metaData ? {}, modules ? [] }:
+		__functor = self: hostname: inputs': data:
 		let
 
 			finalInputs = inputs // inputs';
@@ -54,9 +54,6 @@
 
 			hostPath = hostFolder + "/${hostname}";
 
-			defaultMetaData = lib.trivial.importJSON (hostPath + "/data.meta");
-			finalMetaData = defaultMetaData // (metaData);
-
 		in
 		mkFlake
 		{
@@ -65,16 +62,17 @@
 			{ 
 				flake =
 				{
-					inherit (finalMetaData) root;
+					inherit (data.metaData) root;
 				};
 				host =
 				{
 					name = hostname;
 					path = hostPath;
-					inherit (finalMetaData) system;
+					inherit (data.metaData) system;
 				};
 			};
-			inherit hostname modules;
+			inherit hostname;
+			modules = data.modules or [];
 		};
 
 	};

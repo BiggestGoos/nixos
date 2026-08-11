@@ -38,7 +38,7 @@ let
 	(
 		name: value:
 		let
-			metaData = builtins.fromJSON (builtins.readFile value."data.meta");
+			metaData = (import (./hosts + "/${name}") {}).metaData;
 
 			flakeFiles = 
 			(sharedFlakeFiles) ++

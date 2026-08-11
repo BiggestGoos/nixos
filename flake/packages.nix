@@ -12,7 +12,7 @@ let
 	outputs =
 	rec {
 
-		deployFlake = pkgs.callPackage ./deployFlake.nix { inherit hostData; };
+		deployFlakeFile = pkgs.callPackage ./deployFlakeFile.nix { inherit hostData; };
 
 		generateFlake = pkgs.callPackage ./generateFlake.nix { inherit hostData generateInputs; };
 
@@ -23,7 +23,7 @@ let
 
 			packages =
 			[
-				deployFlake
+				deployFlakeFile
 				generateFlake
 				partition
 			];
