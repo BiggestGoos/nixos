@@ -18,8 +18,15 @@
 	};
 
 	imports =
+	let
+		extraInputs = 
+		if (builtins.pathExists ./extraInputs.nix)
+		then import ./extraInputs.nix
+		else {};
+	in
 	[
 		(lib.trivial.importJSON ./flake.inputs)
+		extraInputs
 	];
 
 	outputs = inputs:
