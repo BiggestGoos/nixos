@@ -3,7 +3,18 @@
 
 	inputs =
 	{	
-		flake.url = "github:BiggestGoos/nixos";
+		flake.url = 
+		let
+			overrideUrl = 
+			if (builtins.pathExists ./overrideUrl.nix)
+			then import ./overrideUrl.nix
+			else null;
+		in
+		(
+			if (overrideUrl == null)
+			then "github:BiggestGoos/nixos"
+			else overrideUrl
+		);
 	};
 
 	imports =
