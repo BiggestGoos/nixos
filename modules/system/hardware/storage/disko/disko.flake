@@ -1,0 +1,10 @@
+szy:
+{
+
+	inputs.disko =
+	{
+		url = szy.lib.attrsets.mkDefault "github:nix-community/disko/latest";
+		inputs.nixpkgs.follows = "nixpkgs";
+	};
+
+}

@@ -5,6 +5,9 @@
 
 	hardware.graphics =
 	{
+		enable = true;
+		enable32Bit = true;
+
 		extraPackages =
 		[ 	
 			pkgs.libvdpau-va-gl
@@ -15,7 +18,11 @@
 		];
 	};
 
-	environment.sessionVariables = { VDPAU_DRIVER = "radeonsi"; LIBVA_DRIVER_NAME = "radeonsi"; };
+	environment.sessionVariables = 
+	{ 
+		VDPAU_DRIVER = "radeonsi"; 
+		LIBVA_DRIVER_NAME = "radeonsi"; 
+	};
 
 	hardware.amdgpu = {
 

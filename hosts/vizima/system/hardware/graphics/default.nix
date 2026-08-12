@@ -4,7 +4,8 @@
 	hardware.graphics = 
 	let
 
-		packages = with pkgs; 
+		packages = 
+		with pkgs; 
 		[ 
 			intel-media-driver
 			# This supports 11th Gen
@@ -15,10 +16,17 @@
 
 	in
 	{
+		enable = true;
+		enable32Bit = true;
+
 		extraPackages = packages;
 		extraPackages32 = packages;
 	};
 
-	environment.sessionVariables = { VDPAU_DRIVER = "va_gl"; LIBVA_DRIVER_NAME = "iHD"; };
+	environment.sessionVariables = 
+	{ 
+		VDPAU_DRIVER = "va_gl"; 
+		LIBVA_DRIVER_NAME = "iHD"; 
+	};
 
 }

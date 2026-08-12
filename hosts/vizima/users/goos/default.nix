@@ -1,7 +1,6 @@
 { szy, lib, config, pkgs, ... }:
 let
-	username = "goos";
-	final = config."${szy}".objects.user.definitions."${username}";
+	final = config."${szy}".objects.user.definitions.goos;
 	template = (szy config).objects.utils.template.get { identifier = final.meta.template; };
 in
 {
