@@ -31,21 +31,31 @@
 
 	outputs = inputs:
 	let
-		data = import ./data.nix inputs;
-		overrideData = 
-		if (builtins.pathExists ./overrideData.nix)
-		then import ./overrideData.nix inputs
-		else null;
+		inherit (inputs.nixpkgs) lib;
+
+		data' = import ./data.nix inputs;
+
+		extraModules =
+		if (builtins.pathExists ./extraModules.nix)
+		then import ./extraModules.nix inputs
+		else [];
+
+		extraMetaData = 
+		if (builtins.pathExists ./extraMetaData.nix)
+		then import ./extraMetaData.nix inputs
+		else {};
+
+		data = data' //
+		{
+			modules = (data'.modules or []) ++ extraModules;
+			metaData = lib.attrsets.recursiveUpdate data'.metaData extraMetaData;
+		};
 	in
 	(
 		inputs.flake.outputs
 		(import ./hostname.nix)
 		inputs
-		(
-			if (overrideData == null)
-			then data
-			else overrideData
-		)
+		data
 	);
 
 }
