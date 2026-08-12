@@ -1,8 +1,0 @@
-{
-
-	imports =
-	[
-		./main.nix.disko
-	];
-
-}

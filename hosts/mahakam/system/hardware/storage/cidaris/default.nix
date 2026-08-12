@@ -1,8 +1,0 @@
-{
-
-	imports =
-	[
-		./partition.nix.disko
-	];
-
-}

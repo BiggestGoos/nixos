@@ -64,7 +64,7 @@ let
 			);
 			partitioning =
 			let
-				diskoFiles = getFiles ".nix.disko" value;
+				diskoFiles = getFiles ".partition.nix" value;
 				set = 
 				szy.lib.attrsets.deepMergeList
 				(
