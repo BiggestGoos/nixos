@@ -48,16 +48,7 @@
 						{
 							type = "btrfs";
 							subvolumes."@storage" = { };
-							subvolumes."@snapshots" = 
-							{ 
-								mountpoint = "/snapshots";
-								mountOptions =
-								[
-									"defaults"
-									"nofail"
-									"compress=zstd"
-								];
-							};
+							subvolumes."@snapshots" = {	};
 						};
 					};
 				};
