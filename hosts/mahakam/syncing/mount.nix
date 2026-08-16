@@ -5,7 +5,7 @@ let
 
 in
 {
-	disko.devices.disk.storage.content.partitions.root.content.subvolumes."@root" =
+	disko.devices.disk.storage.content.partitions.root.content.subvolumes."@storage" =
 	{
 		mountpoint = directory;
 		mountOptions =

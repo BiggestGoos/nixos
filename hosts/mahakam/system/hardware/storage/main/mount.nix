@@ -11,9 +11,4 @@
 		};
 		root.content.mountpoint = "/";
 	};
-
-	imports =
-	[
-		./partition.nix.disko
-	];
 }
