@@ -4,9 +4,9 @@
 	{
 		wireless = 
 		{
-			enable = false;
+			enable = true;
 
-			iwd = 
+			/*iwd = 
 			{
 
 				enable = true;
@@ -19,13 +19,13 @@
 
 				};
 
-			};
+			};*/
 
 		};
 
 		networkmanager.wifi = 
 		{
-			backend = "iwd";
+			#backend = "iwd";
 			powersave = true;
 		};
 

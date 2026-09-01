@@ -4,7 +4,7 @@
 	"${szy}".catalog.applications =
 	{
 
-		#anki.enable = true;
+		anki.enable = true;
 		discord.enable = true;
 
 		browser =
@@ -38,5 +38,7 @@
 		};
 
 	};
+
+	programs.obsidian.enable = true;
 
 }
