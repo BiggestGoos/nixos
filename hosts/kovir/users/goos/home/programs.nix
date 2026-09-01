@@ -39,4 +39,9 @@
 
 	};
 
+	programs =
+	{
+		obsidian.enable = true;
+	};
+
 }
