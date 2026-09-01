@@ -37,7 +37,6 @@
 					[
 						"mahakam"
 						"kovir"
-						"novigrad"
 					];
 					id = "personal";
 					path = "~/Personal";
