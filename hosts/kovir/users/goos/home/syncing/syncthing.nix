@@ -9,7 +9,12 @@
 		settings =
 		{
 
-			devices.mahakam.id = config."${szy}".secrets.public.syncthing.mahakam.system;
+			devices =
+			{
+				mahakam.id = config."${szy}".secrets.public.syncthing.mahakam.system;
+				vizima.id = config."${szy}".secrets.public.syncthing.vizima.goos;
+				novigrad.id = config."${szy}".secrets.public.syncthing.novigrad.goos;
+			};
 
 			folders =
 			{
@@ -19,6 +24,8 @@
 					devices =
 					[
 						"mahakam"
+						"vizima"
+						"novigrad"
 					];
 					id = "documents";
 					path = "~/Documents";
@@ -29,6 +36,8 @@
 					devices =
 					[
 						"mahakam"
+						"vizima"
+						"novigrad"
 					];
 					id = "personal";
 					path = "~/Personal";
@@ -39,6 +48,8 @@
 					devices =
 					[
 						"mahakam"
+						"vizima"
+						"novigrad"
 					];
 					id = "media";
 					path = "~/Media";
