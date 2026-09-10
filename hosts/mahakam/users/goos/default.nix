@@ -1,7 +1,7 @@
 { szy, lib, config, pkgs, ... }:
 {
 
-	"${szy}".objects.user.definitions.goos.data =
+	"${szy}".objects.users.goos.variable =
 	{
 		enable = true;
 

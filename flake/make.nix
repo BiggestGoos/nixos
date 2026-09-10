@@ -52,22 +52,22 @@ in
 
 			    		users = 
 						let
-							homeManagedUserMeta = (szy config).objects.utils.template.getMeta { identifier = "homeManagedUser"; };
+							allUsers = ((szy config).objects.utils.get { identifier = [ "template" "user" "homeManaged"]; }).meta.allObjects;
 							users' = 
 							builtins.map
 							(
 								identifier:
 								let
-									user = (szy config).objects.utils.definition.get { inherit identifier; };
+									user = (szy config).objects.utils.get { inherit identifier; };
 								in
 								{
-									name = user.data.username;
+									name = user.constant.username;
 									value =
 									{
-										imports = user.data.modules;
+										imports = user.variable.modules;
 									};
 								}
-							) homeManagedUserMeta.full.definitions;
+							) allUsers;
 	
 							users = builtins.listToAttrs users';
 						in

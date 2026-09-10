@@ -1,12 +1,11 @@
 { szy, lib, config, pkgs, ... }:
-(szy config).objects.define
+(szy config).objects.make
 {
 
-	template = "package";
-
 	name = "fastfetch";
+	namespace = [ "packages" ];
 
-	configuration = 
+	output.config = 
 	{
 		programs.fastfetch = {
 			enable = true;

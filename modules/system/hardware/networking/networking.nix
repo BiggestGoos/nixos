@@ -1,7 +1,7 @@
 { szy, ... }:
 {
 	
-	"${szy}".objects.user.data.types.normal.groups = [ "networkmanager" ];
+	"${szy}".users.types.normal.groups = [ "networkmanager" ];
 
 	networking =
 	{

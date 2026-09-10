@@ -1,20 +1,19 @@
 { szy, lib, config, pkgs, ... }:
-(szy config).objects.define
+(szy config).objects.make
 {
 
-	template = "package";
-
 	name = "starship";
+	namespace = [ "packages" ];
 
-	configuration = 
+	output.config = 
 	{
 
 		programs.starship = 
 		let
 			
-			shells = config."${szy}".applications.shell or {};
+			#shells = config."${szy}".applications.shell or {};
 
-			shellEnabled = shell: (shells."${shell}" or { enabled = false; }).enabled;
+			#shellEnabled = shell: (shells."${shell}" or { enabled = false; }).enabled;
 
 		in
 		{
@@ -23,7 +22,7 @@
 
 			settings = import ./settings.nix { inherit lib; };
 
-			enableZshIntegration = shellEnabled "zsh";
+			#enableZshIntegration = shellEnabled "zsh";
 
 		};
 

@@ -1,36 +1,25 @@
 { szy, ... }:
 {
 
-	"${szy}".catalog.applications =
+	"${szy}".catalog.programs =
 	{
+		git.enable = true;
+		neovim.enable = true;
+		yazi.enable = true;
+		zsh.enable = true;
 
-		editor =
+		default =
 		{
-			neovim.enable = true;
-		};
-
-		fileManager =
-		{
-			yazi.enable = true;
-		};
-
-		shell =
-		{
-			zsh.enable = true;
-		};
-
-		defaults =
-		{
-			shell.cli.identifier.name = "zsh";
+			shell.cli = "zsh";
 			editor =
 			{
-				cli.identifier.name = "neovim";
-				any.identifier.name = "neovim";
+				cli = "neovim";
+				any = "neovim";
 			};
 			fileManager =
 			{
-				cli.identifier.name = "yazi";
-				any.identifier.name = "yazi";
+				cli = "yazi";
+				any = "yazi";
 			};
 		};
 

@@ -1,9 +1,10 @@
 { szy, lib, config, pkgs, ... }:
-(szy config).objects.declare
+(szy config).objects.make.template
 {
 	
 	name = "musicPlayer";
+	namespace = [ "programs" ];
 
-	extends = [ "application" ];
+	inherits = [ "application" ];
 
 }

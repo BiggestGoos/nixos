@@ -1,19 +1,19 @@
 { szy, lib, config, pkgs, ... }:
-(szy config).objects.define
+(szy config).objects.make
 {
 
-	template = "package";
-	extends = [ "gaming" ];
+	inherits = [ "gaming" ];
 
 	name = "gamemode";
+	namespace = [ "packages" ];
 
-	configuration = 
-	{ enabled, final, template }:
+	output.config = 
 	{
-		programs.gamemode = {
+		programs.gamemode = 
+		{
 			enable = true;
 		};
-		"${szy}".objects.user.data.types.gaming.groups = [ "gamemode" ];	
+		"${szy}".users.types.gaming.groups = [ "gamemode" ];	
 	};
 
 }

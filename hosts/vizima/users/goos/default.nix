@@ -1,11 +1,7 @@
 { szy, lib, config, pkgs, ... }:
-let
-	final = config."${szy}".objects.user.definitions.goos;
-	template = (szy config).objects.utils.template.get { identifier = final.meta.template; };
-in
 {
 
-	"${szy}".objects.user.definitions.goos.data =
+	"${szy}".objects.users.goos.variable =
 	{
 
 		enable = true;

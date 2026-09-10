@@ -9,7 +9,7 @@ in
 {
 
 
-	"${szy}".objects.user.data.types.normal.groups = [ groupName ];
+	"${szy}".users.types.normal.groups = [ groupName ];
 
 	# Maybe think of a better way to do this?
 

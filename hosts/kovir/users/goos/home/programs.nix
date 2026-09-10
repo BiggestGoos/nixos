@@ -1,40 +1,20 @@
 { szy, ... }:
 {
 
-	"${szy}".catalog.applications =
+	"${szy}".catalog.programs =
 	{
 
 		anki.enable = true;
 		discord.enable = true;
-
-		browser =
+		floorp.enable = true;
+		helix.enable = true;
+		ranger.enable = true;
+		steam.enable = true;
+		kitty.enable = true;
+		
+		default =
 		{
-			floorp.enable = true;
-		};
-
-		editor =
-		{
-			helix.enable = true;
-		};
-
-		fileManager =
-		{
-			ranger.enable = true;
-		};
-
-		gameLauncher =
-		{
-			steam.enable = true;
-		};
-
-		terminal =
-		{
-			kitty.enable = true;
-		};
-
-		defaults =
-		{
-			browser.gui.identifier.name = "floorp";
+			browser.gui = "floorp";
 		};
 
 	};

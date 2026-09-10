@@ -4,20 +4,20 @@
 	"${szy}".catalog =
 	{
 
-		applications =
+		programs =
 		{
-
+			nh.enable = true;
 			steam.enable = true;		
-			editor.neovim.enable = true;
-			shell.zsh.enable = true;
-			fileManager.yazi.enable = true;
+			neovim.enable = true;
+			zsh.enable = true;
+			yazi.enable = true;
 
-			defaults =
+			default =
 			{
 
-				editor.cli.identifier.name = "neovim";
-				shell.cli.identifier.name = "zsh";
-				fileManager.cli.identifier.name = "yazi";
+				editor.cli = "neovim";
+				shell.cli = "zsh";
+				fileManager.cli = "yazi";
 
 			};
 

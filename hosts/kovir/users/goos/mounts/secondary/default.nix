@@ -3,9 +3,9 @@
 let
 	user =
 	{
-		name = final.data.username;
+		name = final.constant.username;
 		group = config.users.users."${user.name}".group;
-		home = final.data.homeDirectory;
+		home = final.variable.homeDirectory;
 	};
 
 	disko = import ./disko.nix { root = user.home; };

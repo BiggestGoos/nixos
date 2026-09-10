@@ -2,7 +2,7 @@
 (szy config).users.user.create "goos" true
 {
 
-	arguments =
+	variable =
 	{
 
 		modules = szy.lib.imports.recursive ./home;

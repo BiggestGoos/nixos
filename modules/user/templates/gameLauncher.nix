@@ -1,9 +1,10 @@
 { szy, lib, config, pkgs, ... }:
-(szy config).objects.declare
+(szy config).objects.make.template
 {
 	
 	name = "gameLauncher";
+	namespace = [ "programs" ];
 
-	extends = [ "gaming" "application" ];
+	inherits = [ "gaming" "application" ];
 
 }

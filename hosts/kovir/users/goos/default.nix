@@ -1,14 +1,13 @@
 { szy, lib, config, pkgs, ... }:
 let
+	szy' = szy config;
 	username = "goos";
-	final = config."${szy}".objects.user.definitions."${username}";
-	template = (szy config).objects.utils.template.get { identifier = final.meta.template; };
+	final = szy'.objects.utils.get { identifier = [ "users" username ]; };
 in
 {
 
-	"${szy}".objects.user.definitions.goos.data =
+	"${szy}".objects.users.goos.variable =
 	{
-
 		enable = true;
 
 		modules = szy.lib.imports.recursive ./home;
@@ -21,13 +20,10 @@ in
 	(
 		szy.lib.imports.toggled.recursiveWithArgs
 		{
-			inherit (final.data) enabled;
+			inherit (final.constant) enabled;
 			args =
 			{  
-				inherit 
-					final 
-					template
-				;
+				inherit final;
 			};
 			directory = ./mounts;
 		}

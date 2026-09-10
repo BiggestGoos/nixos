@@ -4,8 +4,8 @@
 	
 	enable = config.sync.enable;
 
-	arguments =
-	{ final, ... }:
+	variable =
+	{ constant, ... }:
 	{
 
 		modules = 
@@ -17,7 +17,7 @@
 			}
 		];
 	
-		primaryGroup = final.data.username;
+		primaryGroup = constant.username;
 
 		types = [ "system" ];
 
@@ -33,7 +33,7 @@
 
 	};
 
-	options =
+	output.options =
 	{
 
 		sync =

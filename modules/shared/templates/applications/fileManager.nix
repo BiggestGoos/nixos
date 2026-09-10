@@ -1,9 +1,10 @@
 { szy, lib, config, pkgs, ... }:
-(szy config).objects.declare
+(szy config).objects.make.template
 {
 	
 	name = "fileManager";
+	namespace = [ "programs" ];
 
-	extends = [ "defaultApplication" ];
+	inherits = [ "default" "application" ];
 
 }

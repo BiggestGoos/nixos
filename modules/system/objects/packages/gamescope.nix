@@ -1,14 +1,13 @@
 { szy, lib, config, pkgs, ... }:
-(szy config).objects.define
+(szy config).objects.make
 {
 
-	template = "package";
-	extends = [ "gaming" ];
+	inherits = [ "gaming" ];
 
 	name = "gamescope";
+	namespace = [ "packages" ];
 
-	configuration = 
-	{ enabled, final, template }:
+	output.config = 
 	{
 		programs.gamescope = {
 			enable = true;

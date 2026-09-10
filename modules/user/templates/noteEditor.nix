@@ -1,9 +1,10 @@
 { szy, lib, config, pkgs, ... }:
-(szy config).objects.declare
+(szy config).objects.make.template
 {
 
 	name = "noteEditor";
+	namespace = [ "programs" ];
 
-	extends = [ "application" ];
+	inherits = [ "application" ];
 
 }
