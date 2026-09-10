@@ -85,7 +85,7 @@
 	};
 
 	output.config =
-	{ constant, ... }:
+	{ constant, anyObjectEnabled, ... }:
 	let
 		default = constant.default.any;
 		defaultOpen = default.variable.commands.default.relative;
@@ -112,6 +112,7 @@ exec ${defaultOpen} "$@"
 '';
 		
 	in
+	anyObjectEnabled
 	{
 
 		/*xdg.terminal-exec =

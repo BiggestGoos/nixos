@@ -8,7 +8,7 @@
 	inherits = [ "default" "application" ];
 
 	output.config =
-	{ variable, constant, ... }:
+	{ variable, constant, anyObjectEnabled, ... }:
 	let
 	
 		default = constant.default.any;
@@ -21,6 +21,7 @@ exec ${defaultOpen} "$@"
 '';
 
 	in
+	anyObjectEnabled
 	{
 	
 		xdg.mimeApps = 
