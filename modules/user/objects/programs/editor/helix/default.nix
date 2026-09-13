@@ -1,28 +1,25 @@
-{ szy, lib, config, pkgs, ... }:
+{
+  szy,
+  config,
+  ...
+}:
 (szy config).objects.make
 {
-	inherits = [ [ "programs" "editor" ] ];
-	#extends = [ "terminalApplication" ];
+  inherits = [["programs" "editor"]];
+  #extends = [ "terminalApplication" ];
 
-	name = "helix";
-	namespace = [ "programs" ];
+  name = "helix";
+  namespace = ["programs"];
 
-	constant.type = "cli";
+  constant.type = "cli";
 
-	variable =
-	{
-		entry.default.base.locator = "Helix";
-	};
+  variable = {
+    entry.default.base.locator = "Helix";
+  };
 
-	output.config = 
-	{
-
-		programs.helix = 
-		{			
-			enable = true;		
-		};
-
-	};
-
+  output.config = {
+    programs.helix = {
+      enable = true;
+    };
+  };
 }
-

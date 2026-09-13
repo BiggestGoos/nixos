@@ -9,13 +9,12 @@
 
 	constant.type = lib.mkForce "cli";
 
-	output.config = 
+	output.config =
 	{
-		programs.zsh = 
+		programs.zsh =
 		{
 			enable = true;
-		};	
+		};
 	};
 
 }
-

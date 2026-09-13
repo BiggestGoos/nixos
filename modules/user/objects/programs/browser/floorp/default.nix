@@ -1,65 +1,41 @@
-{ szy, lib, config, pkgs, ... }:
-(szy config).objects.make
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+(szy config).objects.make {
 
-	name = "floorp";
-	namespace = [ "programs" ];
+  name = "floorp";
+  namespace = [ "programs" ];
 
-	inherits = [ [ "programs" "browser" ] ];
+  inherits = [
+    [
+      "programs"
+      "browser"
+    ]
+  ];
 
-	/*qualifiers = Some sort of bug with recursive import
-	{
+  constant.type = "gui";
 
-		_meta.order = [ "composable" ];
+  variable = {
+    program.package.input = pkgs.floorp-bin;
+    #program..search.args = [ "--search" ];
+  };
 
-		composable =
-		{
+  output.config =
+    { constant, ... }:
+    {
+      programs.floorp = {
+        enable = true;
 
-			components = 
-			{
-				default =
-				{
-					path = "default";
-					enable = true;
-				};
-			};
+        package = constant.program.package.final;
 
-			componentPath = ./.;
-
-		};
-
-	};*/
-
-	constant.type = "gui";
-
-	variable =
-	{
-
-		program.package.input = pkgs.floorp-bin;
-
-		#program..search.args = [ "--search" ];
-
-	};
-
-	output.config =
-	{ constant, ... }:
-	{
-
-		programs.floorp = {
-
-			enable = true;
-
-			package = constant.program.package.final;
-
-			profiles."${config.home.username}" = {
-
-				id = 0;
-				isDefault = true;
-
-			};
-
-		};
-
-	};
-
+        profiles."${config.home.username}" = {
+          id = 0;
+          isDefault = true;
+        };
+      };
+    };
 }

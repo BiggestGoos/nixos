@@ -1,48 +1,29 @@
-{ szy, lib, config, pkgs, ... }:
+{ szy, lib, config, pkgs, inputs, ... }:
 (szy config).objects.make
 {
-	inherits = [ [ "programs" "editor" ] ];
-	#extends = [ "terminalApplication" ];
+  name = "neovim";
+  namespace = [ "programs" ];
 
-	name = "neovim";
-	namespace = [ "programs" ];
+  inherits = [ [ "programs" "editor" ] ];
 
-	constant.type = "cli";
+  constant.type = "cli";
 
-	variable = 
-	{
-		entry =
-		{
+  variable = 
+  {
+    entry =
+    {
 
-			default =
-			{
-				base.locator = "nvim";
-			};
+      default =
+      {
+        base.locator = "nvim";
+      };
 
-		};
-	};
+    };
 
-	output.config = 
-	{
+    program.package.input = pkgs.neovim-unwrapped;
+  };
 
-		programs.neovim = 
-		{
-
-			enable = true;
-
-			extraConfig = ''
-		
-				hi Normal ctermbg=none guibg=none
-
-				set number
-
-				set tabstop=4
-				set shiftwidth=4
-
-			'';	
-		};
-
-	};
+  output.imports = [ ./config ];
 
 }
 

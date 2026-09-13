@@ -1,24 +1,31 @@
-{ szy, lib, config, pkgs, ... }:
-(szy config).objects.make
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+(szy config).objects.make {
 
-	inherits = [ [ "programs" "fileManager" ] ];
-	#extends = [ "terminalApplication" ];
+  inherits = [
+    [
+      "programs"
+      "fileManager"
+    ]
+  ];
+  #extends = [ "terminalApplication" ];
 
-	name = "yazi";
-	namespace = [ "programs" ];
+  name = "yazi";
+  namespace = [ "programs" ];
 
-	constant.type = "cli";
-	
-	output.config = 
-	{
+  constant.type = "cli";
 
-		programs.yazi = 
-		{
-			enable = true;
-		};	
+  output.config = {
 
-	};
+    programs.yazi = {
+      enable = true;
+    };
+
+  };
 
 }
-

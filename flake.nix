@@ -1,80 +1,71 @@
 {
 
-	inputs = 
-	{
-		nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-		flake-parts.url = "github:hercules-ci/flake-parts";
-		szy.url = "github:BiggestGoos/szy-nixos";
-	};
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    szy.url = "github:BiggestGoos/szy-nixos";
+  };
 
-	outputs = 
-	{ ... }@inputs:
-	let
+  outputs =
+    { ... }@inputs:
+    let
 
-		mkFlake = import ./flake/make.nix;
+      mkFlake = import ./flake/make.nix;
 
-		szy = (inputs.szy.library).addArguments
-		{ 
-			root = inputs.self.outPath;
-		};
+      szy = (inputs.szy.library).addArguments {
+        root = inputs.self.outPath;
+      };
 
-	in
-	szy.lib.attrsets.deepMerge
-	(
-		inputs.flake-parts.lib.mkFlake { inherit inputs; }
-		{
+    in
+    szy.lib.attrsets.deepMerge
+      (inputs.flake-parts.lib.mkFlake { inherit inputs; } {
 
-			systems =
-			[
-				"x86_64-linux"
-			];
+        systems = [
+          "x86_64-linux"
+        ];
 
-			perSystem = 
-			{ 
-				pkgs,
-				...
-			}:
-			{
-				packages = import ./flake/packages.nix { inherit pkgs szy; };
-			};
+        perSystem =
+          {
+            pkgs,
+            ...
+          }:
+          {
+            packages = import ./flake/packages.nix { inherit pkgs szy; };
+          };
 
-		}
-	)
-	{
+      })
+      {
 
-		__functor = self: hostname: inputs': data:
-		let
+        __functor =
+          self: hostname: inputs': data:
+          let
 
-			finalInputs = inputs // inputs';
+            finalInputs = inputs // inputs';
 
-			inherit (finalInputs) nixpkgs;
-			inherit (nixpkgs) lib;
+            inherit (finalInputs) nixpkgs;
+            inherit (nixpkgs) lib;
 
-			hostFolder = ./hosts;
+            hostFolder = ./hosts;
 
-			hostPath = hostFolder + "/${hostname}";
+            hostPath = hostFolder + "/${hostname}";
 
-		in
-		mkFlake
-		{
-			inputs = finalInputs;
-			szy = szy.addArguments
-			{ 
-				flake =
-				{
-					inherit (data.metaData) root;
-				};
-				host =
-				{
-					name = hostname;
-					path = hostPath;
-					inherit (data.metaData) system;
-				};
-			};
-			inherit hostname;
-			modules = data.modules or [];
-		};
+          in
+          mkFlake {
+            inputs = finalInputs;
+            szy = szy.addArguments {
+              flake = {
+                inherit (data.metaData) root;
+              };
+              host = {
+                name = hostname;
+                path = hostPath;
+                inherit (data.metaData) system;
+              };
+            };
+            inherit hostname;
+            modules = data.modules or [ ];
+          };
 
-	};
+      };
 
 }

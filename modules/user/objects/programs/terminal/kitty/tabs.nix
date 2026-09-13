@@ -3,7 +3,7 @@
 let
 
 	windowMod = "ctrl+shift+";
-	tabMod = "ctrl+";
+	tabMod = "ctrl+shift+";
 	moveMod = "alt+";
 
 	fileManager = ((szy config).objects.utils.get { identifier = [ "template" "programs" "fileManager" ]; }).constant.default.cli;
