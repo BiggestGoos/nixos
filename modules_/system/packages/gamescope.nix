@@ -1,20 +1,28 @@
-{ szy, lib, config, pkgs, ... }:
-szy.objects.define
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+szy.objects.define {
 
-	inherit config;
-	template = "package";
-	extends = [ "gaming" ];
+  inherit config;
+  template = "package";
+  extends = [ "gaming" ];
 
-	name = "gamescope";
+  name = "gamescope";
 
-	configuration = 
-	{ enabled, final, template }:
-	{
-		programs.gamescope = {
-			enable = true;
-		};	
-	};
+  configuration =
+    {
+      enabled,
+      final,
+      template,
+    }:
+    {
+      programs.gamescope = {
+        enable = true;
+      };
+    };
 
 }
-

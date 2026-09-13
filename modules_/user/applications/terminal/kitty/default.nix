@@ -1,77 +1,78 @@
-{ szy, lib, config, pkgs, ... }:
-szy.objects.define
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+szy.objects.define {
 
-	inherit config;
-	template = "terminal";
+  inherit config;
+  template = "terminal";
 
-	name = "kitty";
+  name = "kitty";
 
-	arguments = 
-	{
+  arguments = {
 
-		desktopEntry.default.base.path = "kitty";
+    desktopEntry.default.base.path = "kitty";
 
-		program.bin.default.defaultArgs = [ "--single-instance" ];
-		program.arguments =
-		{
-			runCommand.args = [ "--" ];
-			remainOpen.args = [ "--hold" ];
-			setDirectory.args = [ "--directory" ];
-			setAppID.args = [ "--class" ];
-			setTitle.args = [ "--title" ];
-		};
+    program.bin.default.defaultArgs = [ "--single-instance" ];
+    program.arguments = {
+      runCommand.args = [ "--" ];
+      remainOpen.args = [ "--hold" ];
+      setDirectory.args = [ "--directory" ];
+      setAppID.args = [ "--class" ];
+      setTitle.args = [ "--title" ];
+    };
 
-	};
+  };
 
-	configuration = 
-	{
+  configuration = {
 
-		programs.kitty = {
-			
-			enable = true;
+    programs.kitty = {
 
-			themeFile = "adwaita_darker";
+      enable = true;
 
-			font = {
+      themeFile = "adwaita_darker";
 
-				size = 10;
-				package = pkgs.nerd-fonts.fira-code;
-				name = "FiraCode Nerd Font Mono";
+      font = {
 
-			};
+        size = 10;
+        package = pkgs.nerd-fonts.fira-code;
+        name = "FiraCode Nerd Font Mono";
 
-			settings = {
+      };
 
-				disable_ligatures = "cursor";
+      settings = {
 
-				# In future, use global theme colors for styling (colors, opacity, etc...)
-				cursor = "#00cc00";
-				cursor_text_color = "background";
+        disable_ligatures = "cursor";
 
-				# Should follow the used desktops input values in some way
-				touch_scroll_multiplier = 5.0;
+        # In future, use global theme colors for styling (colors, opacity, etc...)
+        cursor = "#00cc00";
+        cursor_text_color = "background";
 
-				remember_window_size = false;
-				window_padding_width = 0;
-				#hide_window_decorations = true;
-				confirm_os_window_close = 2;
+        # Should follow the used desktops input values in some way
+        touch_scroll_multiplier = 5.0;
 
-				background = "#021117";
-				background_opacity = 0.9;
+        remember_window_size = false;
+        window_padding_width = 0;
+        #hide_window_decorations = true;
+        confirm_os_window_close = 2;
 
-				clear_all_shortcuts = true;	
+        background = "#021117";
+        background_opacity = 0.9;
 
-			};
+        clear_all_shortcuts = true;
 
-		};
+      };
 
-		imports = [
-			./tabs.nix
-			./clipboard.nix
-		];
+    };
 
-	};
+    imports = [
+      ./tabs.nix
+      ./clipboard.nix
+    ];
+
+  };
 
 }
-

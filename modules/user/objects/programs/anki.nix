@@ -1,21 +1,26 @@
-{ szy, lib, osConfig, config, pkgs, ... }:
-(szy config).objects.make
 {
+  szy,
+  lib,
+  osConfig,
+  config,
+  pkgs,
+  ...
+}:
+(szy config).objects.make {
 
-	inherits = [ "application" ];
+  inherits = [ "application" ];
 
-	name = "anki";
-	namespace = [ "programs" ];
+  name = "anki";
+  namespace = [ "programs" ];
 
-	constant.type = "gui";
+  constant.type = "gui";
 
-	variable.program.package.input = pkgs.anki;
+  variable.program.package.input = pkgs.anki;
 
-	output.config = 
-	{ constant, ... }:
-	{
-		home.packages = [ constant.program.package.final ];
-	};
+  output.config =
+    { constant, ... }:
+    {
+      home.packages = [ constant.program.package.final ];
+    };
 
 }
-

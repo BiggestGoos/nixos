@@ -1,20 +1,17 @@
 { config, ... }:
 {
 
-	programs.ssh =
-	{
-		enable = true;
-		enableDefaultConfig = false;
-		settings =
-		{
+  programs.ssh = {
+    enable = true;
+    enableDefaultConfig = false;
+    settings = {
 
-			"mahakam" =
-			{
-				HostName = "mahakam";
-				User = "goos";
-			};
+      "mahakam" = {
+        HostName = "mahakam";
+        User = "goos";
+      };
 
-		};
-	};
+    };
+  };
 
 }

@@ -1,34 +1,41 @@
-{ szy, lib, config, pkgs, ... }@moduleInput:
-(szy config).objects.make.template
 {
-	
-	name = "gaming";
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}@moduleInput:
+(szy config).objects.make.template {
 
-	output.config =
-	{ variable, meta, ... }:
-	if (szy.data.configType == "system")
-	then
-	{
+  name = "gaming";
 
-		boot.kernel.sysctl."vm.max_map_count" = 2147483642;
+  output.config =
+    { variable, meta, ... }:
+    if (szy.data.configType == "system") then
+      {
 
-		"${szy}".users.types.gaming = {};
+        boot.kernel.sysctl."vm.max_map_count" = 2147483642;
 
-	}
-	else if (szy.data.configType == "user")
-	then
-	let
-		system = szy.objects.utils.get { config = moduleInput.osConfig; inherit (meta) identifier; };
-	in
-	{
+        "${szy}".users.types.gaming = { };
 
-		warnings =
-		[
-			(lib.mkIf (system.constant.enabled == false) "Gaming is enabled in user configuration but not in system, there are certain optimizations that can only be enabled at system level.")
-		];
+      }
+    else if (szy.data.configType == "user") then
+      let
+        system = szy.objects.utils.get {
+          config = moduleInput.osConfig;
+          inherit (meta) identifier;
+        };
+      in
+      {
 
-	}
-	else
-	{};
+        warnings = [
+          (lib.mkIf (system.constant.enabled == false)
+            "Gaming is enabled in user configuration but not in system, there are certain optimizations that can only be enabled at system level."
+          )
+        ];
+
+      }
+    else
+      { };
 
 }

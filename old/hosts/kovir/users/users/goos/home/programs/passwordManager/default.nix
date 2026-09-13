@@ -1,10 +1,17 @@
-{ lib, config, szy, ... }:
+{
+  lib,
+  config,
+  szy,
+  ...
+}:
 {
 
-	"${szy}".objects.application.definitions.bitwarden.data.enable = true;
+  "${szy}".objects.application.definitions.bitwarden.data.enable = true;
 
-	/*imports = [
-		(szy.utils.fromShared "users/user/programs/passwordManager/bitwarden")
-	];*/
+  /*
+    imports = [
+    		(szy.utils.fromShared "users/user/programs/passwordManager/bitwarden")
+    	];
+  */
 
 }

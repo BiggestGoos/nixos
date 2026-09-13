@@ -1,21 +1,26 @@
-{ szy, lib, osConfig, config, pkgs, ... }:
-(szy config).objects.make
 {
+  szy,
+  lib,
+  osConfig,
+  config,
+  pkgs,
+  ...
+}:
+(szy config).objects.make {
 
-	inherits = [ "application" ];
+  inherits = [ "application" ];
 
-	name = "bitwarden";
-	namespace = [ "programs" ];
-	
-	constant.type = "gui";
+  name = "bitwarden";
+  namespace = [ "programs" ];
 
-	variable.program.package.input = pkgs.bitwarden-desktop;
+  constant.type = "gui";
 
-	output.config = 
-	{ constant, ... }:
-	{
-		home.packages = [ constant.program.package.final ];
-	};
+  variable.program.package.input = pkgs.bitwarden-desktop;
+
+  output.config =
+    { constant, ... }:
+    {
+      home.packages = [ constant.program.package.final ];
+    };
 
 }
-

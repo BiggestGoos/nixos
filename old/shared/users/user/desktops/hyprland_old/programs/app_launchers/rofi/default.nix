@@ -1,17 +1,22 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
-	configDir = "rofi";
-	configHomeDir = "${config.xdg.configHome}/${configDir}";
+  configDir = "rofi";
+  configHomeDir = "${config.xdg.configHome}/${configDir}";
 in
 {
 
-	programs.rofi = {
+  programs.rofi = {
 
-		enable = true;
+    enable = true;
 
-	};
+  };
 
-	home.file."${configHomeDir}/config.rasi".source = ./config.rasi;
-	home.file."${configHomeDir}/current.rasi".source = ./current.rasi;
+  home.file."${configHomeDir}/config.rasi".source = ./config.rasi;
+  home.file."${configHomeDir}/current.rasi".source = ./current.rasi;
 
 }

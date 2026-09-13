@@ -1,12 +1,12 @@
 { ... }:
 {
 
-	imports = [
-		./programs
-		./themes
-		./configuration
-	];
+  imports = [
+    ./programs
+    ./themes
+    ./configuration
+  ];
 
-	services.hyprpolkitagent.enable = true;
+  services.hyprpolkitagent.enable = true;
 
 }

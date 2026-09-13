@@ -1,15 +1,22 @@
-{ pkgs, szy, osConfig, lib, desktop, ... }: lib.mkIf (desktop.isDefaultStrict [ "hyprland" ])
 {
+  pkgs,
+  szy,
+  osConfig,
+  lib,
+  desktop,
+  ...
+}:
+lib.mkIf (desktop.isDefaultStrict [ "hyprland" ]) {
 
-	home.pointerCursor = {
-    	gtk.enable = true;
-    	hyprcursor.enable = true;
-		x11.enable = true;
-		x11.defaultCursor = "Vanilla-DMZ";
+  home.pointerCursor = {
+    gtk.enable = true;
+    hyprcursor.enable = true;
+    x11.enable = true;
+    x11.defaultCursor = "Vanilla-DMZ";
 
-		name = "Vanilla-DMZ";
-    	package = pkgs.vanilla-dmz;
-    	#size = 16;
-  	};
+    name = "Vanilla-DMZ";
+    package = pkgs.vanilla-dmz;
+    #size = 16;
+  };
 
 }

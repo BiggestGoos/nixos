@@ -1,18 +1,23 @@
-{ lib, config, szy, ... }:
+{
+  lib,
+  config,
+  szy,
+  ...
+}:
 {
 
-	"${szy}".objects.fileManager =
-	{
+  "${szy}".objects.fileManager = {
 
-		definitions =
-		{
-			yazi.data.enable = true;
-		};
+    definitions = {
+      yazi.data.enable = true;
+    };
 
-	};
+  };
 
-	/*imports = [
-		(szy.utils.fromShared "users/programs/fileManager/yazi")
-	];*/
+  /*
+    imports = [
+    		(szy.utils.fromShared "users/programs/fileManager/yazi")
+    	];
+  */
 
 }

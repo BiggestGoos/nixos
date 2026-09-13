@@ -1,19 +1,24 @@
-{ config, szy, pkgs, lib, ... }:
-szy.desktops.mkDesktop
 {
+  config,
+  szy,
+  pkgs,
+  lib,
+  ...
+}:
+szy.desktops.mkDesktop {
 
-	name = "plasma";
+  name = "plasma";
 
-	enabled = [ "gnome" ];
+  enabled = [ "gnome" ];
 
-	configuration = { desktop, ... }: {
-	
-		services.desktopManager.plasma6.enable = true; 
-	
-	};
-	
-	imports = [
-		./config.nix
-	];
+  configuration = { desktop, ... }: {
+
+    services.desktopManager.plasma6.enable = true;
+
+  };
+
+  imports = [
+    ./config.nix
+  ];
 
 }

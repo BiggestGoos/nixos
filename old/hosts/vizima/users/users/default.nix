@@ -1,14 +1,20 @@
-{ pkgs, lib, config, szy, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  szy,
+  ...
+}:
 {
 
-	imports = [
-		./goos
-	];
-	
-	config = {
+  imports = [
+    ./goos
+  ];
 
-		"${szy}".users.default.name = "goos";
+  config = {
 
-	};
+    "${szy}".users.default.name = "goos";
+
+  };
 
 }

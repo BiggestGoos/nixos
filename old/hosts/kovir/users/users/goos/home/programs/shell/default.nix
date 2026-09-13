@@ -1,18 +1,23 @@
-{ lib, config, szy, ... }:
+{
+  lib,
+  config,
+  szy,
+  ...
+}:
 {
 
-	"${szy}".objects.shell =
-	{
+  "${szy}".objects.shell = {
 
-		definitions =
-		{
-			zsh.data.enable = true;
-		};
+    definitions = {
+      zsh.data.enable = true;
+    };
 
-	};
+  };
 
-	/*imports = [
-		(szy.utils.fromShared "users/user/programs/shell/zsh")
-	];*/
+  /*
+    imports = [
+    		(szy.utils.fromShared "users/user/programs/shell/zsh")
+    	];
+  */
 
 }

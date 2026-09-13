@@ -1,76 +1,65 @@
-{ szy, lib, config, pkgs, systemConfig, ... }:
-szy.objects.declare
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  systemConfig,
+  ...
+}:
+szy.objects.declare {
 
-	inherit config;
-	
-	name = "defaultApplication";
+  inherit config;
 
-	extends = [ "application" "default" ];
+  name = "defaultApplication";
 
-	templateArguments =
-	{ final }:
-	{
+  extends = [
+    "application"
+    "default"
+  ];
 
-		defaultTypes = 
-		lib.mkDefault
-		{
-			any = definition:
-			let
-				inherit (definition.meta) identifier;
-				guiIdentifier = final.data.default.gui.identifier;
-				cliIdentifier = final.data.default.cli.identifier;
-			in
-				(identifier == guiIdentifier) || (identifier == cliIdentifier);
-			gui = definition: definition.data.application.type != "cli";
-			cli = definition: definition.data.application.type != "gui";
-		};
+  templateArguments =
+    { final }:
+    {
 
-	};
+      defaultTypes = lib.mkDefault {
+        any =
+          definition:
+          let
+            inherit (definition.meta) identifier;
+            guiIdentifier = final.data.default.gui.identifier;
+            cliIdentifier = final.data.default.cli.identifier;
+          in
+          (identifier == guiIdentifier) || (identifier == cliIdentifier);
+        gui = definition: definition.data.application.type != "cli";
+        cli = definition: definition.data.application.type != "gui";
+      };
 
-	configuration =
-	{ enabled, final }:
-	if (systemConfig)
-	then
-	{
-	}
-	else
-	{
+    };
 
-		xdg.mimeApps =
-		{
+  configuration =
+    { enabled, final }:
+    if (systemConfig) then
+      {
+      }
+    else
+      {
 
-			enable = true;
+        xdg.mimeApps = {
 
-			defaultApplicationPackages =
-			let
-				inherit (config."${szy}".applications) default;
+          enable = true;
 
-				rawDefaults =
-				lib.attrsets.mapAttrsToList
-				(
-					name: value:
-						value.any
-				)
-				default;
+          defaultApplicationPackages =
+            let
+              inherit (config."${szy}".applications) default;
 
-				defaults =
-				builtins.filter
-				(
-					default:
-						default != null
-				)
-				rawDefaults;
-			in
-			builtins.map
-			(
-				default:
-					default.package
-			)
-			defaults;
+              rawDefaults = lib.attrsets.mapAttrsToList (name: value: value.any) default;
 
-		};
+              defaults = builtins.filter (default: default != null) rawDefaults;
+            in
+            builtins.map (default: default.package) defaults;
 
-	};
+        };
+
+      };
 
 }

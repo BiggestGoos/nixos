@@ -1,10 +1,10 @@
 { szy, lib, ... }:
 {
-	
-	imports = [
-		./system_
-		./users
-		./profiles
-	];
+
+  imports = [
+    ./system_
+    ./users
+    ./profiles
+  ];
 
 }

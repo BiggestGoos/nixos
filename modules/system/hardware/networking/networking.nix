@@ -1,23 +1,21 @@
 { szy, ... }:
 {
-	
-	"${szy}".users.types.normal.groups = [ "networkmanager" ];
 
-	networking =
-	{
+  "${szy}".users.types.normal.groups = [ "networkmanager" ];
 
-		hostName = szy.data.host.name;
+  networking = {
 
-		networkmanager = 
-		{		
-			enable = true;
+    hostName = szy.data.host.name;
 
-			dns = "systemd-resolved";
-			dhcp = "dhcpcd";
-		};
-	
-	};
+    networkmanager = {
+      enable = true;
 
-	services.resolved.enable = true;
+      dns = "systemd-resolved";
+      dhcp = "dhcpcd";
+    };
+
+  };
+
+  services.resolved.enable = true;
 
 }

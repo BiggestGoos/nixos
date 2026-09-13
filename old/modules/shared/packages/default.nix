@@ -1,30 +1,34 @@
-{ szy, lib, config, systemConfig, ... }:
+{
+  szy,
+  lib,
+  config,
+  systemConfig,
+  ...
+}:
 let
 
-	inherit (config."${szy}") packages;
+  inherit (config."${szy}") packages;
 
 in
 {
 
-	options."${szy}".packages = lib.options.mkOption
-	{
-		type = lib.types.listOf lib.types.package;
-		default = [];
-	};
+  options."${szy}".packages = lib.options.mkOption {
+    type = lib.types.listOf lib.types.package;
+    default = [ ];
+  };
 
-	config =
-	if (systemConfig)
-	then
-	{
+  config =
+    if (systemConfig) then
+      {
 
-		environment.systemPackages = packages;
+        environment.systemPackages = packages;
 
-	}
-	else
-	{
+      }
+    else
+      {
 
-		home.packages = packages;
+        home.packages = packages;
 
-	};
+      };
 
 }

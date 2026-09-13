@@ -1,10 +1,9 @@
 {
 
-	imports =
-	[
-		./fastfetch.nix
-		./git.nix
-		./starship
-	];
+  imports = [
+    ./fastfetch.nix
+    ./git.nix
+    ./starship
+  ];
 
 }

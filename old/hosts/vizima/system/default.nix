@@ -1,10 +1,10 @@
 { szy, ... }:
 {
 
-	imports = [
-		./generated
-		./hardware
-		./boot
-	];
+  imports = [
+    ./generated
+    ./hardware
+    ./boot
+  ];
 
 }

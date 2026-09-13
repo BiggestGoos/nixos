@@ -1,8 +1,14 @@
-{ szy, lib, config, pkgs, ... }:
+{
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 {
 
-	users.users.root.hashedPasswordFile = config.sops.secrets."users/root/password".path;
+  users.users.root.hashedPasswordFile = config.sops.secrets."users/root/password".path;
 
-	imports = (szy.lib.imports.recursive ./password);
+  imports = (szy.lib.imports.recursive ./password);
 
 }

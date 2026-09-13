@@ -1,75 +1,79 @@
-{ szy, lib, config, pkgs, ... }:
-(szy config).objects.make
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+(szy config).objects.make {
 
-	inherits = [ "program" ];
+  inherits = [ "program" ];
 
-	name = "nh";
-	namespace = [ "programs" ];
+  name = "nh";
+  namespace = [ "programs" ];
 
-	variable' =
-	{
+  variable' = {
 
-		clean = {
+    clean = {
 
-			enable = lib.mkOption {
-				type = lib.types.bool;
-				default = false;
-			};
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+      };
 
-			generations = {
+      generations = {
 
-				numberToKeep = lib.mkOption {
-					type = lib.types.ints.positive;
-					default = 5;
-				};
+        numberToKeep = lib.mkOption {
+          type = lib.types.ints.positive;
+          default = 5;
+        };
 
-				keepSince = lib.mkOption {
-					type = lib.types.str;
-					default = "3d";
-				};
+        keepSince = lib.mkOption {
+          type = lib.types.str;
+          default = "3d";
+        };
 
-			};
+      };
 
-			optimise = lib.mkOption {
-				type = lib.types.bool;
-				default = true;
-			};
+      optimise = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+      };
 
-			dates = lib.mkOption {
-				type = lib.types.str;
-				default = "weekly";
-			};
+      dates = lib.mkOption {
+        type = lib.types.str;
+        default = "weekly";
+      };
 
-		};
+    };
 
-	};
+  };
 
-	output.config = 
-	{ variable, ... }:
-	{
+  output.config =
+    { variable, ... }:
+    {
 
-		programs.nh =
-		{
+      programs.nh = {
 
-			enable = true;
-			flake = szy.data.flake.root;
+        enable = true;
+        flake = szy.data.flake.root;
 
-			clean =
-			let
-				cfg = variable.clean;
-			in
-			{
+        clean =
+          let
+            cfg = variable.clean;
+          in
+          {
 
-				enable = cfg.enable;
-				dates = cfg.dates;
+            enable = cfg.enable;
+            dates = cfg.dates;
 
-				extraArgs = "--keep ${builtins.toString cfg.generations.numberToKeep} --keep-since ${cfg.generations.keepSince} ${if (cfg.optimise) then "--optimise" else ""}";
+            extraArgs = "--keep ${builtins.toString cfg.generations.numberToKeep} --keep-since ${cfg.generations.keepSince} ${
+              if (cfg.optimise) then "--optimise" else ""
+            }";
 
-			};
-		};
+          };
+      };
 
-	};
+    };
 
 }
-

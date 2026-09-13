@@ -1,8 +1,8 @@
 { ... }:
 {
 
-	imports = [
-		./swaync
-	];
+  imports = [
+    ./swaync
+  ];
 
 }

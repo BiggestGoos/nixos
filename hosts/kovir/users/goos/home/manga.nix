@@ -1,10 +1,9 @@
 { pkgs, ... }:
 {
 
-	home.packages =
-	[
-		pkgs.mokuro
-		pkgs.imagemagick
-	];
+  home.packages = [
+    pkgs.mokuro
+    pkgs.imagemagick
+  ];
 
 }

@@ -1,20 +1,23 @@
-{ szy, lib, osConfig, config, pkgs, ... }:
-(szy config).objects.define
 {
+  szy,
+  lib,
+  osConfig,
+  config,
+  pkgs,
+  ...
+}:
+(szy config).objects.define {
 
-	template = "noteEditor";
+  template = "noteEditor";
 
-	name = "obsidian";
-	
-	arguments =
-	{
-		application.type = "gui";
-	};
+  name = "obsidian";
 
-	configuration = 
-	{
-		programs.obsidian.enable = true;
-	};
+  arguments = {
+    application.type = "gui";
+  };
+
+  configuration = {
+    programs.obsidian.enable = true;
+  };
 
 }
-

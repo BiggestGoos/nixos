@@ -1,309 +1,291 @@
-{ identifier, lib, utils, importLib, helper, internal, qualifiers, ... }@moduleInput:
+{
+  identifier,
+  lib,
+  utils,
+  importLib,
+  helper,
+  internal,
+  qualifiers,
+  ...
+}@moduleInput:
 let
-	
-	/*
-		Resolve a definition, this can then be modified with qualifiers.
-	*/
-	resolveDefinition = 	
-	{
-		config, # The config object of the caller
 
-		# The template to define
-		template,
-		# The name of the definition, must be unique for a definition of a given template
-		name,
-		# The default enable value of the definition, defaults to false
-		enable ? false,
+  # Resolve a definition, this can then be modified with qualifiers.
+  resolveDefinition =
+    {
+      config, # The config object of the caller
 
-		# Additional templates to implement
-		extends ? [],
-		
-		/*
-			Functions, can either be sets or functions to sets. They all take the arguments:
-			- final: The final value (gotten from config) of the definition
-			- template: The final value (gotten from config) of the definition's template
-		*/
+      # The template to define
+      template,
+      # The name of the definition, must be unique for a definition of a given template
+      name,
+      # The default enable value of the definition, defaults to false
+      enable ? false,
 
-		# Arguments for the definition parameters
-		arguments ? {},
-		# Additional parameters for the definition
-		additionalParameters ? {},
+      # Additional templates to implement
+      extends ? [ ],
 
-		# Arbitrary options
-		options ? {},
-		# Arbitrary configuration, is automatically enabled/disabled based on the definition's enabled-value, 
-		# also recieves the additional argument 'enabled'.
-		configuration ? {},
+      /*
+        			Functions, can either be sets or functions to sets. They all take the arguments:
+        			- final: The final value (gotten from config) of the definition
+        			- template: The final value (gotten from config) of the definition's template
+      */
 
-		...
-	}@input:
-	let
-		global =
-		{
-			identifier = { inherit (input) name template; };
+      # Arguments for the definition parameters
+      arguments ? { },
+      # Additional parameters for the definition
+      additionalParameters ? { },
 
-			namespace = helper.definition.namespace global.identifier;
+      # Arbitrary options
+      options ? { },
+      # Arbitrary configuration, is automatically enabled/disabled based on the definition's enabled-value,
+      # also recieves the additional argument 'enabled'.
+      configuration ? { },
 
-			template = helper.template.get { inherit config; name = input.template; };
-			templates = 
-			builtins.map
-			(
-				name: 
-					helper.template.get { inherit config name; }
-			) global.final.meta.full.extends;
+      ...
+    }@input:
+    let
+      global = {
+        identifier = { inherit (input) name template; };
 
-			final = helper.definition.get { inherit config; inherit (global) identifier; };
+        namespace = helper.definition.namespace global.identifier;
 
-			resolveSet = internal.resolveSet { inherit (global) final template; };
-		};
-	in
-	{
+        template = helper.template.get {
+          inherit config;
+          name = input.template;
+        };
+        templates = builtins.map (
+          name: helper.template.get { inherit config name; }
+        ) global.final.meta.full.extends;
 
-		options = utils.mergeAll
-		[
-			(global.resolveSet options)
-			(utils.options.createFromKeys { keys = global.namespace; value =
-			{
+        final = helper.definition.get {
+          inherit config;
+          inherit (global) identifier;
+        };
 
-				# Metadata about the definition
-				meta =
-				{
+        resolveSet = internal.resolveSet { inherit (global) final template; };
+      };
+    in
+    {
 
-					# All definitions have an identifier composed of name and template(-name), this is what makes a definition unique
-					identifier =
-					{
-						name = utils.options.constant { type = lib.types.str; value = input.name; };
-						template = utils.options.constant { type = lib.types.str; value = input.template; };
-					};
+      options = utils.mergeAll [
+        (global.resolveSet options)
+        (utils.options.createFromKeys {
+          keys = global.namespace;
+          value = {
 
-					# The name of the definition
-					name = utils.options.constant { type = lib.types.str; value = input.name; };
-					# The main template the definition defines
-					template = utils.options.constant { type = lib.types.str; value = input.template; };
+            # Metadata about the definition
+            meta = {
 
-					# The namespace (under "${szy}".objects) in which the definition lies
-					namespace = utils.options.constant { type = lib.types.listOf lib.types.str; value = global.namespace; };
+              # All definitions have an identifier composed of name and template(-name), this is what makes a definition unique
+              identifier = {
+                name = utils.options.constant {
+                  type = lib.types.str;
+                  value = input.name;
+                };
+                template = utils.options.constant {
+                  type = lib.types.str;
+                  value = input.template;
+                };
+              };
 
-					# A list of templates this definition extends, by identifier
-					extends = utils.options.constant { type = lib.types.listOf lib.types.anything; value = extends; }; # TODO: Make this be a list of enum of all possible templates.
+              # The name of the definition
+              name = utils.options.constant {
+                type = lib.types.str;
+                value = input.name;
+              };
+              # The main template the definition defines
+              template = utils.options.constant {
+                type = lib.types.str;
+                value = input.template;
+              };
 
-					# A list of all templates, by identifier, that this definition ultimately extends, including the main template
-					full.extends = utils.options.constant
-					{
-						type = lib.types.listOf lib.types.str; # TODO: Make this be a list of enum of all possible templates.
-						value =
-						let
-							# All templates that this definition _directly_ extends
-							templates = 
-							[ 
-								global.template.meta
-							] ++ 
-							(
-								builtins.map
-								(
-									identifier: 
-										helper.template.getMeta { inherit config identifier; }
-								) 
-								global.final.meta.extends
-							);
-							allExtends = 
-							lib.lists.unique 
-							(
-								[ global.template.meta.identifier ] ++
-								global.final.meta.extends ++ 
-								(
-									builtins.concatLists 
-									(
-										builtins.map 
-										(
-											template: 
-												template.full.extends
-										) 
-										templates
-									)
-								)
-							);
-						in
-							allExtends;
-					};
+              # The namespace (under "${szy}".objects) in which the definition lies
+              namespace = utils.options.constant {
+                type = lib.types.listOf lib.types.str;
+                value = global.namespace;
+              };
 
-				};
+              # A list of templates this definition extends, by identifier
+              extends = utils.options.constant {
+                type = lib.types.listOf lib.types.anything;
+                value = extends;
+              }; # TODO: Make this be a list of enum of all possible templates.
 
-				# Data of the definition
-				data = lib.options.mkOption
-				{
+              # A list of all templates, by identifier, that this definition ultimately extends, including the main template
+              full.extends = utils.options.constant {
+                type = lib.types.listOf lib.types.str; # TODO: Make this be a list of enum of all possible templates.
+                value =
+                  let
+                    # All templates that this definition _directly_ extends
+                    templates = [
+                      global.template.meta
+                    ]
+                    ++ (builtins.map (
+                      identifier: helper.template.getMeta { inherit config identifier; }
+                    ) global.final.meta.extends);
+                    allExtends = lib.lists.unique (
+                      [ global.template.meta.identifier ]
+                      ++ global.final.meta.extends
+                      ++ (builtins.concatLists (builtins.map (template: template.full.extends) templates))
+                    );
+                  in
+                  allExtends;
+              };
 
-					type = 
-					let
+            };
 
-						# All template's data
-						templates = 
-						builtins.map 
-						(
-							identifier: 
-							helper.template.get 
-							{ 
-								inherit config identifier; 
-							}
-						) 
-						global.final.meta.full.extends;
+            # Data of the definition
+            data = lib.options.mkOption {
 
-						templateParameters = builtins.map (template: template.meta.parameters) templates;
-						definitionParameters = input.additionalParameters or {};
+              type =
+                let
 
-						builtinParameters =
-						{
+                  # All template's data
+                  templates = builtins.map (
+                    identifier:
+                    helper.template.get {
+                      inherit config identifier;
+                    }
+                  ) global.final.meta.full.extends;
 
-							enable = lib.options.mkOption
-							{
-								type = lib.types.bool;
-								default = enable;
-							};
+                  templateParameters = builtins.map (template: template.meta.parameters) templates;
+                  definitionParameters = input.additionalParameters or { };
 
-							enabled = lib.options.mkOption 
-							{
-								type = lib.types.bool;
-								# readOnly = true; Probably should be readOnly, TODO: Try when things work
-								default = 
-								let
-									allTemplatesEnabled = lib.lists.all (template: template.data.enabled) global.templates;
-								in
-									global.final.data.enable && allTemplatesEnabled;
-							};
+                  builtinParameters = {
 
-						};
+                    enable = lib.options.mkOption {
+                      type = lib.types.bool;
+                      default = enable;
+                    };
 
-						parameters = 
-						builtins.map
-						(
-							parameters:
-							{
-								options = global.resolveSet parameters;
-							}
-						)
-						([ builtinParameters definitionParameters ] ++ templateParameters);
+                    enabled = lib.options.mkOption {
+                      type = lib.types.bool;
+                      # readOnly = true; Probably should be readOnly, TODO: Try when things work
+                      default =
+                        let
+                          allTemplatesEnabled = lib.lists.all (template: template.data.enabled) global.templates;
+                        in
+                        global.final.data.enable && allTemplatesEnabled;
+                    };
 
-						templateArguments = builtins.map (template: template.meta.defaultArguments) global.templates;
-						definitionArguments = input.arguments or {};
+                  };
 
-						arguments = 
-						builtins.map
-						(
-							arguments:
-								global.resolveSet arguments
-						)
-						([ definitionArguments ] ++ templateArguments);
+                  parameters =
+                    builtins.map
+                      (parameters: {
+                        options = global.resolveSet parameters;
+                      })
+                      (
+                        [
+                          builtinParameters
+                          definitionParameters
+                        ]
+                        ++ templateParameters
+                      );
 
-					in
-						lib.types.submoduleWith { modules = parameters ++ arguments; };
+                  templateArguments = builtins.map (template: template.meta.defaultArguments) global.templates;
+                  definitionArguments = input.arguments or { };
 
-				};
+                  arguments = builtins.map (arguments: global.resolveSet arguments) (
+                    [ definitionArguments ] ++ templateArguments
+                  );
 
-			}; })
-		];
+                in
+                lib.types.submoduleWith { modules = parameters ++ arguments; };
 
-		/*
-			We make the configuration toggled depending on the enabled value of the definition,
-			all imports in the configuration are also toggled seperately.
-		*/
-		imports = 
-		let
-			enabled = global.final.data.enabled;
+            };
 
-			arguments =
-			{
-				inherit enabled;
-				inherit (global) final template;
-			};
+          };
+        })
+      ];
 
-			resolved = internal.resolveSet arguments configuration;
+      /*
+        			We make the configuration toggled depending on the enabled value of the definition,
+        			all imports in the configuration are also toggled seperately.
+      */
+      imports =
+        let
+          enabled = global.final.data.enabled;
 
-			imports = resolved.imports or [];
-			result = builtins.removeAttrs resolved [ "imports" ];
-		in
-		(moduleInput.importLib.mkToggleable enabled imports) ++
-		[
-			(lib.mkIf (enabled) (result))
-		];
+          arguments = {
+            inherit enabled;
+            inherit (global) final template;
+          };
 
-	};
+          resolved = internal.resolveSet arguments configuration;
+
+          imports = resolved.imports or [ ];
+          result = builtins.removeAttrs resolved [ "imports" ];
+        in
+        (moduleInput.importLib.mkToggleable enabled imports)
+        ++ [
+          (lib.mkIf (enabled) (result))
+        ];
+
+    };
 
 in
 {
 
-	/*
-		Define an object using the given template. Takes arguments that fulfill the template as well as other modifying the "template" used.
+  /*
+    		Define an object using the given template. Takes arguments that fulfill the template as well as other modifying the "template" used.
 
-		See 'resolveDefinition' for more parameters and implementation.
-	*/
-	define =
-	{ 
-		config,
-		template,
-		name,
-		/*
-			A set of qualifiers to be applied to the definition,
-			attribute names map to qualifier functions and the values are given as arguments to those functions
+    		See 'resolveDefinition' for more parameters and implementation.
+  */
+  define =
+    {
+      config,
+      template,
+      name,
+      /*
+        			A set of qualifiers to be applied to the definition,
+        			attribute names map to qualifier functions and the values are given as arguments to those functions
 
-			The attribute _meta.order can be used to specify in which order the qualifiers will be applied, otherwise the order is undefined.
-		*/
-		qualifiers ? {}, # { <qualifier> = { <arguments> }; }
-		...
-	}@input:
-	let
+        			The attribute _meta.order can be used to specify in which order the qualifiers will be applied, otherwise the order is undefined.
+      */
+      qualifiers ? { }, # { <qualifier> = { <arguments> }; }
+      ...
+    }@input:
+    let
 
-		order = 
-		if (qualifiers ? _meta) && (qualifiers._meta ? order)
-		then
-		(
-			lib.trivial.checkListOfEnum "Qualifiers" (builtins.attrNames moduleInput.qualifiers) qualifiers._meta.order qualifiers._meta.order
-		)
-		else (builtins.attrNames qualifiers);
+      order =
+        if (qualifiers ? _meta) && (qualifiers._meta ? order) then
+          (lib.trivial.checkListOfEnum "Qualifiers" (builtins.attrNames moduleInput.qualifiers)
+            qualifiers._meta.order
+            qualifiers._meta.order
+          )
+        else
+          (builtins.attrNames qualifiers);
 
-		orderedQualifiers = 
-		builtins.map
-		(
-			name: 
-				moduleInput.qualifiers."${name}" (qualifiers."${name}")
-		) order;
+      orderedQualifiers = builtins.map (
+        name: moduleInput.qualifiers."${name}" (qualifiers."${name}")
+      ) order;
 
-		qualifierExtends = 
-		builtins.concatLists
-		(
-			builtins.map
-			(
-				qualifier:
-					qualifier.extends
-			) orderedQualifiers
-		);
+      qualifierExtends = builtins.concatLists (
+        builtins.map (qualifier: qualifier.extends) orderedQualifiers
+      );
 
-		resolvedInput = 
-		utils.mergeAll
-		[
-			input
-			{
-				extends = qualifierExtends;
-			}
-		];
+      resolvedInput = utils.mergeAll [
+        input
+        {
+          extends = qualifierExtends;
+        }
+      ];
 
-		output = resolveDefinition resolvedInput;
+      output = resolveDefinition resolvedInput;
 
-		/*
-			Apply the qualifier functions to the resolved definition output in the defined (or not) order
-		*/
-		resolve = 
-		lib.lists.foldl 
-		(
-			data: qualifier: 
-			qualifier 
-			{
-				inherit config data;
-				identifier = { inherit name template; };
-			}
-		) output;
+      # Apply the qualifier functions to the resolved definition output in the defined (or not) order
+      resolve = lib.lists.foldl (
+        data: qualifier:
+        qualifier {
+          inherit config data;
+          identifier = { inherit name template; };
+        }
+      ) output;
 
-		result = resolve orderedQualifiers;
-	in
-		result;
+      result = resolve orderedQualifiers;
+    in
+    result;
 
 }

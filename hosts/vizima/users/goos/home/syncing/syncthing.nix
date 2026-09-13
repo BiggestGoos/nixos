@@ -1,63 +1,53 @@
 { szy, config, ... }:
 {
 
-	services.syncthing =
-	{
+  services.syncthing = {
 
-		enable = true;
+    enable = true;
 
-		settings =
-		{
+    settings = {
 
-			devices =
-			{
-				mahakam.id = config."${szy}".secrets.public.syncthing.mahakam.system;
-				kovir.id = config."${szy}".secrets.public.syncthing.kovir.goos;
-				novigrad.id = config."${szy}".secrets.public.syncthing.novigrad.goos;
-			};
+      devices = {
+        mahakam.id = config."${szy}".secrets.public.syncthing.mahakam.system;
+        kovir.id = config."${szy}".secrets.public.syncthing.kovir.goos;
+        novigrad.id = config."${szy}".secrets.public.syncthing.novigrad.goos;
+      };
 
-			folders =
-			{
-				
-				Documents =
-				{
-					devices =
-					[
-						"mahakam"
-						"kovir"
-						"novigrad"
-					];
-					id = "documents";
-					path = "~/Documents";
-				};
+      folders = {
 
-				Personal =
-				{
-					devices =
-					[
-						"mahakam"
-						"kovir"
-					];
-					id = "personal";
-					path = "~/Personal";
-				};
+        Documents = {
+          devices = [
+            "mahakam"
+            "kovir"
+            "novigrad"
+          ];
+          id = "documents";
+          path = "~/Documents";
+        };
 
-				Media =
-				{
-					devices =
-					[
-						"mahakam"
-						"kovir"
-						"novigrad"
-					];
-					id = "media";
-					path = "~/Media";
-				};
+        Personal = {
+          devices = [
+            "mahakam"
+            "kovir"
+          ];
+          id = "personal";
+          path = "~/Personal";
+        };
 
-			};
+        Media = {
+          devices = [
+            "mahakam"
+            "kovir"
+            "novigrad"
+          ];
+          id = "media";
+          path = "~/Media";
+        };
 
-		};
+      };
 
-	};
+    };
+
+  };
 
 }

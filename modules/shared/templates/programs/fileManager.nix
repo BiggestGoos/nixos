@@ -1,10 +1,18 @@
-{ szy, lib, config, pkgs, ... }:
-(szy config).objects.make.template
 {
-	
-	name = "fileManager";
-	namespace = [ "programs" ];
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+(szy config).objects.make.template {
 
-	inherits = [ "default" "application" ];
+  name = "fileManager";
+  namespace = [ "programs" ];
+
+  inherits = [
+    "default"
+    "application"
+  ];
 
 }

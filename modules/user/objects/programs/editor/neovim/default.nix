@@ -1,20 +1,28 @@
-{ szy, lib, config, pkgs, inputs, ... }:
-(szy config).objects.make
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
+(szy config).objects.make {
   name = "neovim";
   namespace = [ "programs" ];
 
-  inherits = [ [ "programs" "editor" ] ];
+  inherits = [
+    [
+      "programs"
+      "editor"
+    ]
+  ];
 
   constant.type = "cli";
 
-  variable = 
-  {
-    entry =
-    {
+  variable = {
+    entry = {
 
-      default =
-      {
+      default = {
         base.locator = "nvim";
       };
 
@@ -26,4 +34,3 @@
   output.imports = [ ./config ];
 
 }
-

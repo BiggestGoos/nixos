@@ -2,51 +2,46 @@
 let
   finalPackage = constant.program.package.final;
 in
-{ inputs, szy, lib, ... }:
-if inputs ? nixvim
-then
 {
-  imports =
-  [
-    inputs.nixvim.homeModules.nixvim 
-  ];
-
-  programs.nixvim =
-  enabled
+  inputs,
+  szy,
+  lib,
+  ...
+}:
+if inputs ? nixvim then
   {
-    enable = true;
-    package = finalPackage;
+    imports = [
+      inputs.nixvim.homeModules.nixvim
+    ];
 
-    imports = szy.lib.imports.propagate.recursive
-    {
-      arg = input // {
-        inherit szy;
+    programs.nixvim = enabled {
+      enable = true;
+      package = finalPackage;
+
+      imports = szy.lib.imports.propagate.recursive {
+        arg = input // {
+          inherit szy;
+        };
+        directory = ./nixvim;
       };
-      directory = ./nixvim;
     };
-  };
-}
+  }
 else
-(
-  enabled
-  {
+  (enabled {
 
-    programs.neovim =
-    {
+    programs.neovim = {
       enable = true;
 
       package = finalPackage;
 
-      extraConfig =
-''
-hi Normal ctermbg=none guibg=none
+      extraConfig = ''
+        hi Normal ctermbg=none guibg=none
 
-set number
+        set number
 
-set tabstop=2
-set shiftwidth=2
-'';
+        set tabstop=2
+        set shiftwidth=2
+      '';
     };
 
-  }
-)
+  })

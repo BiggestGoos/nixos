@@ -1,5 +1,5 @@
 {
 
-	flattenTree = (import ./flattenTree.nix);
+  flattenTree = (import ./flattenTree.nix);
 
 }

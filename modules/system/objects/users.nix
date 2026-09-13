@@ -1,4 +1,4 @@
 { szy, ... }:
 {
-	imports = szy.lib.imports.recursive szy.data.root.users;
+  imports = szy.lib.imports.recursive szy.data.root.users;
 }

@@ -1,18 +1,21 @@
-{ szy, lib, config, pkgs, ... }:
-(szy config).objects.make
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+(szy config).objects.make {
 
-	inherits = [ "gaming" ];
+  inherits = [ "gaming" ];
 
-	name = "gamescope";
-	namespace = [ "packages" ];
+  name = "gamescope";
+  namespace = [ "packages" ];
 
-	output.config = 
-	{
-		programs.gamescope = {
-			enable = true;
-		};	
-	};
+  output.config = {
+    programs.gamescope = {
+      enable = true;
+    };
+  };
 
 }
-

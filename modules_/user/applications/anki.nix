@@ -1,22 +1,30 @@
-{ szy, lib, osConfig, config, pkgs, ... }:
-szy.objects.define
 {
+  szy,
+  lib,
+  osConfig,
+  config,
+  pkgs,
+  ...
+}:
+szy.objects.define {
 
-	inherit config;
-	template = "application";
+  inherit config;
+  template = "application";
 
-	name = "anki";
+  name = "anki";
 
-	arguments = 
-	{
-		application.type = "gui";
-	};
+  arguments = {
+    application.type = "gui";
+  };
 
-	configuration = 
-	{ enabled, final, template }:
-	{
-		home.packages = [ final.data.package ];
-	};
+  configuration =
+    {
+      enabled,
+      final,
+      template,
+    }:
+    {
+      home.packages = [ final.data.package ];
+    };
 
 }
-

@@ -1,15 +1,13 @@
 {
 
-	networking =
-	{
-		firewall =
-		{
-			enable = true;
+  networking = {
+    firewall = {
+      enable = true;
 
-			backend = "nftables";
-		};
+      backend = "nftables";
+    };
 
-		nftables.enable = true;
-	};
+    nftables.enable = true;
+  };
 
 }

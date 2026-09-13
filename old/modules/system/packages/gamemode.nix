@@ -1,21 +1,29 @@
-{ szy, lib, config, pkgs, ... }:
-szy.objects.define
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+szy.objects.define {
 
-	inherit config;
-	template = "package";
-	extends = [ "gaming" ];
+  inherit config;
+  template = "package";
+  extends = [ "gaming" ];
 
-	name = "gamemode";
+  name = "gamemode";
 
-	configuration = 
-	{ enabled, final, template }:
-	{
-		programs.gamemode = {
-			enable = true;
-		};
-		"${szy}".users.types.groups.normal = [ "gamemode" ];
-	};
+  configuration =
+    {
+      enabled,
+      final,
+      template,
+    }:
+    {
+      programs.gamemode = {
+        enable = true;
+      };
+      "${szy}".users.types.groups.normal = [ "gamemode" ];
+    };
 
 }
-

@@ -1,110 +1,129 @@
-{ config, options, lib, nixpkgs, szy, ... }:
+{
+  config,
+  options,
+  lib,
+  nixpkgs,
+  szy,
+  ...
+}:
 let
 
-	userTypes = config."${options}".users.types.list;
+  userTypes = config."${options}".users.types.list;
 
 in
 {
 
-	mkUser = 
-	{ name, userType, shell ? null, extraGroups ? [], homeDirectory ? "/home", homeConfig ? null, configuration ? {}, imports ? [] }:
-	let
+  mkUser =
+    {
+      name,
+      userType,
+      shell ? null,
+      extraGroups ? [ ],
+      homeDirectory ? "/home",
+      homeConfig ? null,
+      configuration ? { },
+      imports ? [ ],
+    }:
+    let
 
-		isNormalUser = assert (builtins.elem userType userTypes); if (userType == "normal" || userType == "guest") then true else false;
+      isNormalUser =
+        assert (builtins.elem userType userTypes);
+        if (userType == "normal" || userType == "guest") then true else false;
 
-		groups = config."${options}".users.types.groups."${userType}";
-		userGroups = config."${options}".users.declared."${name}".groups.extra;
+      groups = config."${options}".users.types.groups."${userType}";
+      userGroups = config."${options}".users.declared."${name}".groups.extra;
 
-		getDefaultShell = applications: ((applications.default or {}).shell or {}).cli or null;
+      getDefaultShell = applications: ((applications.default or { }).shell or { }).cli or null;
 
-		systemDefault = getDefaultShell config."${options}".applications;
-		userDefault = getDefaultShell config.home-manager.users."${name}"."${options}".applications;
+      systemDefault = getDefaultShell config."${options}".applications;
+      userDefault = getDefaultShell config.home-manager.users."${name}"."${options}".applications;
 
-		resolvedShell = 
-		if (shell != null) 
-		then shell 
-		else if (userDefault != null)
-		then userDefault.package
-		else if (systemDefault != null)
-		then systemDefault.package
-		else nixpkgs.runtimeShell;
+      resolvedShell =
+        if (shell != null) then
+          shell
+        else if (userDefault != null) then
+          userDefault.package
+        else if (systemDefault != null) then
+          systemDefault.package
+        else
+          nixpkgs.runtimeShell;
 
-		resolvedHomeDirectory = "${homeDirectory}/${name}";
+      resolvedHomeDirectory = "${homeDirectory}/${name}";
 
-	in
-	{
-	
-		imports = szy.import.propogate {
+    in
+    {
 
-			inherit name;
+      imports = szy.import.propogate {
 
-			home = resolvedHomeDirectory;
+        inherit name;
 
-		} imports;
-	
-		config = {
+        home = resolvedHomeDirectory;
 
-			users.users."${name}" = {
+      } imports;
 
-				isNormalUser = isNormalUser;
-				isSystemUser = !isNormalUser;
+      config = {
 
-				extraGroups = groups ++ userGroups ++ extraGroups;
+        users.users."${name}" = {
 
-				shell = lib.mkIf (resolvedShell != null) resolvedShell;
+          isNormalUser = isNormalUser;
+          isSystemUser = !isNormalUser;
 
-				home = resolvedHomeDirectory;
+          extraGroups = groups ++ userGroups ++ extraGroups;
 
-			};
+          shell = lib.mkIf (resolvedShell != null) resolvedShell;
 
-			"${options}".users.homeManagerPaths."${name}".path = lib.mkIf (homeConfig != null) homeConfig;
+          home = resolvedHomeDirectory;
 
-			home-manager.users."${name}" = {
-				
-				home = {
-					username = name;
-					homeDirectory = resolvedHomeDirectory;
-				};
+        };
 
-			};
+        "${options}".users.homeManagerPaths."${name}".path = lib.mkIf (homeConfig != null) homeConfig;
 
-		};
+        home-manager.users."${name}" = {
 
-		options = {
+          home = {
+            username = name;
+            homeDirectory = resolvedHomeDirectory;
+          };
 
-			"${options}".users.declared."${name}" = {
+        };
 
-				type = lib.mkOption {
-					type = lib.types.enum userTypes;
-					readOnly = true;
-					default = userType;
-				};
+      };
 
-				shell = lib.mkOption {
-					type = lib.types.package;
-					readOnly = true;
-					default = resolvedShell;
-				};
+      options = {
 
-				groups = {
+        "${options}".users.declared."${name}" = {
 
-					extra = lib.mkOption {
-						type = lib.types.listOf lib.types.str;
-						default = [];
-					};
+          type = lib.mkOption {
+            type = lib.types.enum userTypes;
+            readOnly = true;
+            default = userType;
+          };
 
-					resolved = lib.mkOption {
-						type = lib.types.listOf lib.types.str;
-						readOnly = true;
-						default = [ config.users.users."${name}".group ] ++ config.users.users."${name}".extraGroups;
-					};
+          shell = lib.mkOption {
+            type = lib.types.package;
+            readOnly = true;
+            default = resolvedShell;
+          };
 
-				};
+          groups = {
 
-			};
+            extra = lib.mkOption {
+              type = lib.types.listOf lib.types.str;
+              default = [ ];
+            };
 
-		};
+            resolved = lib.mkOption {
+              type = lib.types.listOf lib.types.str;
+              readOnly = true;
+              default = [ config.users.users."${name}".group ] ++ config.users.users."${name}".extraGroups;
+            };
 
-	};
+          };
+
+        };
+
+      };
+
+    };
 
 }

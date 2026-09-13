@@ -1,10 +1,9 @@
 {
 
-	imports =
-	[
-		./gamescope.nix
-		./gamemode.nix
-		./nh.nix
-	];
+  imports = [
+    ./gamescope.nix
+    ./gamemode.nix
+    ./nh.nix
+  ];
 
 }

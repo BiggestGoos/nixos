@@ -1,23 +1,22 @@
 enabled:
 { lib, pkgs, ... }:
-enabled
-{
+enabled {
 
-	home.packages = [
-		pkgs.protonup-qt
-	];
+  home.packages = [
+    pkgs.protonup-qt
+  ];
 
-	programs.mangohud = {
+  programs.mangohud = {
 
-		enable = true;
+    enable = true;
 
-		settings = {
-			no_display = true;
+    settings = {
+      no_display = true;
 
-			gpu_temp = true;
-			cpu_temp = true;
-		};
+      gpu_temp = true;
+      cpu_temp = true;
+    };
 
-	};
+  };
 
 }

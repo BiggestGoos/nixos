@@ -1,36 +1,36 @@
 {
-	pkgs,
-	szy,
-	...
+  pkgs,
+  szy,
+  ...
 }:
 let
 
-	hostData = import ./hostData.nix { inherit szy; inherit (pkgs) lib; };
+  hostData = import ./hostData.nix {
+    inherit szy;
+    inherit (pkgs) lib;
+  };
 
-	generateInputs = pkgs.callPackage ./generateInputs.nix { inherit hostData; };
+  generateInputs = pkgs.callPackage ./generateInputs.nix { inherit hostData; };
 
-	outputs =
-	rec {
+  outputs = rec {
 
-		deployFlakeFile = pkgs.callPackage ./deployFlakeFile.nix { inherit hostData; };
+    deployFlakeFile = pkgs.callPackage ./deployFlakeFile.nix { inherit hostData; };
 
-		generateFlake = pkgs.callPackage ./generateFlake.nix { inherit hostData generateInputs; };
+    generateFlake = pkgs.callPackage ./generateFlake.nix { inherit hostData generateInputs; };
 
-		partition = pkgs.callPackage ./partition { inherit hostData; };
+    partition = pkgs.callPackage ./partition { inherit hostData; };
 
-		bootstrap = pkgs.mkShell
-		{
+    bootstrap = pkgs.mkShell {
 
-			packages =
-			[
-				deployFlakeFile
-				generateFlake
-				partition
-			];
+      packages = [
+        deployFlakeFile
+        generateFlake
+        partition
+      ];
 
-		};
+    };
 
-	};
+  };
 
 in
-	outputs
+outputs

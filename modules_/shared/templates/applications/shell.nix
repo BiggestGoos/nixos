@@ -1,23 +1,30 @@
-{ szy, lib, config, pkgs, ... }:
-szy.objects.declare
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+szy.objects.declare {
 
-	inherit config;
-	
-	name = "shell";
+  inherit config;
 
-	extends = [ "defaultApplication" "terminalApplication" ];
+  name = "shell";
 
-	defaultArguments =
-	{ final, template }:
-	{
+  extends = [
+    "defaultApplication"
+    "terminalApplication"
+  ];
 
-		program.arguments =
-		{
-			runCommand.required = true;
-			interactive.required = true;
-		};
+  defaultArguments =
+    { final, template }:
+    {
 
-	};
+      program.arguments = {
+        runCommand.required = true;
+        interactive.required = true;
+      };
+
+    };
 
 }

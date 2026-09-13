@@ -1,10 +1,14 @@
-{ szy, pkgs, config, ... }:
-szy.users.mkUser
 {
+  szy,
+  pkgs,
+  config,
+  ...
+}:
+szy.users.mkUser {
 
-	name = "goos";
-	userType = "normal";
+  name = "goos";
+  userType = "normal";
 
-	homeConfig = ./home;
+  homeConfig = ./home;
 
 }

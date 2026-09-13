@@ -1,10 +1,10 @@
 { szy, osConfig, ... }:
 {
 
-	imports = [
-		./gtk
-		./qt
-		./cursor
-	];
+  imports = [
+    ./gtk
+    ./qt
+    ./cursor
+  ];
 
 }

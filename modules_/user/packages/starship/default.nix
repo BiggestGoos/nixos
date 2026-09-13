@@ -1,34 +1,37 @@
-{ szy, lib, config, pkgs, ... }:
-szy.objects.define
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+szy.objects.define {
 
-	inherit config;
-	template = "package";
+  inherit config;
+  template = "package";
 
-	name = "starship";
+  name = "starship";
 
-	configuration = 
-	{
+  configuration = {
 
-		programs.starship = 
-		let
-			
-			shells = config."${szy}".applications.shell or {};
+    programs.starship =
+      let
 
-			shellEnabled = shell: (shells."${shell}" or { enabled = false; }).enabled;
+        shells = config."${szy}".applications.shell or { };
 
-		in
-		{
+        shellEnabled = shell: (shells."${shell}" or { enabled = false; }).enabled;
 
-			enable = true;
+      in
+      {
 
-			settings = import ./settings.nix { inherit lib; };
+        enable = true;
 
-			enableZshIntegration = shellEnabled "zsh";
+        settings = import ./settings.nix { inherit lib; };
 
-		};
+        enableZshIntegration = shellEnabled "zsh";
 
-	};
+      };
+
+  };
 
 }
-

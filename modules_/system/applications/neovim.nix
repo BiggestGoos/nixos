@@ -1,33 +1,41 @@
-{ szy, lib, config, pkgs, ... }:
-szy.objects.define
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+szy.objects.define {
 
-	inherit config;
-	template = "editor";
+  inherit config;
+  template = "editor";
 
-	name = "neovim";
+  name = "neovim";
 
-	arguments = 
-	{ final, template }:
-	{
+  arguments =
+    { final, template }:
+    {
 
-		application.type = "cli";
+      application.type = "cli";
 
-	};
+    };
 
-	configuration = 
-	{ enabled, final, template }:
-	{
+  configuration =
+    {
+      enabled,
+      final,
+      template,
+    }:
+    {
 
-		programs.neovim = {
+      programs.neovim = {
 
-			enable = true;
+        enable = true;
 
-			defaultEditor = template.data.default.cli.identifier == final.meta.identifier;
+        defaultEditor = template.data.default.cli.identifier == final.meta.identifier;
 
-		};	
+      };
 
-	};
+    };
 
 }
-

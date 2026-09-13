@@ -1,8 +1,13 @@
-{ lib, config, szy, ... }:
+{
+  lib,
+  config,
+  szy,
+  ...
+}:
 {
 
-	imports = [
-		(szy.utils.fromShared "users/user/programs/shell/zsh")
-	];
+  imports = [
+    (szy.utils.fromShared "users/user/programs/shell/zsh")
+  ];
 
 }

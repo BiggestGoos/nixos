@@ -1,45 +1,47 @@
-{ szy, lib, config, pkgs, system, systemConfig, ... }:
-szy.objects.declare
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  system,
+  systemConfig,
+  ...
+}:
+szy.objects.declare {
 
-	inherit config;
-	
-	name = "editor";
+  inherit config;
 
-	extends = [ "defaultApplication" ];
+  name = "editor";
 
-	configuration =
-	{ enabled, final }:
-	let
+  extends = [ "defaultApplication" ];
 
-		default = final.data.default.any.value;
-		defaultOpen = (default.data.commands.exec or default.data.commands.open).relative;
+  configuration =
+    { enabled, final }:
+    let
 
-		scriptName = "${szy}+defaultEditor";
-		script = pkgs.writeShellScriptBin scriptName
-''
-exec ${defaultOpen} "$@"
-'';
+      default = final.data.default.any.value;
+      defaultOpen = (default.data.commands.exec or default.data.commands.open).relative;
 
-	in
-	{
-		"${szy}" =
-		{
-			variables =
-			{
-				EDITOR = lib.mkDefault
-				{
-					value = scriptName;
-					override = "force";
-				};
-				VISUAL = lib.mkDefault
-				{
-					value = scriptName;
-					override = "force";
-				};
-			};
-			packages = [ script ];
-		};
-	};
+      scriptName = "${szy}+defaultEditor";
+      script = pkgs.writeShellScriptBin scriptName ''
+        exec ${defaultOpen} "$@"
+      '';
+
+    in
+    {
+      "${szy}" = {
+        variables = {
+          EDITOR = lib.mkDefault {
+            value = scriptName;
+            override = "force";
+          };
+          VISUAL = lib.mkDefault {
+            value = scriptName;
+            override = "force";
+          };
+        };
+        packages = [ script ];
+      };
+    };
 
 }

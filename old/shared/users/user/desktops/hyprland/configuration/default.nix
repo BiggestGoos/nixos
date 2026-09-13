@@ -1,19 +1,19 @@
 { ... }:
 {
 
-	imports = [
-		./style.nix
-		./binds.nix
-		./misc.nix
-		./devices.nix
-		./displays.nix
-	];
+  imports = [
+    ./style.nix
+    ./binds.nix
+    ./misc.nix
+    ./devices.nix
+    ./displays.nix
+  ];
 
-	wayland.windowManager.hyprland = {
+  wayland.windowManager.hyprland = {
 
-		enable = true;
-		systemd.enable = false;
+    enable = true;
+    systemd.enable = false;
 
-	};
+  };
 
 }

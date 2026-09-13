@@ -1,31 +1,39 @@
-{ szy, lib, config, pkgs, ... }:
-szy.objects.define
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+szy.objects.define {
 
-	inherit config;
-	template = "fileManager";
+  inherit config;
+  template = "fileManager";
 
-	name = "yazi";
+  name = "yazi";
 
-	arguments = 
-	{ final, template }:
-	{
+  arguments =
+    { final, template }:
+    {
 
-		application.type = "cli";
+      application.type = "cli";
 
-	};
+    };
 
-	configuration = 
-	{ enabled, final, template }:
-	{
+  configuration =
+    {
+      enabled,
+      final,
+      template,
+    }:
+    {
 
-		programs.yazi = {
+      programs.yazi = {
 
-			enable = true;
+        enable = true;
 
-		};	
+      };
 
-	};
+    };
 
 }
-

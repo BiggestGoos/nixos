@@ -1,24 +1,32 @@
-{ szy, lib, config, pkgs, ... }:
-(szy config).objects.make
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+(szy config).objects.make {
 
-	inherits = [ [ "programs" "fileManager" ] ];
+  inherits = [
+    [
+      "programs"
+      "fileManager"
+    ]
+  ];
 
-	name = "yazi";
-	namespace = [ "programs" ];
+  name = "yazi";
+  namespace = [ "programs" ];
 
-	constant.type = "cli";
+  constant.type = "cli";
 
-	output.config = 
-	{
+  output.config = {
 
-		programs.yazi = {
+    programs.yazi = {
 
-			enable = true;
+      enable = true;
 
-		};	
+    };
 
-	};
+  };
 
 }
-

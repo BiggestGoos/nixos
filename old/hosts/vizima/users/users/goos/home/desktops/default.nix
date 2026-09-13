@@ -1,6 +1,11 @@
-{ osConfig, szy, config, ... }:
 {
-	
-	imports = osConfig."${szy}".desktops.user.import ./.;
+  osConfig,
+  szy,
+  config,
+  ...
+}:
+{
+
+  imports = osConfig."${szy}".desktops.user.import ./.;
 
 }

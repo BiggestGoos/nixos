@@ -1,14 +1,18 @@
-{ szy, pkgs, config, ... }:
-szy.users.mkUser
-rec {
+{
+  szy,
+  pkgs,
+  config,
+  ...
+}:
+szy.users.mkUser rec {
 
-	name = "goos";
-	userType = "normal";
+  name = "goos";
+  userType = "normal";
 
-	homeConfig = ./home;
+  homeConfig = ./home;
 
-	imports = [
-		./hardware
-	];
+  imports = [
+    ./hardware
+  ];
 
 }

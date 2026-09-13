@@ -1,129 +1,116 @@
-{ szy, config, lib, ... }:
+{
+  szy,
+  config,
+  lib,
+  ...
+}:
 let
 
-	unrestricted = config.sync.baseDirectory + "/Unrestricted";
-	restricted = config.sync.baseDirectory + "/Restricted";
+  unrestricted = config.sync.baseDirectory + "/Unrestricted";
+  restricted = config.sync.baseDirectory + "/Restricted";
 
-	inherit (config.sync) user;
-	inherit (config.users.users."${user}") group;
+  inherit (config.sync) user;
+  inherit (config.users.users."${user}") group;
 
 in
 {
 
-	systemd.tmpfiles.settings."syncthing-directories" =
-	let
-		own = 
-		{
-			inherit user group;
-			mode = "0770";
-		};
-		value =
-		{
-			"d" = own;
-			"z" = own;
-		};
-	in
-	{
-		"${unrestricted}" = value;
-		"${restricted}" = value;
-	};
+  systemd.tmpfiles.settings."syncthing-directories" =
+    let
+      own = {
+        inherit user group;
+        mode = "0770";
+      };
+      value = {
+        "d" = own;
+        "z" = own;
+      };
+    in
+    {
+      "${unrestricted}" = value;
+      "${restricted}" = value;
+    };
 
-	services.syncthing =
-	{
+  services.syncthing = {
 
-		enable = true;
-		openDefaultPorts = true;
+    enable = true;
+    openDefaultPorts = true;
 
-		inherit user group;
-		
-		dataDir = config.users.users."${user}".home;
+    inherit user group;
 
-		settings =
-		{
-		 
-			devices =
-			{
+    dataDir = config.users.users."${user}".home;
 
-				kovir.id = config."${szy}".secrets.public.syncthing.kovir.goos;
-				vizima.id = config."${szy}".secrets.public.syncthing.vizima.goos;
-				novigrad.id = config."${szy}".secrets.public.syncthing.novigrad.goos;
+    settings = {
 
-			};
+      devices = {
 
-			folders =
-			{
+        kovir.id = config."${szy}".secrets.public.syncthing.kovir.goos;
+        vizima.id = config."${szy}".secrets.public.syncthing.vizima.goos;
+        novigrad.id = config."${szy}".secrets.public.syncthing.novigrad.goos;
 
-				Documents =
-				{
-					devices =
-					[
-						"kovir"
-						"novigrad"
-						"vizima"
-					];
-					id = "documents";
-					path = "${unrestricted}/Documents";
-				};
+      };
 
-				Personal =
-				{
-					devices =
-					[
-						"kovir"
-						"vizima"
-					];
-					id = "personal";
-					path = "${restricted}/Personal";
-				};
+      folders = {
 
-				Media =
-				{
-					devices =
-					[
-						"kovir"
-						"novigrad"
-						"vizima"
-					];
-					id = "media";
-					path = "${unrestricted}/Media";
-				};
+        Documents = {
+          devices = [
+            "kovir"
+            "novigrad"
+            "vizima"
+          ];
+          id = "documents";
+          path = "${unrestricted}/Documents";
+        };
 
-				# Only the camera part of media
-				Media_Camera =
-				{
-					devices =
-					[
-						"novigrad"
-					];
-					id = "media_camera";
-					path = "${unrestricted}/Media/Camera";
-				};
+        Personal = {
+          devices = [
+            "kovir"
+            "vizima"
+          ];
+          id = "personal";
+          path = "${restricted}/Personal";
+        };
 
-				Devices =
-				{
-					devices =
-					[
-						"novigrad"
-					];
-					id = "devices";
-					path = "${unrestricted}/Devices";
-				};
+        Media = {
+          devices = [
+            "kovir"
+            "novigrad"
+            "vizima"
+          ];
+          id = "media";
+          path = "${unrestricted}/Media";
+        };
 
-				Games_Emulation_GBA =
-				{
-					devices =
-					[
-						"novigrad"
-						"kovir"
-					];
-					id = "games_emulation_gba";
-					path = "${unrestricted}/Games/Emulation/GBA";
-				};
+        # Only the camera part of media
+        Media_Camera = {
+          devices = [
+            "novigrad"
+          ];
+          id = "media_camera";
+          path = "${unrestricted}/Media/Camera";
+        };
 
-			};
+        Devices = {
+          devices = [
+            "novigrad"
+          ];
+          id = "devices";
+          path = "${unrestricted}/Devices";
+        };
 
-		};
+        Games_Emulation_GBA = {
+          devices = [
+            "novigrad"
+            "kovir"
+          ];
+          id = "games_emulation_gba";
+          path = "${unrestricted}/Games/Emulation/GBA";
+        };
 
-	};
+      };
+
+    };
+
+  };
 
 }

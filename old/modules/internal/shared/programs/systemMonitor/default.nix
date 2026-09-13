@@ -1,14 +1,13 @@
 { szy, config, ... }:
-szy.programs.mkProgram
-{
+szy.programs.mkProgram {
 
-	inherit config;
-	name = "systemMonitor";
+  inherit config;
+  name = "systemMonitor";
 
-	additionalValues = [
-		"commandGraphical"
-	];
+  additionalValues = [
+    "commandGraphical"
+  ];
 
-	guiAndCli = true;
+  guiAndCli = true;
 
 }

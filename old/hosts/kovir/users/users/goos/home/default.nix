@@ -1,16 +1,23 @@
-{ config, pkgs, lib, szy, osConfig, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  szy,
+  osConfig,
+  ...
+}:
 {
 
-	imports = [
-		./desktops
-		./programs
-	#	./sync
+  imports = [
+    ./desktops
+    ./programs
+    #	./sync
 
-	#	./shells/Tilia-dev
+    #	./shells/Tilia-dev
 
-	#	./steamTest.nix
-	];	
-	
-	home.stateVersion = "26.05";
+    #	./steamTest.nix
+  ];
+
+  home.stateVersion = "26.05";
 
 }

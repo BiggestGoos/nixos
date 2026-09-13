@@ -1,11 +1,11 @@
 { ... }:
 {
 
-	hardware.graphics = {
+  hardware.graphics = {
 
-		enable = true;
-		enable32Bit = true;
+    enable = true;
+    enable32Bit = true;
 
-	};
+  };
 
 }

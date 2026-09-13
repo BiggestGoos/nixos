@@ -1,9 +1,8 @@
 {
 
-	imports =
-	[
-		./steam.nix
-		./lutris.nix
-	];
+  imports = [
+    ./steam.nix
+    ./lutris.nix
+  ];
 
 }

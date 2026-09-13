@@ -1,11 +1,10 @@
 {
 
-	imports =
-	[
-		./defaultDefinition.nix
-		./package.nix
-		./desktopEntry
-		./commands.nix
-	];
+  imports = [
+    ./defaultDefinition.nix
+    ./package.nix
+    ./desktopEntry
+    ./commands.nix
+  ];
 
 }

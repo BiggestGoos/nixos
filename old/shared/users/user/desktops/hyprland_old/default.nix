@@ -1,11 +1,11 @@
 { ... }:
 {
 
-	imports = [
-		./configuration
-		./uwsm
-		./programs
-		./themes
-	];
+  imports = [
+    ./configuration
+    ./uwsm
+    ./programs
+    ./themes
+  ];
 
 }

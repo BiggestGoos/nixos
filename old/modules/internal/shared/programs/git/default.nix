@@ -1,19 +1,22 @@
-{ lib, szy, config, ... }:
-szy.programs.mkProgram
 {
+  lib,
+  szy,
+  config,
+  ...
+}:
+szy.programs.mkProgram {
 
-	inherit config;
-	name = "git";
+  inherit config;
+  name = "git";
 
-	singleInstance = true;
+  singleInstance = true;
 
-	configuration = 
-	{ enabled, ... }:
-	lib.mkIf (enabled)
-	{
+  configuration =
+    { enabled, ... }:
+    lib.mkIf (enabled) {
 
-		programs.git.enable = true;
+      programs.git.enable = true;
 
-	};
+    };
 
 }

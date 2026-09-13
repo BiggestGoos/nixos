@@ -1,23 +1,26 @@
-{ config, szy, pkgs, lib, ... }:
 {
-	
-	programs = 
-	{
+  config,
+  szy,
+  pkgs,
+  lib,
+  ...
+}:
+{
 
-		hyprland = 
-		{
-			enable = true;
-			withUWSM = true;
-		};
+  programs = {
 
-		uwsm.enable = true;
+    hyprland = {
+      enable = true;
+      withUWSM = true;
+    };
 
-	};
-	
-	imports = 
-	[
-		./displayManager.nix
-		./xdgPortal.nix
-	];
+    uwsm.enable = true;
+
+  };
+
+  imports = [
+    ./displayManager.nix
+    ./xdgPortal.nix
+  ];
 
 }

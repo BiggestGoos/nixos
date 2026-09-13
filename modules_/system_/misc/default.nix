@@ -1,12 +1,12 @@
 { ... }:
 {
 
-	imports = [
-		./management
-		./nix
-		./timeZone
-		./locale
-		./boot
-	];
+  imports = [
+    ./management
+    ./nix
+    ./timeZone
+    ./locale
+    ./boot
+  ];
 
 }

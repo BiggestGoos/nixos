@@ -1,34 +1,49 @@
-{ szy, lib, osConfig, config, pkgs, ... }:
-szy.objects.define
 {
+  szy,
+  lib,
+  osConfig,
+  config,
+  pkgs,
+  ...
+}:
+szy.objects.define {
 
-	inherit config;
-	template = "gameLauncher";
+  inherit config;
+  template = "gameLauncher";
 
-	name = "steam";
+  name = "steam";
 
-	arguments = 
-	let
+  arguments =
+    let
 
-		systemSteam = szy.objects.helper.definition.get { config = osConfig; identifier = { name = "steam"; template = "application"; }; };
+      systemSteam = szy.objects.helper.definition.get {
+        config = osConfig;
+        identifier = {
+          name = "steam";
+          template = "application";
+        };
+      };
 
-	in
-	{
+    in
+    {
 
-		package = systemSteam.data.package;
-		enable = lib.mkIf (!systemSteam.data.enabled) (lib.mkForce false);
+      package = systemSteam.data.package;
+      enable = lib.mkIf (!systemSteam.data.enabled) (lib.mkForce false);
 
-		application.type = "gui";
+      application.type = "gui";
 
-	};
+    };
 
-	configuration = 
-	{ enabled, final, template }:
-	{
+  configuration =
+    {
+      enabled,
+      final,
+      template,
+    }:
+    {
 
-		home.packages = [ final.data.package ];
+      home.packages = [ final.data.package ];
 
-	};
+    };
 
 }
-

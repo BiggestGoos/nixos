@@ -1,47 +1,53 @@
 variant:
-{ lib, config, szy, ... }:
+{
+  lib,
+  config,
+  szy,
+  ...
+}:
 let
 
-	variables = {
+  variables = {
 
-		NIXOS_OZONE_WL = "1";
+    NIXOS_OZONE_WL = "1";
 
-		# Toolkits use wayland
-		GDK_BACKEND = "wayland,x11,*";
-		QT_QPA_PLATFORM = "wayland;xcb";
-		SDL_VIDEODRIVER = "wayland";
-		CLUTTER_BACKEND = "wayland";
+    # Toolkits use wayland
+    GDK_BACKEND = "wayland,x11,*";
+    QT_QPA_PLATFORM = "wayland;xcb";
+    SDL_VIDEODRIVER = "wayland";
+    CLUTTER_BACKEND = "wayland";
 
-		# Qt
-		QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+    # Qt
+    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
 
-		# Electron
-		ELECTRON_OZONE_PLATFORM_HINT = "auto";
+    # Electron
+    ELECTRON_OZONE_PLATFORM_HINT = "auto";
 
-	};
+  };
 
-	enabledFor = config."${szy}".desktops.components.wayland.variables.enabledFor;
+  enabledFor = config."${szy}".desktops.components.wayland.variables.enabledFor;
 
 in
 {
 
-	options."${szy}".desktops.components.wayland.variables.enabledFor = lib.mkOption { 
-		type = lib.types.listOf (lib.types.enum config."${szy}".desktops.available);
-		default = [];
-	};
+  options."${szy}".desktops.components.wayland.variables.enabledFor = lib.mkOption {
+    type = lib.types.listOf (lib.types.enum config."${szy}".desktops.available);
+    default = [ ];
+  };
 
-	config."${szy}".desktops = { 
+  config."${szy}".desktops = {
 
-		components.variables.variables = lib.mkIf variant.enabled (builtins.listToAttrs (builtins.map 
-		(desktop: 
-		{
-			name = desktop;
-			value = variables;
-		}
-		) enabledFor));
+    components.variables.variables = lib.mkIf variant.enabled (
+      builtins.listToAttrs (
+        builtins.map (desktop: {
+          name = desktop;
+          value = variables;
+        }) enabledFor
+      )
+    );
 
-		variants.enabled = lib.mkIf (enabledFor != []) [ "wayland" ];
+    variants.enabled = lib.mkIf (enabledFor != [ ]) [ "wayland" ];
 
-	};
+  };
 
 }

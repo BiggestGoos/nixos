@@ -1,34 +1,42 @@
-{ szy, lib, config, pkgs, ... }:
-szy.objects.define
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+szy.objects.define {
 
-	inherit config;
-	template = "editor";
-	extends = [ "terminalApplication" ];
+  inherit config;
+  template = "editor";
+  extends = [ "terminalApplication" ];
 
-	name = "helix";
+  name = "helix";
 
-	arguments =
-	{ final, template }:
-	{
-	
-		desktopEntry.default.base.path = "Helix";
+  arguments =
+    { final, template }:
+    {
 
-	};
+      desktopEntry.default.base.path = "Helix";
 
-	configuration = 
-	{ enabled, final, template }:
-	{
+    };
 
-		programs.helix = {
+  configuration =
+    {
+      enabled,
+      final,
+      template,
+    }:
+    {
 
-			enable = true;
+      programs.helix = {
 
-			defaultEditor = template.data.default.cli.identifier == final.meta.identifier;
+        enable = true;
 
-		};
+        defaultEditor = template.data.default.cli.identifier == final.meta.identifier;
 
-	};
+      };
+
+    };
 
 }
-

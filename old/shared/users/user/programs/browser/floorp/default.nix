@@ -1,52 +1,56 @@
-{ szy, lib, config, pkgs, ... }:
-let
-	package = pkgs.floorp-bin;
-in
-szy.programs.mkInstance
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+let
+  package = pkgs.floorp-bin;
+in
+szy.programs.mkInstance {
 
-	inherit config;
-	program = "browser";
-	name = "floorp";
+  inherit config;
+  program = "browser";
+  name = "floorp";
 
-	values = 
-	{ finalCommand, ... }:
-	{
-		inherit package;
-		desktopEntry = "floorp.desktop";
-		search = "${finalCommand} --search";
-	};
+  values =
+    { finalCommand, ... }:
+    {
+      inherit package;
+      desktopEntry = "floorp.desktop";
+      search = "${finalCommand} --search";
+    };
 
-	configuration = 
-	{ enabled, optionKeys, ... }:
-	szy.themes.mkThemed
-	{
+  configuration =
+    { enabled, optionKeys, ... }:
+    szy.themes.mkThemed {
 
-		path = ./.;
-		inherit config enabled;
+      path = ./.;
+      inherit config enabled;
 
-		option = optionKeys;
+      option = optionKeys;
 
-		themes = [ "default" ];
-		defaultTheme = "default";
+      themes = [ "default" ];
+      defaultTheme = "default";
 
-		configuration = {
+      configuration = {
 
-			programs.floorp = {
+        programs.floorp = {
 
-				enable = true;
+          enable = true;
 
-				profiles."${config.home.username}" = {
+          profiles."${config.home.username}" = {
 
-					id = 0;
-					isDefault = true;
+            id = 0;
+            isDefault = true;
 
-				};
+          };
 
-			};
+        };
 
-		};
+      };
 
-	};
+    };
 
 }

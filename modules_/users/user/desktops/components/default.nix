@@ -1,9 +1,9 @@
 { ... }:
 {
 
-	imports = [
-		./actions
-		./variables
-	];
+  imports = [
+    ./actions
+    ./variables
+  ];
 
 }

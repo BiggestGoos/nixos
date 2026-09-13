@@ -1,58 +1,65 @@
 enabled:
-{ szy, inputs, hostname, config, lib, pkgs, ... }:
+{
+  szy,
+  inputs,
+  hostname,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
 
-	imports = enabled
-	[
-		./optimizations.nix
-		./styling.nix
-	];
-	
-	programs.floorp = enabled {
+  imports = enabled [
+    ./optimizations.nix
+    ./styling.nix
+  ];
 
-		languagePacks = [
-			"en-US"
-			"sv-SE"
-		];
+  programs.floorp = enabled {
 
-		profiles."${config.home.username}" = {
+    languagePacks = [
+      "en-US"
+      "sv-SE"
+    ];
 
-			settings = {
+    profiles."${config.home.username}" = {
 
-				"identity.fxaccounts.account.device.name" = szy.utils.hostname;
-				"identity.fxaccounts.enabled" = true;
+      settings = {
 
-				"middlemouse.paste" = false;
-				"general.autoScroll" = true;
-				"apz.overscroll.enabled" = false;
-				# Scrollspeed with trackpad
-				"mousewheel.default.delta_multiplier_y" = 250;
+        "identity.fxaccounts.account.device.name" = szy.utils.hostname;
+        "identity.fxaccounts.enabled" = true;
 
-				"toolkit.tabbox.switchByScrolling" = true;
+        "middlemouse.paste" = false;
+        "general.autoScroll" = true;
+        "apz.overscroll.enabled" = false;
+        # Scrollspeed with trackpad
+        "mousewheel.default.delta_multiplier_y" = 250;
 
-				"media.autoplay.blocking_policy" = 0;
+        "toolkit.tabbox.switchByScrolling" = true;
 
-				"privacy.resistFingerprinting" = true;
+        "media.autoplay.blocking_policy" = 0;
 
-				"privacy.clearOnShutdown.cookies" = false;
-				"privacy.clearOnShutdown.history" = false;
-				"privacy.clearOnShutdown_v2.browsingHistoryAndDownloads" = false;
-				"privacy.clearOnShutdown_v2.cookiesAndStorage" = false;
-				"privacy.clearOnShutdown_v2.history" = false;
+        "privacy.resistFingerprinting" = true;
 
-				"browser.translations.automaticallyPopup" = false;
-				"browser.translations.neverTranslateLanguages" = "sv"; # E.g. "sv,fi,..."
+        "privacy.clearOnShutdown.cookies" = false;
+        "privacy.clearOnShutdown.history" = false;
+        "privacy.clearOnShutdown_v2.browsingHistoryAndDownloads" = false;
+        "privacy.clearOnShutdown_v2.cookiesAndStorage" = false;
+        "privacy.clearOnShutdown_v2.history" = false;
 
-				"floorp.workspaces.enabled" = false;
+        "browser.translations.automaticallyPopup" = false;
+        "browser.translations.neverTranslateLanguages" = "sv"; # E.g. "sv,fi,..."
 
-				"browser.tabs.closeWindowWithLastTab" = false;
+        "floorp.workspaces.enabled" = false;
 
-			};
+        "browser.tabs.closeWindowWithLastTab" = false;
 
-		};
+      };
 
-		# Set custom keybinds: https://superuser.com/a/1747680
+    };
 
-	};
+    # Set custom keybinds: https://superuser.com/a/1747680
+
+  };
 
 }

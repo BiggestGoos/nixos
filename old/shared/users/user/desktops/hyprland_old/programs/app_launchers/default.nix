@@ -1,8 +1,8 @@
 { ... }:
 {
 
-	imports = [
-		./rofi
-	];
+  imports = [
+    ./rofi
+  ];
 
 }

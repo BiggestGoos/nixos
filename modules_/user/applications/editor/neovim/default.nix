@@ -1,54 +1,58 @@
-{ szy, lib, config, pkgs, ... }:
-szy.objects.define
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+szy.objects.define {
 
-	inherit config;
-	template = "editor";
-	extends = [ "terminalApplication" ];
+  inherit config;
+  template = "editor";
+  extends = [ "terminalApplication" ];
 
-	name = "neovim";
+  name = "neovim";
 
-	arguments = 
-	{ final, template }:
-	{
-		desktopEntry =
-		{
+  arguments =
+    { final, template }:
+    {
+      desktopEntry = {
 
-			default =
-			{
-				base.path = "nvim";
-				overrides.desktopName = "Neovim";
-			};
+        default = {
+          base.path = "nvim";
+          overrides.desktopName = "Neovim";
+        };
 
-		};
-	};
+      };
+    };
 
-	configuration = 
-	{ enabled, final, template }:
-	{
+  configuration =
+    {
+      enabled,
+      final,
+      template,
+    }:
+    {
 
-		
+      programs.neovim = {
 
-		programs.neovim = {
+        enable = true;
 
-			enable = true;
+        extraConfig = ''
+          		
+          				hi Normal ctermbg=none guibg=none
 
-			extraConfig = ''
-		
-				hi Normal ctermbg=none guibg=none
+          				set number
 
-				set number
+          				set tabstop=4
+          				set shiftwidth=4
 
-				set tabstop=4
-				set shiftwidth=4
+          			'';
 
-			'';
+        defaultEditor = template.data.default.cli.identifier == final.meta.identifier;
 
-			defaultEditor = template.data.default.cli.identifier == final.meta.identifier;
+      };
 
-		};
-
-	};
+    };
 
 }
-

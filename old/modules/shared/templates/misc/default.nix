@@ -1,8 +1,7 @@
 {
 
-	imports =
-	[
-		./gaming.nix
-	];
+  imports = [
+    ./gaming.nix
+  ];
 
 }

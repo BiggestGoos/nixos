@@ -1,34 +1,43 @@
-{ szy, lib, config, pkgs, ... }:
-(szy config).objects.make
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+(szy config).objects.make {
 
-	inherits = [ [ "programs" "shell" ] ];
+  inherits = [
+    [
+      "programs"
+      "shell"
+    ]
+  ];
 
-	name = "zsh";
-	namespace = [ "programs" ];
+  name = "zsh";
+  namespace = [ "programs" ];
 
-	/*variable = 
-	{
+  /*
+    variable =
+    	{
 
-		program.arguments =
-		{
-			runCommand.args = [ "-c" ];
-			interactive.args = [ "-i" ];
-		};
+    		program.arguments =
+    		{
+    			runCommand.args = [ "-c" ];
+    			interactive.args = [ "-i" ];
+    		};
 
-	};*/
+    	};
+  */
 
-	constant.type = "cli";
+  constant.type = "cli";
 
-	output.config = 
-	{
+  output.config = {
 
-		programs.zsh = 
-		{
-			enable = true;
-		};	
+    programs.zsh = {
+      enable = true;
+    };
 
-	};
+  };
 
 }
-

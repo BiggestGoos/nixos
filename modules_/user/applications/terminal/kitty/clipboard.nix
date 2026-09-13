@@ -1,24 +1,28 @@
 enabled:
-{ szy, config, lib, ... }:
+{
+  szy,
+  config,
+  lib,
+  ...
+}:
 let
 
-	clipboardMod = "ctrl+shift+";
+  clipboardMod = "ctrl+shift+";
 
-	keybindings = {
+  keybindings = {
 
-		"${clipboardMod}c" = "copy_to_clipboard";
-		"${clipboardMod}v" = "paste_from_clipboard";
+    "${clipboardMod}c" = "copy_to_clipboard";
+    "${clipboardMod}v" = "paste_from_clipboard";
 
-	};
+  };
 
 in
-enabled
-{
+enabled {
 
-	programs.kitty = {
+  programs.kitty = {
 
-		inherit keybindings;
+    inherit keybindings;
 
-	};
+  };
 
 }

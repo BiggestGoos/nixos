@@ -1,34 +1,36 @@
-{ lib, config, szy, ... }:
+{
+  lib,
+  config,
+  szy,
+  ...
+}:
 {
 
-	"${szy}".objects.editor =
-	{
+  "${szy}".objects.editor = {
 
-		data =
-		{
-			default.any.identifier.name = "neovim";
-			default.cli.identifier.name = "neovim";
-		};
+    data = {
+      default.any.identifier.name = "neovim";
+      default.cli.identifier.name = "neovim";
+    };
 
-		definitions =
-		{
+    definitions = {
 
-			neovim.data =
-			{
-				enable = true;
-			};
+      neovim.data = {
+        enable = true;
+      };
 
-			helix.data =
-			{
-					enable = true;
-			};
+      helix.data = {
+        enable = true;
+      };
 
-		};
+    };
 
-	};
+  };
 
-	/*imports = [
-		(szy.utils.fromShared "users/user/programs/editor/neovim")
-	];*/
+  /*
+    imports = [
+    		(szy.utils.fromShared "users/user/programs/editor/neovim")
+    	];
+  */
 
 }

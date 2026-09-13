@@ -1,10 +1,10 @@
 { ... }:
 {
 
-	imports = [
-		./storage
-		./networking
-		./graphics
-	];
+  imports = [
+    ./storage
+    ./networking
+    ./graphics
+  ];
 
 }

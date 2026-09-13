@@ -1,37 +1,40 @@
-{ lib, szy, config, ... }@inputs:
+{
+  lib,
+  szy,
+  config,
+  ...
+}@inputs:
 let
 
-	homeManaged = builtins.hasAttr "osConfig" inputs;
-	osConfig = inputs.osConfig or {};
+  homeManaged = builtins.hasAttr "osConfig" inputs;
+  osConfig = inputs.osConfig or { };
 
 in
 {
 
-	imports = [
-		(szy.programs.mkProgram
-		{
+  imports = [
+    (szy.programs.mkProgram {
 
-			inherit config;
-			name = "steam";
+      inherit config;
+      name = "steam";
 
-			singleInstance = true;
+      singleInstance = true;
 
-			additionalValues = 
-			[
-				"autostart"
-				"shutdown"
-				"bigPictureArgument"
-				"silentArgument"
-				"chooseUserArgument"
-			];
+      additionalValues = [
+        "autostart"
+        "shutdown"
+        "bigPictureArgument"
+        "silentArgument"
+        "chooseUserArgument"
+      ];
 
-		})
-	];
+    })
+  ];
 
-	config = lib.mkIf (homeManaged) {
+  config = lib.mkIf (homeManaged) {
 
-		"${szy}".programs.steam.enabled = lib.mkForce osConfig."${szy}".programs.steam.enabled;
+    "${szy}".programs.steam.enabled = lib.mkForce osConfig."${szy}".programs.steam.enabled;
 
-	};
+  };
 
 }

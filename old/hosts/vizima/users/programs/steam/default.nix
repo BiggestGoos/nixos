@@ -1,8 +1,13 @@
-{ lib, config, szy, ... }:
+{
+  lib,
+  config,
+  szy,
+  ...
+}:
 {
 
-	imports = [
-		(szy.utils.fromShared "users/programs/steam")
-	];
+  imports = [
+    (szy.utils.fromShared "users/programs/steam")
+  ];
 
 }

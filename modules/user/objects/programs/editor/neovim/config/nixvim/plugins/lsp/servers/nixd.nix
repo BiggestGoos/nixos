@@ -7,7 +7,7 @@
 
     config.settings.nixd = {
 
-      nixpkgs.expr = ''import (builtins.getFlake ${szy.data.flake.root}).inputs.nixpkgs { }'';
+      nixpkgs.expr = "import (builtins.getFlake ${szy.data.flake.root}).inputs.nixpkgs { }";
 
       options = {
 

@@ -1,24 +1,31 @@
-{ szy, lib, config, pkgs, ... }:
-(szy config).objects.make
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+(szy config).objects.make {
 
-	inherits = [ [ "programs" "fileManager" ] ];
-	#extends = [ "terminalApplication" ];
+  inherits = [
+    [
+      "programs"
+      "fileManager"
+    ]
+  ];
+  #extends = [ "terminalApplication" ];
 
-	name = "ranger";
-	namespace = [ "programs" ];
+  name = "ranger";
+  namespace = [ "programs" ];
 
-	constant.type = "cli";
+  constant.type = "cli";
 
-	output.config = 
-	{
+  output.config = {
 
-		programs.ranger = 
-		{
-			enable = true;
-		};	
+    programs.ranger = {
+      enable = true;
+    };
 
-	};
+  };
 
 }
-

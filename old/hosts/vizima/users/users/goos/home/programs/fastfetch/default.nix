@@ -1,8 +1,13 @@
-{ lib, config, szy, ... }:
+{
+  lib,
+  config,
+  szy,
+  ...
+}:
 {
 
-	imports = [
-		(szy.utils.fromShared "users/user/programs/fastfetch")
-	];
+  imports = [
+    (szy.utils.fromShared "users/user/programs/fastfetch")
+  ];
 
 }

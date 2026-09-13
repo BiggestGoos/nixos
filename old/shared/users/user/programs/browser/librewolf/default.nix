@@ -1,52 +1,56 @@
-{ szy, lib, config, pkgs, ... }:
-let
-	package = pkgs.librewolf;
-in
-szy.programs.mkInstance
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+let
+  package = pkgs.librewolf;
+in
+szy.programs.mkInstance {
 
-	inherit config;
-	program = "browser";
-	name = "librewolf";
+  inherit config;
+  program = "browser";
+  name = "librewolf";
 
-	values = 
-	{ finalCommand, ... }:
-	{
-		inherit package;
-		desktopEntry = "librewolf.desktop";
-		search = "${finalCommand} --search";
-	};
+  values =
+    { finalCommand, ... }:
+    {
+      inherit package;
+      desktopEntry = "librewolf.desktop";
+      search = "${finalCommand} --search";
+    };
 
-	configuration = 
-	{ enabled, optionKeys, ... }:
-	szy.themes.mkThemed
-	{
+  configuration =
+    { enabled, optionKeys, ... }:
+    szy.themes.mkThemed {
 
-		path = ./.;
-		inherit config enabled;
+      path = ./.;
+      inherit config enabled;
 
-		option = optionKeys;
+      option = optionKeys;
 
-		themes = [ "default" ];
-		defaultTheme = "default";
+      themes = [ "default" ];
+      defaultTheme = "default";
 
-		configuration = {
+      configuration = {
 
-			programs.librewolf = {
+        programs.librewolf = {
 
-				enable = true;
+          enable = true;
 
-				profiles."${config.home.username}" = {
+          profiles."${config.home.username}" = {
 
-					id = 0;
-					isDefault = true;
+            id = 0;
+            isDefault = true;
 
-				};
+          };
 
-			};
+        };
 
-		};
+      };
 
-	};
+    };
 
 }

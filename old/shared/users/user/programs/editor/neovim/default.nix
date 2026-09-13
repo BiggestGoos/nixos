@@ -1,48 +1,51 @@
-{ szy, lib, config, pkgs, ... }:
-let
-	package = pkgs.neovim;
-	terminal = config."${szy}".programs.terminal.default.values.runProgram;
-in
-szy.programs.mkInstance
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+let
+  package = pkgs.neovim;
+  terminal = config."${szy}".programs.terminal.default.values.runProgram;
+in
+szy.programs.mkInstance {
 
-	inherit config;
-	program = "editor";
-	name = "neovim";
+  inherit config;
+  program = "editor";
+  name = "neovim";
 
-	values = 
-	{ finalCommand, ... }:
-	{
-		inherit package;
-		commandGraphical = "${terminal} ${finalCommand}";
-		isGraphical = false;
-	};
+  values =
+    { finalCommand, ... }:
+    {
+      inherit package;
+      commandGraphical = "${terminal} ${finalCommand}";
+      isGraphical = false;
+    };
 
-	configuration = 
-	{ enabled, default, ... }:
-	lib.mkIf (enabled)
-	{
+  configuration =
+    { enabled, default, ... }:
+    lib.mkIf (enabled) {
 
-		programs.neovim = {
+      programs.neovim = {
 
-			enable = true;
+        enable = true;
 
-			extraConfig = ''
-		
-				hi Normal ctermbg=none guibg=none
+        extraConfig = ''
+          		
+          				hi Normal ctermbg=none guibg=none
 
-				set number
+          				set number
 
-				set tabstop=4
-				set shiftwidth=4
+          				set tabstop=4
+          				set shiftwidth=4
 
-			'';
+          			'';
 
-			defaultEditor = default;
+        defaultEditor = default;
 
-		};	
+      };
 
-	};
+    };
 
 }
-

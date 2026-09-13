@@ -1,9 +1,9 @@
 { pkgs, ... }:
 {
 
-	imports = [
-		./misc.nix
-		./batsignal.nix
-	];
+  imports = [
+    ./misc.nix
+    ./batsignal.nix
+  ];
 
 }

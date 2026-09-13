@@ -1,37 +1,43 @@
-{ szy, lib, config, pkgs, ... }:
-(szy config).objects.make
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+(szy config).objects.make {
 
-	inherits = [ "application" "gaming" ];
+  inherits = [
+    "application"
+    "gaming"
+  ];
 
-	name = "steam";
-	namespace = [ "programs" ];
+  name = "steam";
+  namespace = [ "programs" ];
 
-	constant.type = "gui";
-	variable.program.package.input = pkgs.steam;
+  constant.type = "gui";
+  variable.program.package.input = pkgs.steam;
 
-	output.config =
-	{ constant, ... }:
-	{
+  output.config =
+    { constant, ... }:
+    {
 
-		programs.steam = 
-		{
-		
-			enable = true;
+      programs.steam = {
 
-			package = constant.program.package.final;
-			
-			remotePlay.openFirewall = true;
+        enable = true;
 
-			#extest.enable = true;
+        package = constant.program.package.final;
 
-			extraCompatPackages = [
-				pkgs.proton-ge-bin
-			];
+        remotePlay.openFirewall = true;
 
-		};
+        #extest.enable = true;
 
-	};
+        extraCompatPackages = [
+          pkgs.proton-ge-bin
+        ];
+
+      };
+
+    };
 
 }
-

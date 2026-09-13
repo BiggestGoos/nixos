@@ -1,37 +1,35 @@
 { config, szy, ... }@args:
 let
-	configDir = "uwsm";
-	configHomeDir = "${config.xdg.configHome}/${configDir}";
+  configDir = "uwsm";
+  configHomeDir = "${config.xdg.configHome}/${configDir}";
 in
 {
-	
-	home.file."${configHomeDir}/env" = {
-		text = 
-		''
-		
-			# Uwsm environment
 
-			export XDG_CURRENT_DESKTOP=Hyprland
+  home.file."${configHomeDir}/env" = {
+    text = ''
+      		
+      			# Uwsm environment
 
-			# Cursor
-			export XCURSOR_SIZE=24
+      			export XDG_CURRENT_DESKTOP=Hyprland
 
-			# Steam
-			export STEAM_FORCE_DESKTOPUI_SCALING=1.25
-		'';
-		
-	};
+      			# Cursor
+      			export XCURSOR_SIZE=24
 
-	home.file."${configHomeDir}/env-hyprland" = {
-		text = 
-		''
-			
-			# Uwsm environment hyprland
+      			# Steam
+      			export STEAM_FORCE_DESKTOPUI_SCALING=1.25
+      		'';
 
-			# Cursor
-			export HYPRCURSOR_SIZE=24
+  };
 
-		'';
-	};
+  home.file."${configHomeDir}/env-hyprland" = {
+    text = ''
+      			
+      			# Uwsm environment hyprland
+
+      			# Cursor
+      			export HYPRCURSOR_SIZE=24
+
+      		'';
+  };
 
 }

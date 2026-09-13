@@ -1,10 +1,17 @@
-{ lib, config, szy, ... }:
+{
+  lib,
+  config,
+  szy,
+  ...
+}:
 {
 
-	#"${szy}".objects.gameLauncher.definitions.lutris.data.enable = true;
+  #"${szy}".objects.gameLauncher.definitions.lutris.data.enable = true;
 
-	/*imports = [
-		(szy.utils.fromShared "users/user/programs/lutris")
-	];*/
+  /*
+    imports = [
+    		(szy.utils.fromShared "users/user/programs/lutris")
+    	];
+  */
 
 }

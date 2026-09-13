@@ -1,78 +1,94 @@
-{ lib, pkgs, inputs, ... }:
+{
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
 {
 
-	imports = [
-		inputs.steam-config-nix.nixosModules.default
-	];
+  imports = [
+    inputs.steam-config-nix.nixosModules.default
+  ];
 
-	config =
-	{
+  config = {
 
-		programs.steam.config = {
+    programs.steam.config = {
 
-			enable = true;
-			/*steam.autoClose = {
-				enable = true;
-				#restart.enable = true;
-			};*/
+      enable = true;
+      /*
+        steam.autoClose = {
+        				enable = true;
+        				#restart.enable = true;
+        			};
+      */
 
-			#closeSteam = true;
-			shutdownBehavior = "restart";
+      #closeSteam = true;
+      shutdownBehavior = "restart";
 
-			defaultCompatTool = "GE-Proton";
+      defaultCompatTool = "GE-Proton";
 
-			/*default = {
-				
-				compatTool = "GE-Protonn";
-				launchOptions = {
+      /*
+        default = {
 
-					wrappers = [ "mangohud" "gamemoderun" ];
+        				compatTool = "GE-Protonn";
+        				launchOptions = {
 
-				};
+        					wrappers = [ "mangohud" "gamemoderun" ];
 
-			};*/
+        				};
 
-			apps = {
+        			};
+      */
 
-				"20900" = {
-					launchOptions = {
-	
-						env = {
-							LD_PRELOAD = "";
-						};
+      apps = {
 
-						wrappers = [
-							"${lib.meta.getExe pkgs.gamescope}"
-							"-w" "1920" "-h" "1080" "--fullscreen" "--force-grab-cursor" "--rt" "--expose-wayland" "--" 
-							"${lib.meta.getExe' pkgs.mangohud "mangohud"}"
-							"${lib.meta.getExe' pkgs.gamemode "gamemoderun"}"
-						];
+        "20900" = {
+          launchOptions = {
 
-					};
-				};
+            env = {
+              LD_PRELOAD = "";
+            };
 
-			};
+            wrappers = [
+              "${lib.meta.getExe pkgs.gamescope}"
+              "-w"
+              "1920"
+              "-h"
+              "1080"
+              "--fullscreen"
+              "--force-grab-cursor"
+              "--rt"
+              "--expose-wayland"
+              "--"
+              "${lib.meta.getExe' pkgs.mangohud "mangohud"}"
+              "${lib.meta.getExe' pkgs.gamemode "gamemoderun"}"
+            ];
 
-			users.goos = {
+          };
+        };
 
-				id = 76561198295332347;
+      };
 
-				apps = {
+      users.goos = {
 
-					"427520" = {
+        id = 76561198295332347;
 
-						launchOptions = {
-							wrappers = [ "mangohud" ];
-						};
+        apps = {
 
-					};
+          "427520" = {
 
-				};
+            launchOptions = {
+              wrappers = [ "mangohud" ];
+            };
 
-			};
+          };
 
-		};
+        };
 
-	};
+      };
+
+    };
+
+  };
 
 }

@@ -1,73 +1,61 @@
 { szy, config, ... }:
 {
 
-	services.syncthing =
-	{
+  services.syncthing = {
 
-		enable = true;
+    enable = true;
 
-		settings =
-		{
+    settings = {
 
-			devices =
-			{
-				mahakam.id = config."${szy}".secrets.public.syncthing.mahakam.system;
-				vizima.id = config."${szy}".secrets.public.syncthing.vizima.goos;
-				novigrad.id = config."${szy}".secrets.public.syncthing.novigrad.goos;
-			};
+      devices = {
+        mahakam.id = config."${szy}".secrets.public.syncthing.mahakam.system;
+        vizima.id = config."${szy}".secrets.public.syncthing.vizima.goos;
+        novigrad.id = config."${szy}".secrets.public.syncthing.novigrad.goos;
+      };
 
-			folders =
-			{
-				
-				Documents =
-				{
-					devices =
-					[
-						"mahakam"
-						"vizima"
-						"novigrad"
-					];
-					id = "documents";
-					path = "~/Documents";
-				};
+      folders = {
 
-				Personal =
-				{
-					devices =
-					[
-						"mahakam"
-						"vizima"
-					];
-					id = "personal";
-					path = "~/Personal";
-				};
+        Documents = {
+          devices = [
+            "mahakam"
+            "vizima"
+            "novigrad"
+          ];
+          id = "documents";
+          path = "~/Documents";
+        };
 
-				Media =
-				{
-					devices =
-					[
-						"mahakam"
-						"vizima"
-						"novigrad"
-					];
-					id = "media";
-					path = "~/Media";
-				};
+        Personal = {
+          devices = [
+            "mahakam"
+            "vizima"
+          ];
+          id = "personal";
+          path = "~/Personal";
+        };
 
-				Games_Emulation_GBA =
-				{
-					devices =
-					[
-						"mahakam"
-					];
-					id = "games_emulation_gba";
-					path = "~/Games/Emulation/GBA";
-				};
+        Media = {
+          devices = [
+            "mahakam"
+            "vizima"
+            "novigrad"
+          ];
+          id = "media";
+          path = "~/Media";
+        };
 
-			};
+        Games_Emulation_GBA = {
+          devices = [
+            "mahakam"
+          ];
+          id = "games_emulation_gba";
+          path = "~/Games/Emulation/GBA";
+        };
 
-		};
+      };
 
-	};
+    };
+
+  };
 
 }

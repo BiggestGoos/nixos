@@ -1,15 +1,19 @@
-{ lib, szy, config, ... }:
-szy.programs.mkProgram
 {
+  lib,
+  szy,
+  config,
+  ...
+}:
+szy.programs.mkProgram {
 
-	inherit config;
-	name = "discord";
+  inherit config;
+  name = "discord";
 
-	singleInstance = true;
+  singleInstance = true;
 
-	additionalValues = [
-		"autostart"
-		"silentArgument"
-	];
-	
+  additionalValues = [
+    "autostart"
+    "silentArgument"
+  ];
+
 }

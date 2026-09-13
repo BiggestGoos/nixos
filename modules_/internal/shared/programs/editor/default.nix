@@ -1,14 +1,18 @@
-{ lib, szy, config, ... }:
-szy.programs.mkProgram
 {
+  lib,
+  szy,
+  config,
+  ...
+}:
+szy.programs.mkProgram {
 
-	inherit config;
-	name = "editor";
+  inherit config;
+  name = "editor";
 
-	additionalValues = [
-		"commandGraphical"
-	];
+  additionalValues = [
+    "commandGraphical"
+  ];
 
-	guiAndCli = true;
+  guiAndCli = true;
 
 }

@@ -1,29 +1,29 @@
 { szy, pkgs, ... }:
 {
 
-	imports = [  
-		./users
-		./system
+  imports = [
+    ./users
+    ./system
 
-		#./steamTest.nix
-	];
+    #./steamTest.nix
+  ];
 
-	services.sunshine = {
+  services.sunshine = {
 
-		enable = true;
-		capSysAdmin = true;
-		openFirewall = true;
+    enable = true;
+    capSysAdmin = true;
+    openFirewall = true;
 
-	};
-/*
-    networking.extraHosts = ''
-      0.0.0.0 log-upload-os.hoyoverse.com
-	  0.0.0.0 overseauspider.yuanshen.com
-	  0.0.0.0 apm-log-upload-os.hoyoverse.com
-	  0.0.0.0 zzz-log-upload-os.hoyoverse.com
-    '';*/
+  };
+  /*
+        networking.extraHosts = ''
+          0.0.0.0 log-upload-os.hoyoverse.com
+    	  0.0.0.0 overseauspider.yuanshen.com
+    	  0.0.0.0 apm-log-upload-os.hoyoverse.com
+    	  0.0.0.0 zzz-log-upload-os.hoyoverse.com
+        '';
+  */
 
-	system.stateVersion = "26.05"; 
+  system.stateVersion = "26.05";
 
 }
-

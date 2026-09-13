@@ -1,8 +1,7 @@
 {
 
-	imports =
-	[
-		./qualifiers
-	];
+  imports = [
+    ./qualifiers
+  ];
 
 }

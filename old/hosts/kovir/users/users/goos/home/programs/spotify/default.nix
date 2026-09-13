@@ -1,10 +1,17 @@
-{ lib, config, szy, ... }:
+{
+  lib,
+  config,
+  szy,
+  ...
+}:
 {
 
-	"${szy}".objects.musicPlayer.definitions.spotify.data.enable = true;
+  "${szy}".objects.musicPlayer.definitions.spotify.data.enable = true;
 
-	/*imports = [
-		(szy.utils.fromShared "users/user/programs/musicPlayer/spotify")
-	];*/
+  /*
+    imports = [
+    		(szy.utils.fromShared "users/user/programs/musicPlayer/spotify")
+    	];
+  */
 
 }

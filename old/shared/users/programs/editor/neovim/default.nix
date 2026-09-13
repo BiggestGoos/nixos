@@ -1,36 +1,39 @@
-{ szy, lib, config, pkgs, ... }:
-let
-	package = pkgs.neovim;
-in
-szy.programs.mkInstance
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+let
+  package = pkgs.neovim;
+in
+szy.programs.mkInstance {
 
-	inherit config;
-	program = "editor";
-	name = "neovim";
+  inherit config;
+  program = "editor";
+  name = "neovim";
 
-	values = 
-	{ finalCommand, ... }:
-	{
-		inherit package;
-		commandGraphical = finalCommand;
-		isGraphical = false;
-	};
+  values =
+    { finalCommand, ... }:
+    {
+      inherit package;
+      commandGraphical = finalCommand;
+      isGraphical = false;
+    };
 
-	configuration =	
-	{ enabled, default, ... }: 
-	lib.mkIf (enabled)
-	{
+  configuration =
+    { enabled, default, ... }:
+    lib.mkIf (enabled) {
 
-		programs.neovim = {
+      programs.neovim = {
 
-			enable = true;
+        enable = true;
 
-			defaultEditor = default;
+        defaultEditor = default;
 
-		};	
+      };
 
-	};
+    };
 
 }
-

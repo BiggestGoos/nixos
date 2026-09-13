@@ -1,62 +1,70 @@
 theme:
-{ szy, inputs, hostname, config, lib, pkgs, ... }:
+{
+  szy,
+  inputs,
+  hostname,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
 
-	imports = [
-		./optimizations.nix
-		./styling.nix
-		{
-			_module.args = {
-				inherit theme;
-			};
-		}
-	];
+  imports = [
+    ./optimizations.nix
+    ./styling.nix
+    {
+      _module.args = {
+        inherit theme;
+      };
+    }
+  ];
 
-	programs.floorp = lib.mkIf theme.enabled {
+  programs.floorp = lib.mkIf theme.enabled {
 
-		languagePacks = [
-			"en-US"
-			"sv-SE"
-		];
+    languagePacks = [
+      "en-US"
+      "sv-SE"
+    ];
 
-		profiles."${config.home.username}" = {
+    profiles."${config.home.username}" = {
 
-			settings = {
+      settings = {
 
-				"identity.fxaccounts.account.device.name" = szy.utils.hostname;
-				"identity.fxaccounts.enabled" = true;
+        "identity.fxaccounts.account.device.name" = szy.utils.hostname;
+        "identity.fxaccounts.enabled" = true;
 
-				"middlemouse.paste" = false;
-				"general.autoScroll" = true;
-				"apz.overscroll.enabled" = false;
-				# Scrollspeed with trackpad
-				"mousewheel.default.delta_multiplier_y" = 250;
+        "middlemouse.paste" = false;
+        "general.autoScroll" = true;
+        "apz.overscroll.enabled" = false;
+        # Scrollspeed with trackpad
+        "mousewheel.default.delta_multiplier_y" = 250;
 
-				"toolkit.tabbox.switchByScrolling" = true;
+        "toolkit.tabbox.switchByScrolling" = true;
 
-				"media.autoplay.blocking_policy" = 0;
+        "media.autoplay.blocking_policy" = 0;
 
-				"privacy.resistFingerprinting" = true;
+        "privacy.resistFingerprinting" = true;
 
-				"privacy.clearOnShutdown.cookies" = false;
-				"privacy.clearOnShutdown.history" = false;
-				"privacy.clearOnShutdown_v2.browsingHistoryAndDownloads" = false;
-				"privacy.clearOnShutdown_v2.cookiesAndStorage" = false;
-				"privacy.clearOnShutdown_v2.history" = false;
+        "privacy.clearOnShutdown.cookies" = false;
+        "privacy.clearOnShutdown.history" = false;
+        "privacy.clearOnShutdown_v2.browsingHistoryAndDownloads" = false;
+        "privacy.clearOnShutdown_v2.cookiesAndStorage" = false;
+        "privacy.clearOnShutdown_v2.history" = false;
 
-				"browser.translations.automaticallyPopup" = false;
-				"browser.translations.neverTranslateLanguages" = "sv"; # E.g. "sv,fi,..."
+        "browser.translations.automaticallyPopup" = false;
+        "browser.translations.neverTranslateLanguages" = "sv"; # E.g. "sv,fi,..."
 
-				"floorp.workspaces.enabled" = false;
+        "floorp.workspaces.enabled" = false;
 
-				"browser.tabs.closeWindowWithLastTab" = false;
+        "browser.tabs.closeWindowWithLastTab" = false;
 
-			};
+      };
 
-		};
+    };
 
-		# Set custom keybinds: https://superuser.com/a/1747680
+    # Set custom keybinds: https://superuser.com/a/1747680
 
-	};
+  };
 
 }

@@ -1,14 +1,14 @@
 { ... }:
 {
 
-	imports = [
-		./actions
-		./audio
-		./devices
-		./displays
-		./power
-		./variables
-		./variants
-	];
+  imports = [
+    ./actions
+    ./audio
+    ./devices
+    ./displays
+    ./power
+    ./variables
+    ./variants
+  ];
 
 }

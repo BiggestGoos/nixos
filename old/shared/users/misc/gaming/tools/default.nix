@@ -1,17 +1,21 @@
 enabled:
-{ szy, lib, pkgs, ... }:
-enabled
 {
+  szy,
+  lib,
+  pkgs,
+  ...
+}:
+enabled {
 
-	programs = {
-		gamescope.enable = true;
-		gamemode = {
+  programs = {
+    gamescope.enable = true;
+    gamemode = {
 
-			enable = true;
+      enable = true;
 
-		};
-	};
+    };
+  };
 
-	"${szy}".users.types.groups.normal = [ "gamemode" ];
+  "${szy}".users.types.groups.normal = [ "gamemode" ];
 
 }

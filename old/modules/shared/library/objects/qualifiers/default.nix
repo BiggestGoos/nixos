@@ -1,8 +1,7 @@
 {
 
-	imports =
-	[
-		./composable.nix
-	];
+  imports = [
+    ./composable.nix
+  ];
 
 }

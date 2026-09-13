@@ -1,11 +1,10 @@
 {
 
-	hardware =
-	{
-		opentabletdriver.enable = true;
-		uinput.enable = true;
-	};
+  hardware = {
+    opentabletdriver.enable = true;
+    uinput.enable = true;
+  };
 
-	boot.kernelModules = [ "uinput" ];
+  boot.kernelModules = [ "uinput" ];
 
 }

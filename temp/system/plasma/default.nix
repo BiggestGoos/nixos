@@ -1,12 +1,17 @@
-{ config, szy, pkgs, lib, ... }:
+{
+  config,
+  szy,
+  pkgs,
+  lib,
+  ...
+}:
 {
 
-	services.desktopManager.plasma6.enable = true; 
-	
-	imports = 
-	[
-		./config.nix
-		./disableBaloo.nix
-	];
+  services.desktopManager.plasma6.enable = true;
+
+  imports = [
+    ./config.nix
+    ./disableBaloo.nix
+  ];
 
 }

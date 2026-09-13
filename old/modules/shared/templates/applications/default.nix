@@ -1,10 +1,9 @@
 {
 
-	imports =
-	[
-		./shell.nix
-		./editor.nix
-		./fileManager.nix
-	];
+  imports = [
+    ./shell.nix
+    ./editor.nix
+    ./fileManager.nix
+  ];
 
 }

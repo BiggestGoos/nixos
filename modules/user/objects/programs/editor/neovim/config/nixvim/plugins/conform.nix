@@ -1,4 +1,4 @@
-{...}: {pkgs, ...}: {
+{ ... }: { pkgs, ... }: {
   # Dependencies
   #
   # https://nix-community.github.io/nixvim/NeovimOptions/index.html#extrapackages
@@ -32,10 +32,10 @@
         end
       '';
       formatters_by_ft = {
-        lua = ["stylua"];
-        markdown = ["prettierd"];
+        lua = [ "stylua" ];
+        markdown = [ "prettierd" ];
 
-        nix = ["nixfmt-rs"];
+        nix = [ "nixfmt-rs" ];
         # Conform can also run multiple formatters sequentially
         # python = [ "isort "black" ];
         #

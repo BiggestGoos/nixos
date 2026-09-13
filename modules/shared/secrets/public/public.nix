@@ -1,9 +1,13 @@
-{ szy, lib, config, ... }:
+{
+  szy,
+  lib,
+  config,
+  ...
+}:
 {
 
-	options."${szy}".secrets.public = lib.options.mkOption
-	{
-		type = lib.types.anything;
-	};
+  options."${szy}".secrets.public = lib.options.mkOption {
+    type = lib.types.anything;
+  };
 
 }

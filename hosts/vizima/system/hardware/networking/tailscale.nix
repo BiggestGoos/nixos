@@ -1,12 +1,11 @@
 {
 
-	services.tailscale =
-	{
+  services.tailscale = {
 
-		enable = true;
+    enable = true;
 
-		# We must use systemd-resolved, according to this: https://github.com/tailscale/tailscale/issues/4254
+    # We must use systemd-resolved, according to this: https://github.com/tailscale/tailscale/issues/4254
 
-	};
+  };
 
 }

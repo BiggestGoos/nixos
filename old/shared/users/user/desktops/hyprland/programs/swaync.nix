@@ -1,7 +1,6 @@
 { lib, desktop, ... }:
-lib.mkIf (desktop.isEnabledStrict [ "hyprland" ])
-{
+lib.mkIf (desktop.isEnabledStrict [ "hyprland" ]) {
 
-	services.swaync.enable = true;
+  services.swaync.enable = true;
 
 }

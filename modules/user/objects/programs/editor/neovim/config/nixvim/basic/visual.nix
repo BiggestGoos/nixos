@@ -1,7 +1,6 @@
 {
 
-  opts =
-  {
+  opts = {
     # Show line numbers
     number = true;
 

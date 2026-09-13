@@ -1,11 +1,11 @@
 { ... }:
 {
 
-	imports = [
-		./storage
-		./networking
-		./graphics
-		./motherboard
-	];
+  imports = [
+    ./storage
+    ./networking
+    ./graphics
+    ./motherboard
+  ];
 
 }

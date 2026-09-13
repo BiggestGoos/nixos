@@ -1,9 +1,8 @@
 {
 
-	imports =
-	[
-		./kitty
-		./ghostty
-	];
+  imports = [
+    ./kitty
+    ./ghostty
+  ];
 
 }

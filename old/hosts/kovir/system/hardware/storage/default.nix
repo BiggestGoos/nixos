@@ -1,8 +1,8 @@
 { ... }:
 {
 
-	imports = [
-		./partitioning
-	];
+  imports = [
+    ./partitioning
+  ];
 
 }

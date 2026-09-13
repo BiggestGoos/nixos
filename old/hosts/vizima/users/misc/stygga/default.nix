@@ -1,18 +1,18 @@
 { pkgs, ... }:
 {
 
-	users = {
+  users = {
 
-		groups.stygga = {};
+    groups.stygga = { };
 
-		users = {
+    users = {
 
-			goos.extraGroups = [ "stygga" ];
+      goos.extraGroups = [ "stygga" ];
 
-		};
+    };
 
-	};
+  };
 
-	boot.enableContainers = true;
+  boot.enableContainers = true;
 
 }

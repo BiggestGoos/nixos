@@ -25,8 +25,6 @@
     # See `:help telescope` and `:help telescope.setup()`
     enable = true;
 
-
-
     # Enable Telescope extensions
     extensions = {
       # https://github.com/nvim-telescope/telescope-fzf-native.nvim

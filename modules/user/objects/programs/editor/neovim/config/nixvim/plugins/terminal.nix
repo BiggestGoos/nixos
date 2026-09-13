@@ -8,7 +8,7 @@
 
   keymaps = [
     {
-      key = ''<C-'>'';
+      key = "<C-'>";
       action = "<cmd>ToggleTerm<cr>";
       options = {
         desc = "Open Terminal";

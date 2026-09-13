@@ -1,11 +1,11 @@
 { szy, ... }:
 {
-	
-	imports = [
-		./desktops
-		./themes
-		./programs
-		./misc
-	];
+
+  imports = [
+    ./desktops
+    ./themes
+    ./programs
+    ./misc
+  ];
 
 }

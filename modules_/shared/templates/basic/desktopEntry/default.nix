@@ -1,90 +1,68 @@
-{ szy, lib, config, pkgs, system, systemConfig, ... }:
-szy.objects.declare
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  system,
+  systemConfig,
+  ...
+}:
+szy.objects.declare {
 
-	inherit config;
-	
-	name = "desktopEntry";
+  inherit config;
 
-	parameters = import ./parameters.nix { inherit szy lib pkgs; };
+  name = "desktopEntry";
 
-	configuration =
-	{ enabled, final }:
-	let
+  parameters = import ./parameters.nix { inherit szy lib pkgs; };
 
-		definitions = builtins.map (identifier: szy.objects.helper.definition.get ({ inherit config identifier; })) final.meta.full.definitions;
-		enabledDefinitions = builtins.filter
-		(
-			definition:
-				definition.data.enabled
-		)
-		definitions;
+  configuration =
+    { enabled, final }:
+    let
 
-		flatList =
-		lib.lists.flatten
-		(
-			builtins.map
-			(
-				definition:
-				lib.attrsets.mapAttrsToList
-				(
-					name: value:
-						value
-				)
-				definition.data.desktopEntry
-			)
-			enabledDefinitions	
-		);
+      definitions = builtins.map (
+        identifier: szy.objects.helper.definition.get ({ inherit config identifier; })
+      ) final.meta.full.definitions;
+      enabledDefinitions = builtins.filter (definition: definition.data.enabled) definitions;
 
-		filteredList = builtins.filter
-		(
-			entry:
-				entry.final.path != null
-		)
-		flatList;
+      flatList = lib.lists.flatten (
+        builtins.map (
+          definition: lib.attrsets.mapAttrsToList (name: value: value) definition.data.desktopEntry
+        ) enabledDefinitions
+      );
 
-		argsList =
-		builtins.map
-		(
-			desktopEntry:
-''
-install -D -m 664 ${desktopEntry.final.path} $out/share/applications/${desktopEntry.final.values.name}.desktop
-''
-		)
-		filteredList;
+      filteredList = builtins.filter (entry: entry.final.path != null) flatList;
 
-		argsStrBase = 
-''
-export PATH="$coreutils/bin"
+      argsList = builtins.map (desktopEntry: ''
+        install -D -m 664 ${desktopEntry.final.path} $out/share/applications/${desktopEntry.final.values.name}.desktop
+      '') filteredList;
 
-mkdir $out
-mkdir -p $out/share/applications
-'';
+      argsStrBase = ''
+        export PATH="$coreutils/bin"
 
-		argsStr = lib.strings.concatStrings ([ argsStrBase ] ++ argsList);
+        mkdir $out
+        mkdir -p $out/share/applications
+      '';
 
-		package = builtins.derivation
-		{
-			name = "desktopEntryOverrides";
-			inherit system;
-			builder = "${pkgs.bash}/bin/bash";
+      argsStr = lib.strings.concatStrings ([ argsStrBase ] ++ argsList);
 
-			coreutils = pkgs.coreutils;
+      package = builtins.derivation {
+        name = "desktopEntryOverrides";
+        inherit system;
+        builder = "${pkgs.bash}/bin/bash";
 
-			args = 
-			[
-				(
-					pkgs.writeScript "makeDesktopEntryOverrides" argsStr
-				)
-			];
+        coreutils = pkgs.coreutils;
 
-		};
+        args = [
+          (pkgs.writeScript "makeDesktopEntryOverrides" argsStr)
+        ];
 
-		prioritizedPackage = lib.meta.setPrio (-999999999) package;
+      };
 
-	in
-	{
-		"${szy}".packages = [ prioritizedPackage ];
-	};
+      prioritizedPackage = lib.meta.setPrio (-999999999) package;
+
+    in
+    {
+      "${szy}".packages = [ prioritizedPackage ];
+    };
 
 }

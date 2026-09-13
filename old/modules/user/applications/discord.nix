@@ -1,21 +1,24 @@
-{ szy, lib, osConfig, config, pkgs, ... }:
-szy.objects.define
 {
+  szy,
+  lib,
+  osConfig,
+  config,
+  pkgs,
+  ...
+}:
+szy.objects.define {
 
-	inherit config;
-	template = "application";
+  inherit config;
+  template = "application";
 
-	name = "discord";
+  name = "discord";
 
-	arguments = 
-	{
-		application.type = "gui";
-	};
+  arguments = {
+    application.type = "gui";
+  };
 
-	configuration = 
-	{
-		programs.discord.enable = true;
-	};
+  configuration = {
+    programs.discord.enable = true;
+  };
 
 }
-

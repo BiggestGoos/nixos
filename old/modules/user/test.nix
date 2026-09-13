@@ -1,162 +1,160 @@
-{ szy, lib, config, ... }:
+{
+  szy,
+  lib,
+  config,
+  ...
+}:
 {
 
-	options."${szy}".test =
-	{
+  options."${szy}".test = {
 
-		nested = lib.options.mkOption
-		{
-			type = 
-			let
+    nested = lib.options.mkOption {
+      type =
+        let
 
-				# https://discourse.nixos.org/t/problems-with-types-oneof-and-submodules/15197/5
-				typecheckSubmoduleByTryEval = submodule: 
-				let
-					check = x: 
-					(
-						builtins.tryEval 
-						(
-							(
-								lib.evalModules 
-								{
-									modules = submodule.getSubModules ++ [ x ];
-								}
-							).config
-						)
-					).success;
-				in 
-					lib.types.addCheck submodule check;
+          # https://discourse.nixos.org/t/problems-with-types-oneof-and-submodules/15197/5
+          typecheckSubmoduleByTryEval =
+            submodule:
+            let
+              check =
+                x:
+                (builtins.tryEval (
+                  (lib.evalModules {
+                    modules = submodule.getSubModules ++ [ x ];
+                  }).config
+                )).success;
+            in
+            lib.types.addCheck submodule check;
 
-				testModule = 
-				{ config, ... }:
-				{
-					options = 
-					{
-						meta = lib.options.mkOption
-						{
-							type = lib.types.attrs;
-							default = {};
-						};
+          testModule =
+            { config, ... }:
+            {
+              options = {
+                meta = lib.options.mkOption {
+                  type = lib.types.attrs;
+                  default = { };
+                };
 
-						x = lib.options.mkOption
-						{
-							type = lib.types.int;
-							default = 5;
-						};
-					};
-				};
+                x = lib.options.mkOption {
+                  type = lib.types.int;
+                  default = 5;
+                };
+              };
+            };
 
-				test2Module =
-				{ config, ... }:
-				{
-					options = 
-					{
-						/*data.y = lib.options.mkOption
-						{
-							type = lib.types.int;
-							default = config.data.x * 2;
-						};*/
+          test2Module =
+            { config, ... }:
+            {
+              options = {
+                /*
+                  data.y = lib.options.mkOption
+                  						{
+                  							type = lib.types.int;
+                  							default = config.data.x * 2;
+                  						};
+                */
 
-						y = lib.options.mkOption
-						{
-							type = lib.types.int;
-							default = config.x * 2 + 25;
-						};
+                y = lib.options.mkOption {
+                  type = lib.types.int;
+                  default = config.x * 2 + 25;
+                };
 
-						/*xy = lib.options.mkOption
-						{
-							type = lib.types.int;
-							default = config.data.x * config.y;
-						};*/
-					};
-				};
+                /*
+                  xy = lib.options.mkOption
+                  						{
+                  							type = lib.types.int;
+                  							default = config.data.x * config.y;
+                  						};
+                */
+              };
+            };
 
-				allModules =
-				{
-					inherit testModule test2Module;
-				};
+          allModules = {
+            inherit testModule test2Module;
+          };
 
-				innerModule = lib.types.submoduleWith { modules = [ (
-				{ config, ... }:
-				let
+          innerModule = lib.types.submoduleWith {
+            modules = [
+              (
+                { config, ... }:
+                let
 
-					freeModules = builtins.map (module: allModules."${module}") config.meta.modules;
+                  freeModules = builtins.map (module: allModules."${module}") config.meta.modules;
 
-					eval = lib.modules.evalModules 
-					{
-						modules = freeModules;
-					};
+                  eval = lib.modules.evalModules {
+                    modules = freeModules;
+                  };
 
-				in
-				{
-	
-					#freeformType = (lib.types.submoduleWith { modules = freeModules; });
+                in
+                {
 
-					options =
-					{
+                  #freeformType = (lib.types.submoduleWith { modules = freeModules; });
 
-						meta.modules = lib.options.mkOption
-						{
-							type = lib.types.listOf lib.types.str;
-							default = [ "testModule" ];
-						};
+                  options = {
 
-						#test = lib.options;
+                    meta.modules = lib.options.mkOption {
+                      type = lib.types.listOf lib.types.str;
+                      default = [ "testModule" ];
+                    };
 
-						data = lib.options.mkOption
-						{
-							type = lib.types.submoduleWith { modules = freeModules; };
-							default = {};
-						};
+                    #test = lib.options;
 
-						/*tree = lib.options.mkOption
-						{
-							type = lib.types.nullOr treeType;
-							default = null;
-						};*/
+                    data = lib.options.mkOption {
+                      type = lib.types.submoduleWith { modules = freeModules; };
+                      default = { };
+                    };
 
-						str = lib.options.mkOption
-						{
-							type = lib.types.str;
-						};
+                    /*
+                      tree = lib.options.mkOption
+                      						{
+                      							type = lib.types.nullOr treeType;
+                      							default = null;
+                      						};
+                    */
 
-						int = lib.options.mkOption
-						{
-							type = lib.types.int;
-							default = 5;
-						};
+                    str = lib.options.mkOption {
+                      type = lib.types.str;
+                    };
 
-						str2 = lib.options.mkOption
-						{
-							type = lib.types.str;
-							default = "${config.str}+${builtins.toString config.int}";
-						};
+                    int = lib.options.mkOption {
+                      type = lib.types.int;
+                      default = 5;
+                    };
 
-					};
+                    str2 = lib.options.mkOption {
+                      type = lib.types.str;
+                      default = "${config.str}+${builtins.toString config.int}";
+                    };
 
-					config = 
-					{
-						meta = lib.mkDefault {};
-					};
+                  };
 
-				} ) ]; };
+                  config = {
+                    meta = lib.mkDefault { };
+                  };
 
-				treeType = mkTreeType [ innerModule ];
+                }
+              )
+            ];
+          };
 
-				mkTreeType = modules:
-				let
-					leafOrBranch = lib.types.oneOf 
-					((builtins.map (module: typecheckSubmoduleByTryEval module) modules) ++
-					[
-						(lib.types.attrsOf leafOrBranch)
-          			]);
-        		in 
-					leafOrBranch;
+          treeType = mkTreeType [ innerModule ];
 
-			in
-				lib.types.attrsOf treeType;
-		};
+          mkTreeType =
+            modules:
+            let
+              leafOrBranch = lib.types.oneOf (
+                (builtins.map (module: typecheckSubmoduleByTryEval module) modules)
+                ++ [
+                  (lib.types.attrsOf leafOrBranch)
+                ]
+              );
+            in
+            leafOrBranch;
 
-	};
+        in
+        lib.types.attrsOf treeType;
+    };
+
+  };
 
 }

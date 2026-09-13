@@ -1,12 +1,11 @@
 { szy, config, ... }:
-szy.programs.mkProgram
-{
+szy.programs.mkProgram {
 
-	inherit config;
-	name = "terminal";
+  inherit config;
+  name = "terminal";
 
-	additionalValues = [	
-		"runProgram"
-	];
+  additionalValues = [
+    "runProgram"
+  ];
 
 }

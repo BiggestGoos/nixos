@@ -1,40 +1,42 @@
-{ lib, config, szy, ... }:
+{
+  lib,
+  config,
+  szy,
+  ...
+}:
 {
 
-	"${szy}".objects.browser =
-	{
+  "${szy}".objects.browser = {
 
-		data =
-		{
-			default.gui.identifier.name = "floorp";
-		};
+    data = {
+      default.gui.identifier.name = "floorp";
+    };
 
-		definitions =
-		{
+    definitions = {
 
-			floorp =
-			{
+      floorp = {
 
-				data =
-				{
+        data = {
 
-					enable = true;
+          enable = true;
 
-	#				components.default.enable = true;
+          #				components.default.enable = true;
 
-				};
+        };
 
-			};
+      };
 
-		};
+    };
 
-	};
+  };
 
-	/*imports = [
-		(szy.utils.fromShared "users/user/programs/browser/floorp")
-		(szy.utils.fromShared "users/user/programs/browser/librewolf")
-	];
-	
-	"${szy}".programs.browser.default.name = "floorp";*/
+  /*
+    imports = [
+    		(szy.utils.fromShared "users/user/programs/browser/floorp")
+    		(szy.utils.fromShared "users/user/programs/browser/librewolf")
+    	];
+
+    	"${szy}".programs.browser.default.name = "floorp";
+  */
 
 }

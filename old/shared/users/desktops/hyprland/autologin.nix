@@ -1,11 +1,18 @@
-{ desktop, pkgs, szy, lib, config, hostname, ... }:
+{
+  desktop,
+  pkgs,
+  szy,
+  lib,
+  config,
+  hostname,
+  ...
+}:
 let
   tuigreet = "${pkgs.tuigreet}/bin/tuigreet";
   session = "${pkgs.uwsm}/bin/uwsm start -F -- ${pkgs.hyprland}/share/wayland-sessions/hyprland.desktop";
   username = config."${szy}".desktops.components.autologin.user;
 in
-lib.mkIf (config."${szy}".desktops.components.autologin.enabled)
-{
+lib.mkIf (config."${szy}".desktops.components.autologin.enabled) {
   services.greetd = {
     enable = true;
     settings = {

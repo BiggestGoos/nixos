@@ -3,13 +3,17 @@
   config,
   ...
 }:
-(szy config).objects.make
-{
-  inherits = [["programs" "editor"]];
+(szy config).objects.make {
+  inherits = [
+    [
+      "programs"
+      "editor"
+    ]
+  ];
   #extends = [ "terminalApplication" ];
 
   name = "helix";
-  namespace = ["programs"];
+  namespace = [ "programs" ];
 
   constant.type = "cli";
 

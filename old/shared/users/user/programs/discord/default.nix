@@ -1,29 +1,33 @@
-{ szy, lib, config, pkgs, ... }:
-let
-	package = pkgs.discord;
-in
-szy.programs.mkInstance
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+let
+  package = pkgs.discord;
+in
+szy.programs.mkInstance {
 
-	inherit config;
-	program = "discord";
+  inherit config;
+  program = "discord";
 
-	values = 
-	{ finalCommand, ... }:
-	rec {
-		inherit package;
-		desktopEntry = "discord.desktop";
-		autostart = "${finalCommand} ${silentArgument}";
-		silentArgument = "--start-minimized";
-	};
+  values =
+    { finalCommand, ... }:
+    rec {
+      inherit package;
+      desktopEntry = "discord.desktop";
+      autostart = "${finalCommand} ${silentArgument}";
+      silentArgument = "--start-minimized";
+    };
 
-	configuration = 
-	{ enabled, ... }:
-	lib.mkIf (enabled)
-	{
+  configuration =
+    { enabled, ... }:
+    lib.mkIf (enabled) {
 
-		programs.discord.enable = true;
+      programs.discord.enable = true;
 
-	};
+    };
 
 }

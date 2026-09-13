@@ -1,8 +1,8 @@
 { ... }:
 {
 
-	imports = [
-		./hyprlock
-	];
+  imports = [
+    ./hyprlock
+  ];
 
 }

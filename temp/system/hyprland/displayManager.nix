@@ -1,9 +1,13 @@
-{ config, lib, szy, ... }:
+{
+  config,
+  lib,
+  szy,
+  ...
+}:
 {
 
-	services.displayManager.ly = 
-	{
-		enable = true;
-	};
+  services.displayManager.ly = {
+    enable = true;
+  };
 
 }

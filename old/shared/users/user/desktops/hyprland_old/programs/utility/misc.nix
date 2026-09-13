@@ -1,9 +1,9 @@
 { pkgs, szy, ... }:
 {
 
-	home.packages = with pkgs; [
-		blueman
-		pavucontrol
-	];
+  home.packages = with pkgs; [
+    blueman
+    pavucontrol
+  ];
 
 }

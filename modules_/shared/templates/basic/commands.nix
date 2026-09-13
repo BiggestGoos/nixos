@@ -1,48 +1,51 @@
-{ szy, lib, config, pkgs, ... }:
-szy.objects.declare
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+szy.objects.declare {
 
-	inherit config;
-	
-	name = "commands";
+  inherit config;
 
-	parameters =
-	{ final, template }:
-	{
+  name = "commands";
 
-		commands = lib.options.mkOption
-		{
+  parameters =
+    { final, template }:
+    {
 
-			type = 
-			let
+      commands = lib.options.mkOption {
 
-				module = { config, ... }:
-				{
-					options =
-					let
-						option = lib.options.mkOption
-						{
-							type = lib.types.str;
-						};
-					in
-					{
-						
-						absolute = option;
-						relative = option;
-						__toString = lib.options.mkOption
-						{
-							type = lib.types.functionTo lib.types.str;
-							default = self: config.relative;
-						};
+        type =
+          let
 
-					};
-				};
+            module =
+              { config, ... }:
+              {
+                options =
+                  let
+                    option = lib.options.mkOption {
+                      type = lib.types.str;
+                    };
+                  in
+                  {
 
-			in
-			lib.types.attrsOf (lib.types.submoduleWith { modules = [ module ]; });		
+                    absolute = option;
+                    relative = option;
+                    __toString = lib.options.mkOption {
+                      type = lib.types.functionTo lib.types.str;
+                      default = self: config.relative;
+                    };
 
-		};
+                  };
+              };
 
-	};
+          in
+          lib.types.attrsOf (lib.types.submoduleWith { modules = [ module ]; });
+
+      };
+
+    };
 
 }

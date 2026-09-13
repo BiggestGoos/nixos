@@ -1,35 +1,36 @@
-{ szy, lib, config, pkgs, ... }:
-szy.objects.define
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+szy.objects.define {
 
-	inherit config;
-	template = "shell";
+  inherit config;
+  template = "shell";
 
-	name = "zsh";
+  name = "zsh";
 
-	arguments = 
-	{
+  arguments = {
 
-		application.type = "cli";
+    application.type = "cli";
 
-		program.arguments =
-		{
-			runCommand.args = [ "-c" ];
-			interactive.args = [ "-i" ];
-		};
+    program.arguments = {
+      runCommand.args = [ "-c" ];
+      interactive.args = [ "-i" ];
+    };
 
-	};
+  };
 
-	configuration = 
-	{
+  configuration = {
 
-		programs.zsh = {
+    programs.zsh = {
 
-			enable = true;
+      enable = true;
 
-		};	
+    };
 
-	};
+  };
 
 }
-

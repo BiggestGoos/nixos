@@ -1,10 +1,17 @@
-{ lib, config, szy, ... }:
+{
+  lib,
+  config,
+  szy,
+  ...
+}:
 {
 
-	"${szy}".objects.package.definitions.git.data.enable = true;
+  "${szy}".objects.package.definitions.git.data.enable = true;
 
-	/*imports = [
-		(szy.utils.fromShared "users/user/programs/git")
-	];*/
+  /*
+    imports = [
+    		(szy.utils.fromShared "users/user/programs/git")
+    	];
+  */
 
 }

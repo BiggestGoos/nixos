@@ -16,17 +16,17 @@
   # by lazily updating your workspace libraries.
   # https://nix-community.github.io/nixvim/plugins/lazydev/index.html
   /*
-    plugins.lazydev = {
-    enable = true; # autoEnableSources not enough
-    settings = {
-      library = [
-        {
-          path = "\${3rd}/luv/library";
-          words = [ "vim%.uv" ];
-        }
-      ];
+      plugins.lazydev = {
+      enable = true; # autoEnableSources not enough
+      settings = {
+        library = [
+          {
+            path = "\${3rd}/luv/library";
+            words = [ "vim%.uv" ];
+          }
+        ];
+      };
     };
-  };
   */
 
   # Brief aside: **What is LSP?**

@@ -1,66 +1,72 @@
-{ szy, lib, config, ... }:
+{
+  szy,
+  lib,
+  config,
+  ...
+}:
 {
 
-	imports =
-	[
-		./templates
-		./applications
-		./packages
-	#	./test.nix
-	];
+  imports = [
+    ./templates
+    ./applications
+    ./packages
+    #	./test.nix
+  ];
 
-	/*"${szy}".test.nested =
-	{
+  /*
+    "${szy}".test.nested =
+    	{
 
-		foo =
-		{
+    		foo =
+    		{
 
-			x.y.data.x = 5;
+    			x.y.data.x = 5;
 
-			#data.y = 2;
+    			#data.y = 2;
 
-			str = "hello";
+    			str = "hello";
 
-		};
+    		};
 
-		foo =
-		{
-			
-			meta.modules = [ "testModule" "test2Module" ];
+    		foo =
+    		{
 
-			str = "bar";	
+    			meta.modules = [ "testModule" "test2Module" ];
 
-			data.x = 2;
+    			str = "bar";
 
-			#test.xy = 5;
+    			data.x = 2;
 
-			#int = config."${szy}".test.nested.foo.data.y * 4 + config."${szy}".test.nested.foo.tree.bar.data.x;
-			#data = { y = lib.mkIf (config."${szy}".test.nested.foo.tree.bar.data.x >= 2) 11; x = 3; };
-			tree =
-			{
+    			#test.xy = 5;
 
-				bar =
-				{
+    			#int = config."${szy}".test.nested.foo.data.y * 4 + config."${szy}".test.nested.foo.tree.bar.data.x;
+    			#data = { y = lib.mkIf (config."${szy}".test.nested.foo.tree.bar.data.x >= 2) 11; x = 3; };
+    			tree =
+    			{
 
-					modules = [ "testModule" ];
+    				bar =
+    				{
 
-					str = "footwo";
-					data = 
-					{
-						x = 3;
-					};
-				};
+    					modules = [ "testModule" ];
 
-			};
-		};
+    					str = "footwo";
+    					data =
+    					{
+    						x = 3;
+    					};
+    				};
 
-		bar =
-		{
-			str = "barbar";
-			#data = { x = config."${szy}".test.nested.foo.data.y; };
+    			};
+    		};
 
-		};
+    		bar =
+    		{
+    			str = "barbar";
+    			#data = { x = config."${szy}".test.nested.foo.data.y; };
 
-	};*/
+    		};
+
+    	};
+  */
 
 }

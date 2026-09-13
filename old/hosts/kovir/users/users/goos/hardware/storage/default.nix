@@ -1,8 +1,7 @@
-user:
-{
+user: {
 
-	imports = user [
-		./secondary
-	];
+  imports = user [
+    ./secondary
+  ];
 
 }

@@ -1,8 +1,7 @@
 {
 
-	imports =
-	[
-		./objects
-	];
+  imports = [
+    ./objects
+  ];
 
 }

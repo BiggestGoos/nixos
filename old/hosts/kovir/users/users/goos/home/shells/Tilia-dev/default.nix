@@ -1,8 +1,8 @@
 { szy, ... }:
 {
 
-	imports = [
-		(szy.utils.fromShared "users/user/shells/Tilia-dev")
-	];
+  imports = [
+    (szy.utils.fromShared "users/user/shells/Tilia-dev")
+  ];
 
 }

@@ -1,30 +1,35 @@
-{ szy, lib, config, ... }:
+{
+  szy,
+  lib,
+  config,
+  ...
+}:
 let
 
-	cfg = config."${szy}".timeZone;
+  cfg = config."${szy}".timeZone;
 
 in
 {
 
-	options."${szy}".timeZone = {
+  options."${szy}".timeZone = {
 
-		default = lib.mkOption {
-			type = lib.types.str;
-		};
+    default = lib.mkOption {
+      type = lib.types.str;
+    };
 
-		automatic = lib.mkOption {
-			type = lib.types.bool;
-			default = false;
-		};
+    automatic = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
 
-	};
+  };
 
-	config = {
+  config = {
 
-		services.automatic-timezoned.enable = cfg.automatic;
+    services.automatic-timezoned.enable = cfg.automatic;
 
-		time.timeZone = lib.mkDefault cfg.default;
+    time.timeZone = lib.mkDefault cfg.default;
 
-	};
+  };
 
 }

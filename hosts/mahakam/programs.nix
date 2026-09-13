@@ -1,25 +1,28 @@
-{ szy, lib, config, pkgs, ... }:
+{
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 {
 
-	"${szy}".catalog =
-	{
+  "${szy}".catalog = {
 
-		programs =
-		{
-			nh.enable = true;
-			neovim.enable = true;
-			zsh.enable = true;
-			yazi.enable = true;
+    programs = {
+      nh.enable = true;
+      neovim.enable = true;
+      zsh.enable = true;
+      yazi.enable = true;
 
-			default =
-			{
-				editor.cli = "neovim";
-				shell.cli = "zsh";
-				fileManager.cli = "yazi";
-			};
+      default = {
+        editor.cli = "neovim";
+        shell.cli = "zsh";
+        fileManager.cli = "yazi";
+      };
 
-		};
+    };
 
-	};
+  };
 
 }

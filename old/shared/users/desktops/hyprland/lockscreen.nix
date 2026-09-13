@@ -1,11 +1,17 @@
-{ szy, config, pkgs, desktop, lib, ... }:
-lib.mkIf (desktop.isEnabledStrict [ "hyprland" ])
 {
-	
-	security.pam.services.hyprlock = {};
+  szy,
+  config,
+  pkgs,
+  desktop,
+  lib,
+  ...
+}:
+lib.mkIf (desktop.isEnabledStrict [ "hyprland" ]) {
 
-	"${szy}".desktops.components.hibernateResume.commands = [
-		"${pkgs.procps}/bin/pkill -USR1 hyprlock"
-	];
+  security.pam.services.hyprlock = { };
+
+  "${szy}".desktops.components.hibernateResume.commands = [
+    "${pkgs.procps}/bin/pkill -USR1 hyprlock"
+  ];
 
 }

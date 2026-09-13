@@ -1,11 +1,19 @@
-{ szy, lib, config, pkgs, ... }:
-szy.objects.declare
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+szy.objects.declare {
 
-	inherit config;
-	
-	name = "gameLauncher";
+  inherit config;
 
-	extends = [ "gaming" "application" ];
+  name = "gameLauncher";
+
+  extends = [
+    "gaming"
+    "application"
+  ];
 
 }

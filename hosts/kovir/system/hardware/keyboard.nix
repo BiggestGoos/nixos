@@ -1,9 +1,8 @@
 {
 
-	hardware.keyboard.qmk =
-	{
-		enable = true;
-		keychronSupport = true;
-	};
+  hardware.keyboard.qmk = {
+    enable = true;
+    keychronSupport = true;
+  };
 
 }

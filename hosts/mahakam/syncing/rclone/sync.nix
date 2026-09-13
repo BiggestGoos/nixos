@@ -1,69 +1,65 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 let
 
-	rclone = lib.getExe pkgs.rclone;
+  rclone = lib.getExe pkgs.rclone;
 
-	syncText = "${rclone} bisync ${config.sync.baseDirectory}/Unrestricted ${config.sync.remoteDirectory}/Unrestricted --create-empty-src-dirs --compare size,modtime,checksum --resilient --conflict-resolve newer --conflict-loser delete";
+  syncText = "${rclone} bisync ${config.sync.baseDirectory}/Unrestricted ${config.sync.remoteDirectory}/Unrestricted --create-empty-src-dirs --compare size,modtime,checksum --resilient --conflict-resolve newer --conflict-loser delete";
 
-	firstSyncText = "${syncText} --resync";
+  firstSyncText = "${syncText} --resync";
 
-	firstSync = pkgs.writeShellScriptBin "firstSync"
-	''
-		${firstSyncText} $@
-	'';
+  firstSync = pkgs.writeShellScriptBin "firstSync" ''
+    		${firstSyncText} $@
+    	'';
 
-	runSync = pkgs.writeShellScriptBin "runSync" 
-	''
-		${syncText}
-	'';
+  runSync = pkgs.writeShellScriptBin "runSync" ''
+    		${syncText}
+    	'';
 
-	user = config.sync.user;
-	group = config.users.users."${user}".group;
+  user = config.sync.user;
+  group = config.users.users."${user}".group;
 
 in
 {
 
-	environment.systemPackages =
-	[
-		runSync
-		firstSync
-	];
+  environment.systemPackages = [
+    runSync
+    firstSync
+  ];
 
-	systemd =
-	{
+  systemd = {
 
-		services.rclone-bisync =
-		{
-			serviceConfig = 
-			{	
-				Type = "oneshot";
-				ExecStart = lib.getExe runSync;
+    services.rclone-bisync = {
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = lib.getExe runSync;
 
-				User = user;
-				Group = group;
-  			};
+        User = user;
+        Group = group;
+      };
 
-			after = 
-			[
-				"rclone-config.service"
-				"network-online.target"
-			];
+      after = [
+        "rclone-config.service"
+        "network-online.target"
+      ];
 
-			wants = [ "network-online.target" ];
-		};
+      wants = [ "network-online.target" ];
+    };
 
-		timers.rclone-bisync =
-		{
-			wantedBy = [ "timers.target" ];
+    timers.rclone-bisync = {
+      wantedBy = [ "timers.target" ];
 
-			timerConfig =
-			{
-				OnBootSec = "1min";
-				OnUnitInactiveSec = "1min";
-				Persistent = true;
-			};
-		};
+      timerConfig = {
+        OnBootSec = "1min";
+        OnUnitInactiveSec = "1min";
+        Persistent = true;
+      };
+    };
 
-	};
+  };
 
 }

@@ -1,11 +1,16 @@
-{ szy, lib, config, pkgs, ... }:
-szy.objects.declare
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+szy.objects.declare {
 
-	inherit config;
-	
-	name = "fileManager";
+  inherit config;
 
-	extends = [ "defaultApplication" ];
+  name = "fileManager";
+
+  extends = [ "defaultApplication" ];
 
 }

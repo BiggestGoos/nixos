@@ -1,7 +1,6 @@
 { lib, desktop, ... }:
-lib.mkIf (desktop.isEnabledStrict [ "hyprland" ])
-{
+lib.mkIf (desktop.isEnabledStrict [ "hyprland" ]) {
 
-	programs.rofi.enable = true;
+  programs.rofi.enable = true;
 
 }

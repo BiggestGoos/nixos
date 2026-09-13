@@ -1,50 +1,56 @@
-{ config, szy, pkgs, lib, ... }:
-szy.desktops.mkDesktop
 {
+  config,
+  szy,
+  pkgs,
+  lib,
+  ...
+}:
+szy.desktops.mkDesktop {
 
-	name = "hyprland";
+  name = "hyprland";
 
-	configuration = { desktop, args, ... }: 
-	{
-	
-		"${szy}" = {
-		
-			desktops.components.wayland.variables.enabledFor = [
-				"hyprland"
-			];
+  configuration =
+    { desktop, args, ... }:
+    {
 
-		};
-	
-		programs = {
+      "${szy}" = {
 
-			hyprland = {
-				enable = true;
-				withUWSM = true;
-			};
+        desktops.components.wayland.variables.enabledFor = [
+          "hyprland"
+        ];
 
-			uwsm.enable = true;
+      };
 
-		};
+      programs = {
 
-	};
-	
-	imports = [
-		./displayManager.nix
-		./lockscreen.nix
-		./xdgPortal.nix
-		./variants
-		./brightness.nix
-	];
+        hyprland = {
+          enable = true;
+          withUWSM = true;
+        };
 
-	globalImports = [
-		./brightnessGlobal.nix
-	];
+        uwsm.enable = true;
 
-	styles = [
-		{
-			names = [ "fallout" ];
-			variants = [ "fallout" ];
-		}
-	];
+      };
+
+    };
+
+  imports = [
+    ./displayManager.nix
+    ./lockscreen.nix
+    ./xdgPortal.nix
+    ./variants
+    ./brightness.nix
+  ];
+
+  globalImports = [
+    ./brightnessGlobal.nix
+  ];
+
+  styles = [
+    {
+      names = [ "fallout" ];
+      variants = [ "fallout" ];
+    }
+  ];
 
 }

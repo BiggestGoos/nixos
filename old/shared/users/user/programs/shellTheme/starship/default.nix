@@ -1,46 +1,49 @@
-{ szy, lib, config, pkgs, ... }:
-let
-	package = pkgs.starship;
-	terminal = config."${szy}".programs.terminal.default.values.runProgram;
-
-	shells = config."${szy}".applications.shell or {};
-	
-in
-szy.programs.mkInstance
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+let
+  package = pkgs.starship;
+  terminal = config."${szy}".programs.terminal.default.values.runProgram;
 
-	inherit config;
-	program = "shellTheme";
-	name = "starship";
+  shells = config."${szy}".applications.shell or { };
 
-	values = 
-	{ finalCommand, ... }:
-	{
-		inherit package;
-	};
+in
+szy.programs.mkInstance {
 
-	configuration = 
-	{ enabled, ... }:
-	lib.mkIf (enabled)
-	{
+  inherit config;
+  program = "shellTheme";
+  name = "starship";
 
-		programs.starship = 
-		let
+  values =
+    { finalCommand, ... }:
+    {
+      inherit package;
+    };
 
-			shellEnabled = shell: (shells."${shell}" or { enabled = false; }).enabled;
+  configuration =
+    { enabled, ... }:
+    lib.mkIf (enabled) {
 
-		in
-		{
+      programs.starship =
+        let
 
-			enable = true;
+          shellEnabled = shell: (shells."${shell}" or { enabled = false; }).enabled;
 
-			settings = import ./settings.nix { inherit lib; };
+        in
+        {
 
-			enableZshIntegration = shellEnabled "zsh";
+          enable = true;
 
-		};
+          settings = import ./settings.nix { inherit lib; };
 
-	};
+          enableZshIntegration = shellEnabled "zsh";
+
+        };
+
+    };
 
 }
-

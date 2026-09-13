@@ -1,16 +1,16 @@
 { config, ... }:
 {
 
-	xdg.portal = {
+  xdg.portal = {
 
-		enable = true;
+    enable = true;
 
-		extraPortals = [
-			config.programs.hyprland.portalPackage
-		];
+    extraPortals = [
+      config.programs.hyprland.portalPackage
+    ];
 
-		xdgOpenUsePortal = true;
+    xdgOpenUsePortal = true;
 
-	};
+  };
 
 }

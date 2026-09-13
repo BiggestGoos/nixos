@@ -1,11 +1,10 @@
 {
 
-	imports = 
-	[
-		./misc
-		./basic
-		./program
-		./applications
-	];
+  imports = [
+    ./misc
+    ./basic
+    ./program
+    ./applications
+  ];
 
 }

@@ -1,62 +1,67 @@
-{ szy, lib, config, pkgs, ... }:
-szy.objects.define
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+szy.objects.define {
 
-	inherit config;
+  inherit config;
 
-	name = "floorp";
-	template = "browser";
+  name = "floorp";
+  template = "browser";
 
-	qualifiers =
-	{
+  qualifiers = {
 
-		_meta.order = [ "composable" ];
+    _meta.order = [ "composable" ];
 
-		composable =
-		{
+    composable = {
 
-			components = 
-			{
-				default =
-				{
-					path = "default";
-					enable = true;
-				};
-			};
+      components = {
+        default = {
+          path = "default";
+          enable = true;
+        };
+      };
 
-			componentPath = ./.;
+      componentPath = ./.;
 
-		};
+    };
 
-	};
+  };
 
-	arguments =
-	{ final, template }:
-	{
+  arguments =
+    { final, template }:
+    {
 
-		package = config.programs.floorp.finalPackage;
+      package = config.programs.floorp.finalPackage;
 
-		program.arguments.search.args = [ "--search" ];
+      program.arguments.search.args = [ "--search" ];
 
-	};
+    };
 
-	configuration =
-	{ enabled, final, template }:
-	{
+  configuration =
+    {
+      enabled,
+      final,
+      template,
+    }:
+    {
 
-		programs.floorp = {
+      programs.floorp = {
 
-			enable = true;
+        enable = true;
 
-			profiles."${config.home.username}" = {
+        profiles."${config.home.username}" = {
 
-				id = 0;
-				isDefault = true;
+          id = 0;
+          isDefault = true;
 
-			};
+        };
 
-		};
+      };
 
-	};
+    };
 
 }

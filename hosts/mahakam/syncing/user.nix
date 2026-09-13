@@ -1,70 +1,67 @@
-{ szy, lib, config, pkgs, ... }:
-(szy config).users.user.create config.sync.user true
 {
-	
-	enable = config.sync.enable;
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+(szy config).users.user.create config.sync.user true {
 
-	variable =
-	{ constant, ... }:
-	{
+  enable = config.sync.enable;
 
-		modules = 
-		[
-			{
+  variable =
+    { constant, ... }:
+    {
 
-				home.stateVersion = "26.05";
+      modules = [
+        {
 
-			}
-		];
-	
-		primaryGroup = constant.username;
+          home.stateVersion = "26.05";
 
-		types = [ "system" ];
+        }
+      ];
 
-		settings =
-		{
+      primaryGroup = constant.username;
 
-			createHome = true;
-			homeMode = "770";
+      types = [ "system" ];
 
-			linger = true;
+      settings = {
 
-		};
+        createHome = true;
+        homeMode = "770";
 
-	};
+        linger = true;
 
-	output.options =
-	{
+      };
 
-		sync =
-		{
+    };
 
-			enable = lib.options.mkOption
-			{
-				type = lib.types.bool;
-				default = true;
-			};
+  output.options = {
 
-			user = lib.options.mkOption
-			{
-				type = lib.types.str;
-				default = "sync";
-			};
+    sync = {
 
-			baseDirectory = lib.options.mkOption
-			{
-				type = lib.types.str;
-				default = "/storage";
-			};
+      enable = lib.options.mkOption {
+        type = lib.types.bool;
+        default = true;
+      };
 
-			remoteDirectory = lib.options.mkOption
-			{
-				type = lib.types.str;
-				default = "remote:Sync";
-			};
+      user = lib.options.mkOption {
+        type = lib.types.str;
+        default = "sync";
+      };
 
-		};
+      baseDirectory = lib.options.mkOption {
+        type = lib.types.str;
+        default = "/storage";
+      };
 
-	};
+      remoteDirectory = lib.options.mkOption {
+        type = lib.types.str;
+        default = "remote:Sync";
+      };
+
+    };
+
+  };
 
 }

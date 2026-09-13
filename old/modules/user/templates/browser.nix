@@ -1,90 +1,82 @@
-{ szy, lib, config, pkgs, ... }:
-szy.objects.declare
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+szy.objects.declare {
 
-	inherit config;
-	
-	name = "browser";
+  inherit config;
 
-	extends = [ "defaultApplication" ];
+  name = "browser";
 
-	defaultArguments =
-	{ final, template }:
-	{
+  extends = [ "defaultApplication" ];
 
-		application.type = lib.mkDefault "gui";
-		desktopEntry.default.required = lib.mkForce true;
-		program.arguments.search.required = lib.mkForce true;
+  defaultArguments =
+    { final, template }:
+    {
 
-	};
+      application.type = lib.mkDefault "gui";
+      desktopEntry.default.required = lib.mkForce true;
+      program.arguments.search.required = lib.mkForce true;
 
-	configuration =
-	{ enabled, final }:
-	let
-	
-		default = final.data.default.any.value;
-		defaultOpen = default.data.commands.open.relative;
-		
-		scriptName = "${szy}+defaultBrowser";
-		script = pkgs.writeShellScriptBin scriptName
-''
-exec ${defaultOpen} "$@"
-'';
+    };
 
-	in
-	{
-	
-		xdg.mimeApps = 
-		{
+  configuration =
+    { enabled, final }:
+    let
 
-			enable = true;
+      default = final.data.default.any.value;
+      defaultOpen = default.data.commands.open.relative;
 
-			defaultApplications = 
-			let
-				mimetypes = 
-				[
-					"text/html"
-					"x-scheme-handler/http"
-					"x-scheme-handler/https"
-					"x-scheme-handler/about"
-					"x-scheme-handler/unknown"
-				];
-			in
-			builtins.listToAttrs 
-			(
-				builtins.map 
-				(
-					mimetype: 
-					{
-						name = mimetype; 
-						value = 
-						[ 
-							default.data.desktopEntry.default.final.id 
-						]; 
-					}
-				)
-				mimetypes
-			);
+      scriptName = "${szy}+defaultBrowser";
+      script = pkgs.writeShellScriptBin scriptName ''
+        exec ${defaultOpen} "$@"
+      '';
 
-		};
+    in
+    {
 
-		"${szy}" =
-		{
-			variables = {
-				BROWSER =
-				{
-					value = scriptName;
-					override = "force";
-				};
-				DEFAULT_BROWSER =
-				{
-					value = scriptName;
-					override = "force";
-				};
-			};
-			packages = [ script ];
-		};
+      xdg.mimeApps = {
 
-	};
+        enable = true;
+
+        defaultApplications =
+          let
+            mimetypes = [
+              "text/html"
+              "x-scheme-handler/http"
+              "x-scheme-handler/https"
+              "x-scheme-handler/about"
+              "x-scheme-handler/unknown"
+            ];
+          in
+          builtins.listToAttrs (
+            builtins.map (mimetype: {
+              name = mimetype;
+              value = [
+                default.data.desktopEntry.default.final.id
+              ];
+            }) mimetypes
+          );
+
+      };
+
+      "${szy}" = {
+        variables = {
+          BROWSER = {
+            value = scriptName;
+            override = "force";
+          };
+          DEFAULT_BROWSER = {
+            value = scriptName;
+            override = "force";
+          };
+        };
+        packages = [ script ];
+      };
+
+    };
 
 }

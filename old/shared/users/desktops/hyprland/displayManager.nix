@@ -1,14 +1,24 @@
-{ desktop, config, lib, szy, ... }:
+{
+  desktop,
+  config,
+  lib,
+  szy,
+  ...
+}:
 {
 
-	imports = [
-		./autologin.nix
-	];
+  imports = [
+    ./autologin.nix
+  ];
 
-	services.displayManager.ly = 
-	lib.mkIf ((desktop.isDefaultStrict [ "hyprland" ]) && (config."${szy}".desktops.components.autologin.enabled == false))
-	{
-		enable = true;
-	};
+  services.displayManager.ly =
+    lib.mkIf
+      (
+        (desktop.isDefaultStrict [ "hyprland" ])
+        && (config."${szy}".desktops.components.autologin.enabled == false)
+      )
+      {
+        enable = true;
+      };
 
 }

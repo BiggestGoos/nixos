@@ -1,9 +1,8 @@
 {
 
-	imports =
-	[
-		./yazi.nix
-		./ranger.nix
-	];
+  imports = [
+    ./yazi.nix
+    ./ranger.nix
+  ];
 
 }

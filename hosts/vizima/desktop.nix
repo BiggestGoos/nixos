@@ -1,9 +1,8 @@
 { szy, ... }:
 {
 
-	imports =
-	[
-		"${szy.data.root.temp.system.plasma}"
-	];
+  imports = [
+    "${szy.data.root.temp.system.plasma}"
+  ];
 
 }

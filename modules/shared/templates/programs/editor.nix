@@ -1,45 +1,47 @@
-{ szy, lib, config, pkgs, ... }:
-(szy config).objects.make.template
 {
-	
-	name = "editor";
-	namespace = [ "programs" ];
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+(szy config).objects.make.template {
 
-	inherits = [ "default" "application" ];
+  name = "editor";
+  namespace = [ "programs" ];
 
-	output.config =
-	{ constant, anyObjectEnabled, ... }:
-	let
+  inherits = [
+    "default"
+    "application"
+  ];
 
-		default = constant.default.any;
-		defaultOpen = default.variable.commands.default.relative;
+  output.config =
+    { constant, anyObjectEnabled, ... }:
+    let
 
-		scriptName = "${szy}+defaultEditor";
-		script = pkgs.writeShellScriptBin scriptName
-''
-exec ${defaultOpen} "$@"
-'';
+      default = constant.default.any;
+      defaultOpen = default.variable.commands.default.relative;
 
-	in
-	anyObjectEnabled
-	{
-		"${szy}" =
-		{
-			variables =
-			{
-				EDITOR = lib.mkDefault
-				{
-					value = scriptName;
-					override = "force";
-				};
-				VISUAL = lib.mkDefault
-				{
-					value = scriptName;
-					override = "force";
-				};
-			};
-			packages = [ script ];
-		};
-	};
+      scriptName = "${szy}+defaultEditor";
+      script = pkgs.writeShellScriptBin scriptName ''
+        exec ${defaultOpen} "$@"
+      '';
+
+    in
+    anyObjectEnabled {
+      "${szy}" = {
+        variables = {
+          EDITOR = lib.mkDefault {
+            value = scriptName;
+            override = "force";
+          };
+          VISUAL = lib.mkDefault {
+            value = scriptName;
+            override = "force";
+          };
+        };
+        packages = [ script ];
+      };
+    };
 
 }

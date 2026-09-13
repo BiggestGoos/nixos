@@ -1,21 +1,24 @@
-{ lib, szy, config, ... }:
-szy.programs.mkProgram
 {
+  lib,
+  szy,
+  config,
+  ...
+}:
+szy.programs.mkProgram {
 
-	inherit config;
-	name = "fastfetch";
+  inherit config;
+  name = "fastfetch";
 
-	additionalValues = [
-		"commandGraphical"
-	];
+  additionalValues = [
+    "commandGraphical"
+  ];
 
-	singleInstance = true;
-	
-	configuration = 
-	{ enabled, ... }:
-	lib.mkIf (enabled)
-	{
-		programs.fastfetch.enable = true;
-	};
+  singleInstance = true;
+
+  configuration =
+    { enabled, ... }:
+    lib.mkIf (enabled) {
+      programs.fastfetch.enable = true;
+    };
 
 }

@@ -1,8 +1,8 @@
 { ... }:
 {
 
-	imports = [
-		./uwsm.nix
-	];
+  imports = [
+    ./uwsm.nix
+  ];
 
 }

@@ -1,11 +1,10 @@
 {
 
-	imports =
-	[
-		./library
-		./templates
-		./variables
-		./packages
-	];
+  imports = [
+    ./library
+    ./templates
+    ./variables
+    ./packages
+  ];
 
 }

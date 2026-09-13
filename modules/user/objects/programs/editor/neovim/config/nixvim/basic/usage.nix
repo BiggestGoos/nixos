@@ -1,7 +1,6 @@
 {
 
-  opts =
-  {
+  opts = {
     # Enable mouse mode, can be useful for resizing splits for example!
     mouse = "a";
 

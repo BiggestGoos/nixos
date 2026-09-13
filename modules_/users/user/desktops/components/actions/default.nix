@@ -1,8 +1,13 @@
-{ szy, config, lib, ... }:
+{
+  szy,
+  config,
+  lib,
+  ...
+}:
 {
 
-	imports = [
-		(szy.import.internal.shared.from "desktops/components/actions")
-	];
+  imports = [
+    (szy.import.internal.shared.from "desktops/components/actions")
+  ];
 
 }

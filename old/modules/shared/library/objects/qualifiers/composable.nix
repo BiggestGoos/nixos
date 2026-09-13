@@ -1,37 +1,38 @@
-{ szy, lib, config, pkgs, ... }:
-szy.objects.declare
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+szy.objects.declare {
 
-	inherit config;
-	
-	name = "composable";
+  inherit config;
 
-	parameters =
-	{ final, template }:
-	{
+  name = "composable";
 
-		components = lib.options.mkOption
-		{
-			type = 
-			let
+  parameters =
+    { final, template }:
+    {
 
-				module.options =
-				{
-					path = lib.options.mkOption
-					{
-						type = lib.types.path;
-					};
+      components = lib.options.mkOption {
+        type =
+          let
 
-					enable = lib.options.mkOption
-					{ 
-						type = lib.types.bool;
-					};
-				};
+            module.options = {
+              path = lib.options.mkOption {
+                type = lib.types.path;
+              };
 
-			in
-			lib.types.attrsOf (lib.types.submoduleWith { modules = [ module ]; });
-		};
+              enable = lib.options.mkOption {
+                type = lib.types.bool;
+              };
+            };
 
-	};
+          in
+          lib.types.attrsOf (lib.types.submoduleWith { modules = [ module ]; });
+      };
+
+    };
 
 }

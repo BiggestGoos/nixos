@@ -1,34 +1,33 @@
 {
-	
-	networking =
-	{
-		wireless = 
-		{
-			enable = true;
 
-			/*iwd = 
-			{
+  networking = {
+    wireless = {
+      enable = true;
 
-				enable = true;
+      /*
+        iwd =
+        			{
 
-				settings = 
-				{
-		
-					General.AddressRandomization = "network";
-					Settings.AutoConnect = true;
+        				enable = true;
 
-				};
+        				settings =
+        				{
 
-			};*/
+        					General.AddressRandomization = "network";
+        					Settings.AutoConnect = true;
 
-		};
+        				};
 
-		networkmanager.wifi = 
-		{
-			#backend = "iwd";
-			powersave = true;
-		};
+        			};
+      */
 
-	};
+    };
+
+    networkmanager.wifi = {
+      #backend = "iwd";
+      powersave = true;
+    };
+
+  };
 
 }

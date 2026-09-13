@@ -1,8 +1,8 @@
 { szy, ... }:
 {
 
-	imports = [
-		"${szy.import.internal.shared.from "themes"}"
-	];
+  imports = [
+    "${szy.import.internal.shared.from "themes"}"
+  ];
 
 }

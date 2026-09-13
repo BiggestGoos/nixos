@@ -1,12 +1,16 @@
-{ szy, lib, config, pkgs, ... }:
-(szy config).users.user.create "goos" true
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+(szy config).users.user.create "goos" true {
 
-	variable =
-	{
+  variable = {
 
-		modules = szy.lib.imports.recursive ./home;
-	
-	};
+    modules = szy.lib.imports.recursive ./home;
+
+  };
 
 }

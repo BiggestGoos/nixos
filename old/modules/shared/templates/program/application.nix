@@ -1,127 +1,122 @@
-{ szy, lib, config, pkgs, ... }:
-szy.objects.declare
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+szy.objects.declare {
 
-	inherit config;
-	
-	name = "application";
+  inherit config;
 
-	extends = [ "program" "desktopEntry" ];
+  name = "application";
 
-	parameters =
-	{ final, template }:
-	{
+  extends = [
+    "program"
+    "desktopEntry"
+  ];
 
-		application = 
-		{
+  parameters =
+    { final, template }:
+    {
 
-			type = lib.options.mkOption
-			{
-				type = 
-				let
-					types = 
-					[
-						"gui"
-						"cli"
-						"both"
-					];
-				in
-					lib.types.enum types;
-			};
+      application = {
 
-		};
+        type = lib.options.mkOption {
+          type =
+            let
+              types = [
+                "gui"
+                "cli"
+                "both"
+              ];
+            in
+            lib.types.enum types;
+        };
 
-	};
+      };
 
-	defaultArguments =
-	{ final, template }:
-	let
-		inherit (final.data.application) type;
+    };
 
-		defaultRun =
-		if (type == "cli")
-		then final.data.program.arguments.exec
-		else final.data.program.arguments.open;
+  defaultArguments =
+    { final, template }:
+    let
+      inherit (final.data.application) type;
 
-	in
-	{
+      defaultRun =
+        if (type == "cli") then final.data.program.arguments.exec else final.data.program.arguments.open;
 
-		program.arguments.exec = lib.mkIf (type != "gui") {};
-		program.arguments.open = lib.mkIf (type != "cli") {};
+    in
+    {
 
-		program.arguments.defaultDesktopEntry =
-		{
-			generateCommand = false;
-			args = 
-			let
+      program.arguments.exec = lib.mkIf (type != "gui") { };
+      program.arguments.open = lib.mkIf (type != "cli") { };
 
-				old = final.data.desktopEntry.default.base.values;
+      program.arguments.defaultDesktopEntry = {
+        generateCommand = false;
+        args =
+          let
 
-				oldArgs = if (old ? exec) then lib.lists.drop 1 (lib.strings.splitString " " old.exec) else [];
-				newArgs = final.data.program.bin."${defaultRun.exe}".defaultArgs;
-				combined = lib.lists.unique (newArgs ++ oldArgs);
+            old = final.data.desktopEntry.default.base.values;
 
-			in
-				combined;
-		};
-		
-		desktopEntry.default.base.path = lib.mkIf (type != "cli") (lib.mkDefault final.meta.name);
-		desktopEntry.default.overrides =
-		let
+            oldArgs = if (old ? exec) then lib.lists.drop 1 (lib.strings.splitString " " old.exec) else [ ];
+            newArgs = final.data.program.bin."${defaultRun.exe}".defaultArgs;
+            combined = lib.lists.unique (newArgs ++ oldArgs);
 
-			inherit (final.data.program.arguments.defaultDesktopEntry) args;
+          in
+          combined;
+      };
 
-			cmdline = lib.strings.concatStringsSep " " ([ final.data.program.bin."${defaultRun.exe}".name ] ++ args);
+      desktopEntry.default.base.path = lib.mkIf (type != "cli") (lib.mkDefault final.meta.name);
+      desktopEntry.default.overrides =
+        let
 
-		in
-		lib.mkIf ((type != "cli") && (final.data.desktopEntry.default.base.values != {}))
-		{
-			exec = lib.mkDefault cmdline;
-		};
+          inherit (final.data.program.arguments.defaultDesktopEntry) args;
 
-	};
+          cmdline = lib.strings.concatStringsSep " " (
+            [ final.data.program.bin."${defaultRun.exe}".name ] ++ args
+          );
 
-	configuration =
-	{ enabled, final }:
-	{
+        in
+        lib.mkIf ((type != "cli") && (final.data.desktopEntry.default.base.values != { })) {
+          exec = lib.mkDefault cmdline;
+        };
 
-		imports =
-		[
-			./applications.nix
-		];
+    };
 
-		assertions =
-		let
-			definitions = 
-			builtins.map
-			(
-				identifier:
-					szy.objects.helper.definition.get { inherit config identifier; }
-			)
-			final.meta.full.definitions;
-		in
-		lib.lists.flatten
-		(
-			builtins.map
-			(
-				definition:
-				let
-					inherit (definition.data.application) type;
-				in
-				[
-					{
-						assertion = (type == "gui") || definition.data.commands ? exec;
-						message = "The cli definition \"${definition.meta.name}\" of the template \"${definition.meta.template}\" must have an exec command value!";
-					}
-					{
-						assertion = (type == "cli") || definition.data.commands ? open;
-						message = "The gui definition \"${definition.meta.name}\" of the template \"${definition.meta.template}\" must have an open command value!";
-					}
-				]
-			)
-			definitions
-		);
+  configuration =
+    { enabled, final }:
+    {
 
-	};
+      imports = [
+        ./applications.nix
+      ];
+
+      assertions =
+        let
+          definitions = builtins.map (
+            identifier: szy.objects.helper.definition.get { inherit config identifier; }
+          ) final.meta.full.definitions;
+        in
+        lib.lists.flatten (
+          builtins.map (
+            definition:
+            let
+              inherit (definition.data.application) type;
+            in
+            [
+              {
+                assertion = (type == "gui") || definition.data.commands ? exec;
+                message = "The cli definition \"${definition.meta.name}\" of the template \"${definition.meta.template}\" must have an exec command value!";
+              }
+              {
+                assertion = (type == "cli") || definition.data.commands ? open;
+                message = "The gui definition \"${definition.meta.name}\" of the template \"${definition.meta.template}\" must have an open command value!";
+              }
+            ]
+          ) definitions
+        );
+
+    };
 
 }

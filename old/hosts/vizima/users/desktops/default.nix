@@ -1,107 +1,115 @@
-{ pkgs, lib, config, szy, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  szy,
+  ...
+}:
 {
 
-	imports = [
-		./plasma
-		./gnome
-		./hyprland
-	];
+  imports = [
+    ./plasma
+    ./gnome
+    ./hyprland
+  ];
 
-	"${szy}".desktops.configuration = [ {
+  "${szy}".desktops.configuration = [
+    {
 
-		"${szy}".desktops = {
+      "${szy}".desktops = {
 
-			components = {
+        components = {
 
-				displays = {
+          displays = {
 
-					displays = {
+            displays = {
 
-						main = {
+              main = {
 
-							hardware = {
-								portName = "eDP-1";
-								description = "Chimei Innolux Corporation 0x1406";
-							};
-	
-							scale = 1.25;
-			
-						};
+                hardware = {
+                  portName = "eDP-1";
+                  description = "Chimei Innolux Corporation 0x1406";
+                };
 
-						secondary = {
+                scale = 1.25;
 
-							hardware = {
-								portName = "HDMI-A-1";
-								description = "Philips Consumer Electronics Company PHL 288E2 AU52038000277";
-							};
+              };
 
-							scale = 1.5;
+              secondary = {
 
-						};
+                hardware = {
+                  portName = "HDMI-A-1";
+                  description = "Philips Consumer Electronics Company PHL 288E2 AU52038000277";
+                };
 
-					};
+                scale = 1.5;
 
-					default.name = "main";
+              };
 
-				};
+            };
 
-				devices = {
+            default.name = "main";
 
-					keyboards = {
+          };
 
-						default = {
+          devices = {
 
-							xkb.layout = "se";
+            keyboards = {
 
-						};
+              default = {
 
-					};
-	
-					pointers = {
+                xkb.layout = "se";
 
-						touchpads.default = {
-								
-							scrolling = {
+              };
 
-								factor = 0.5;
+            };
 
-							};
+            pointers = {
 
-							tapAndDrag = "timeout";
+              touchpads.default = {
 
-							clickfingerBehavior = true;
+                scrolling = {
 
-						};
+                  factor = 0.5;
 
-						touchpads.touchpads.laptop = {
+                };
 
-							hardware.name = "syna30bd:00-06cb:ce08-2";
+                tapAndDrag = "timeout";
 
-							sensitivity = 0;
+                clickfingerBehavior = true;
 
-						};
+              };
 
-						generics.generics.pointingStick = {
+              touchpads.touchpads.laptop = {
 
-							hardware.name = "syna30bd:00-06cb:ce08-1";
+                hardware.name = "syna30bd:00-06cb:ce08-2";
 
-							sensitivity = -1;
+                sensitivity = 0;
 
-						};
+              };
 
-					};
+              generics.generics.pointingStick = {
 
-				};
+                hardware.name = "syna30bd:00-06cb:ce08-1";
 
-			};
+                sensitivity = -1;
 
-			variants.enabled = [
-				"autologin"
-				"hibernateResume"
-			];
-				
-		};
+              };
 
-	} ];
+            };
+
+          };
+
+        };
+
+        variants.enabled = [
+          "autologin"
+          "hibernateResume"
+        ];
+
+      };
+
+    }
+  ];
 
 }

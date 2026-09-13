@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
 
-	home.packages = [ pkgs.sleek-todo ];
+  home.packages = [ pkgs.sleek-todo ];
 
 }

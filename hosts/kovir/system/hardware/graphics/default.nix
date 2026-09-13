@@ -1,39 +1,35 @@
 { pkgs, ... }:
 {
 
-	boot.initrd.kernelModules = [ "amdgpu" ];
+  boot.initrd.kernelModules = [ "amdgpu" ];
 
-	hardware.graphics =
-	{
-		enable = true;
-		enable32Bit = true;
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
 
-		extraPackages =
-		[ 	
-			pkgs.libvdpau-va-gl
-		];
-		extraPackages32 =
-		[
-			pkgs.driversi686Linux.libvdpau-va-gl
-		];
-	};
+    extraPackages = [
+      pkgs.libvdpau-va-gl
+    ];
+    extraPackages32 = [
+      pkgs.driversi686Linux.libvdpau-va-gl
+    ];
+  };
 
-	environment.sessionVariables = 
-	{ 
-		VDPAU_DRIVER = "radeonsi"; 
-		LIBVA_DRIVER_NAME = "radeonsi"; 
-	};
+  environment.sessionVariables = {
+    VDPAU_DRIVER = "radeonsi";
+    LIBVA_DRIVER_NAME = "radeonsi";
+  };
 
-	hardware.amdgpu = {
+  hardware.amdgpu = {
 
-		initrd.enable = true;
-		opencl.enable = true;
+    initrd.enable = true;
+    opencl.enable = true;
 
-		overdrive = {
-			enable = true;
-			#ppfeaturemask = "0xfffd3fff";
-		};
+    overdrive = {
+      enable = true;
+      #ppfeaturemask = "0xfffd3fff";
+    };
 
-	};
+  };
 
 }

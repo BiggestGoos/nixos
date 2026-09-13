@@ -1,163 +1,157 @@
-{ szy, lib, config, pkgs, ... }:
-szy.objects.declare
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+szy.objects.declare {
 
-	inherit config;
-	
-	name = "terminalApplication";
+  inherit config;
 
-	parameters =
-	{ final, template }:
-	{
+  name = "terminalApplication";
 
-		application =
-		{
+  parameters =
+    { final, template }:
+    {
 
-			terminal =
-			let
-				terminals = (szy.objects.helper.getTemplate { inherit config; name = "terminal"; }).meta.full.definitions;
+      application = {
 
-				names = builtins.map (identifier: identifier.name) terminals;
-				templates = builtins.map (identifier: identifier.template) terminals;
+        terminal =
+          let
+            terminals =
+              (szy.objects.helper.getTemplate {
+                inherit config;
+                name = "terminal";
+              }).meta.full.definitions;
 
-				inherit (final.data.application) terminal;
-			in
-			lib.options.mkOption
-			{
-	
-				type = 
-				let
+            names = builtins.map (identifier: identifier.name) terminals;
+            templates = builtins.map (identifier: identifier.template) terminals;
 
-					module.options =
-					{
+            inherit (final.data.application) terminal;
+          in
+          lib.options.mkOption {
 
-						name = lib.options.mkOption
-						{
-							type = lib.types.enum names;
-						};
+            type =
+              let
 
-						template = lib.options.mkOption
-						{
-							type = lib.types.enum templates;
-							default =
-							let
-								inherit (terminal) name;
+                module.options = {
 
-								possibleDefinitions =
-								builtins.filter 
-								(
-									identifier: identifier.name == name
-								) terminals;
+                  name = lib.options.mkOption {
+                    type = lib.types.enum names;
+                  };
 
-								template =
-								lib.trivial.throwIfNot
-								(
-									(builtins.length possibleDefinitions) == 1
-								)
-								"Either there is no terminal with name ${name} or you also need to specify which template it defines"
-								(
-									(builtins.head possibleDefinitions).template
-								);
-							in
-								template;
-						};
+                  template = lib.options.mkOption {
+                    type = lib.types.enum templates;
+                    default =
+                      let
+                        inherit (terminal) name;
 
-					};
+                        possibleDefinitions = builtins.filter (identifier: identifier.name == name) terminals;
 
-				in
-					lib.types.nullOr (lib.types.submoduleWith { modules = [ module ]; });
+                        template =
+                          lib.trivial.throwIfNot ((builtins.length possibleDefinitions) == 1)
+                            "Either there is no terminal with name ${name} or you also need to specify which template it defines"
+                            ((builtins.head possibleDefinitions).template);
+                      in
+                      template;
+                  };
 
-				default = null;
+                };
 
-			};
+              in
+              lib.types.nullOr (lib.types.submoduleWith { modules = [ module ]; });
 
-		};
+            default = null;
 
-	};
+          };
 
-	defaultArguments =
-	{ final, template }:
-	let
-		inherit (final) data;
-		inherit (data) application desktopEntry;
-		inherit (application) terminal type;
+      };
 
-		runCommand = (szy.objects.helper.definition.get ({ inherit config; identifier = terminal; })).data.commands.runCommand.relative;
-	in
-	{
+    };
 
-		application.type = 
-		if (terminal == null)
-		then lib.mkDefault "cli"
-		else lib.mkForce "both";
+  defaultArguments =
+    { final, template }:
+    let
+      inherit (final) data;
+      inherit (data) application desktopEntry;
+      inherit (application) terminal type;
 
-		desktopEntry.default.overrides =
-		lib.mkIf (terminal != null)
-		{
-			terminal = lib.mkDefault false;
-			exec = 
-			let
-				inherit (final.data.program.arguments.defaultDesktopEntry) args;
+      runCommand =
+        (szy.objects.helper.definition.get ({
+          inherit config;
+          identifier = terminal;
+        })).data.commands.runCommand.relative;
+    in
+    {
 
-				cmdline = lib.strings.concatStringsSep " " ([ runCommand final.data.program.bin."${final.data.program.arguments.open.exe}".name ] ++ args);
-			in
-			lib.mkOverride 999 cmdline;
-		};
+      application.type = if (terminal == null) then lib.mkDefault "cli" else lib.mkForce "both";
 
-		commands.open =
-		let
-			inherit (final.data.program) arguments bin;
+      desktopEntry.default.overrides = lib.mkIf (terminal != null) {
+        terminal = lib.mkDefault false;
+        exec =
+          let
+            inherit (final.data.program.arguments.defaultDesktopEntry) args;
 
-			openExe = bin."${arguments.open.exe}";
+            cmdline = lib.strings.concatStringsSep " " (
+              [
+                runCommand
+                final.data.program.bin."${final.data.program.arguments.open.exe}".name
+              ]
+              ++ args
+            );
+          in
+          lib.mkOverride 999 cmdline;
+      };
 
-			generateCommand = exe: "${lib.strings.concatStringsSep " " ([ exe ] ++ openExe.defaultArgs ++ arguments.open.args)}";
+      commands.open =
+        let
+          inherit (final.data.program) arguments bin;
 
-			defaultRunCommand = config."${szy}".applications.default.terminal.any.commands.runCommand.relative;
-		in
-		lib.mkIf (type != "cli")
-		(if (terminal != null)
-		then
-		{
-			absolute = lib.mkForce ("${runCommand} ${generateCommand openExe.path}");
-			relative = lib.mkForce ("${runCommand} ${generateCommand openExe.name}");
-		}
-		else
-		{
-			absolute = lib.mkForce ("${defaultRunCommand} ${generateCommand openExe.path}");
-			relative = lib.mkForce ("${defaultRunCommand} ${generateCommand openExe.name}");
-		});
+          openExe = bin."${arguments.open.exe}";
 
-	};
+          generateCommand =
+            exe: "${lib.strings.concatStringsSep " " ([ exe ] ++ openExe.defaultArgs ++ arguments.open.args)}";
 
-	configuration =
-	{ enabled, final }:
-	{
+          defaultRunCommand = config."${szy}".applications.default.terminal.any.commands.runCommand.relative;
+        in
+        lib.mkIf (type != "cli") (
+          if (terminal != null) then
+            {
+              absolute = lib.mkForce ("${runCommand} ${generateCommand openExe.path}");
+              relative = lib.mkForce ("${runCommand} ${generateCommand openExe.name}");
+            }
+          else
+            {
+              absolute = lib.mkForce ("${defaultRunCommand} ${generateCommand openExe.path}");
+              relative = lib.mkForce ("${defaultRunCommand} ${generateCommand openExe.name}");
+            }
+        );
 
-		assertions =
-		let
-			definitions = 
-			builtins.map
-			(
-				identifier:
-					szy.objects.helper.definition.get { inherit config identifier; }
-			)
-			final.meta.full.definitions;
-		in
-		lib.lists.flatten
-		(
-			builtins.map
-			(
-				definition:
-				[
-					{
-						assertion = builtins.elem definition.data.application.type [ "cli" "both" ];
-						message = "The definition \"${definition.meta.name}\" of the template \"${definition.meta.template}\" is marked as a terminalApplication and can't have the application type \"${definition.data.application.type}\".";
-					}
-				]
-			)
-			definitions
-		);
+    };
 
-	};
+  configuration =
+    { enabled, final }:
+    {
+
+      assertions =
+        let
+          definitions = builtins.map (
+            identifier: szy.objects.helper.definition.get { inherit config identifier; }
+          ) final.meta.full.definitions;
+        in
+        lib.lists.flatten (
+          builtins.map (definition: [
+            {
+              assertion = builtins.elem definition.data.application.type [
+                "cli"
+                "both"
+              ];
+              message = "The definition \"${definition.meta.name}\" of the template \"${definition.meta.template}\" is marked as a terminalApplication and can't have the application type \"${definition.data.application.type}\".";
+            }
+          ]) definitions
+        );
+
+    };
 
 }

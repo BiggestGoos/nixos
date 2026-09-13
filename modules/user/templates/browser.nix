@@ -1,80 +1,79 @@
-{ szy, lib, config, pkgs, ... }:
-(szy config).objects.make.template
 {
-	
-	name = "browser";
-	namespace = [ "programs" ];
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+(szy config).objects.make.template {
 
-	inherits = [ "default" "application" ];
+  name = "browser";
+  namespace = [ "programs" ];
 
-	output.config =
-	{ variable, constant, anyObjectEnabled, ... }:
-	let
-	
-		default = constant.default.any;
-		defaultOpen = default.variable.commands.default.relative;
-		
-		scriptName = "${szy}+defaultBrowser";
-		script = pkgs.writeShellScriptBin scriptName
-''
-exec ${defaultOpen} "$@"
-'';
+  inherits = [
+    "default"
+    "application"
+  ];
 
-	in
-	anyObjectEnabled
-	{
-	
-		xdg.mimeApps = 
-		{
+  output.config =
+    {
+      variable,
+      constant,
+      anyObjectEnabled,
+      ...
+    }:
+    let
 
-			enable = true;
+      default = constant.default.any;
+      defaultOpen = default.variable.commands.default.relative;
 
-			defaultApplications = 
-			let
-				mimetypes = 
-				[
-					"text/html"
-					"x-scheme-handler/http"
-					"x-scheme-handler/https"
-					"x-scheme-handler/about"
-					"x-scheme-handler/unknown"
-				];
-			in
-			builtins.listToAttrs 
-			(
-				builtins.map 
-				(
-					mimetype: 
-					{
-						name = mimetype; 
-						value = 
-						[ 
-							default.variable.entry.default.final.id 
-						]; 
-					}
-				)
-				mimetypes
-			);
+      scriptName = "${szy}+defaultBrowser";
+      script = pkgs.writeShellScriptBin scriptName ''
+        exec ${defaultOpen} "$@"
+      '';
 
-		};
+    in
+    anyObjectEnabled {
 
-		"${szy}" =
-		{
-			variables = {
-				BROWSER =
-				{
-					value = scriptName;
-					override = "force";
-				};
-				DEFAULT_BROWSER =
-				{
-					value = scriptName;
-					override = "force";
-				};
-			};
-			packages = [ script ];
-		};
+      xdg.mimeApps = {
 
-	};
+        enable = true;
+
+        defaultApplications =
+          let
+            mimetypes = [
+              "text/html"
+              "x-scheme-handler/http"
+              "x-scheme-handler/https"
+              "x-scheme-handler/about"
+              "x-scheme-handler/unknown"
+            ];
+          in
+          builtins.listToAttrs (
+            builtins.map (mimetype: {
+              name = mimetype;
+              value = [
+                default.variable.entry.default.final.id
+              ];
+            }) mimetypes
+          );
+
+      };
+
+      "${szy}" = {
+        variables = {
+          BROWSER = {
+            value = scriptName;
+            override = "force";
+          };
+          DEFAULT_BROWSER = {
+            value = scriptName;
+            override = "force";
+          };
+        };
+        packages = [ script ];
+      };
+
+    };
 
 }

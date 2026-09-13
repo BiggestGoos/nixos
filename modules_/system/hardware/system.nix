@@ -1,6 +1,12 @@
-{ szy, lib, config, system, ... }:
+{
+  szy,
+  lib,
+  config,
+  system,
+  ...
+}:
 {
 
-	nixpkgs.hostPlatform = system;
+  nixpkgs.hostPlatform = system;
 
 }

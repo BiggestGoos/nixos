@@ -1,26 +1,29 @@
-{ szy, lib, config, pkgs, ... }:
+{
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 {
 
-	"${szy}".objects.users.goos.variable =
-	{
-		enable = true;
+  "${szy}".objects.users.goos.variable = {
+    enable = true;
 
-		modules = szy.lib.imports.recursive ./home;
+    modules = szy.lib.imports.recursive ./home;
 
-		settings =
-		{
-			# Public keys allowed to authorize
-			openssh.authorizedKeys.keys =
-			[
-				config."${szy}".secrets.public.ssh.kovir.goos
-				config."${szy}".secrets.public.ssh.vizima.goos
-				config."${szy}".secrets.public.ssh.novigrad.goos
-			];
+    settings = {
+      # Public keys allowed to authorize
+      openssh.authorizedKeys.keys = [
+        config."${szy}".secrets.public.ssh.kovir.goos
+        config."${szy}".secrets.public.ssh.vizima.goos
+        config."${szy}".secrets.public.ssh.novigrad.goos
+      ];
 
-			hashedPasswordFile = config.sops.secrets."users/goos/password".path;
-		};
-	};
+      hashedPasswordFile = config.sops.secrets."users/goos/password".path;
+    };
+  };
 
-	imports = szy.lib.imports.recursive ./password;
+  imports = szy.lib.imports.recursive ./password;
 
 }

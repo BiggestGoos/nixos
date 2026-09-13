@@ -1,32 +1,40 @@
-{ szy, lib, config, pkgs, ... }:
-szy.objects.define
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+szy.objects.define {
 
-	inherit config;
-	template = "fileManager";
-	extends = [ "terminalApplication" ];
+  inherit config;
+  template = "fileManager";
+  extends = [ "terminalApplication" ];
 
-	name = "ranger";
+  name = "ranger";
 
-	arguments = 
-	{ final, template }:
-	{
+  arguments =
+    { final, template }:
+    {
 
-		application.type = "both";
+      application.type = "both";
 
-	};
+    };
 
-	configuration = 
-	{ enabled, final, template }:
-	{
+  configuration =
+    {
+      enabled,
+      final,
+      template,
+    }:
+    {
 
-		programs.ranger = {
+      programs.ranger = {
 
-			enable = true;
+        enable = true;
 
-		};	
+      };
 
-	};
+    };
 
 }
-

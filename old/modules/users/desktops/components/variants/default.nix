@@ -1,16 +1,15 @@
 { szy, config, ... }:
-szy.variants.mkVarying
-{
+szy.variants.mkVarying {
 
-	path = ./.;
-	inherit config;
+  path = ./.;
+  inherit config;
 
-	option = [ "desktops" ];
+  option = [ "desktops" ];
 
-	variants = [
-		"autologin"
-		"hibernateResume"
-		"wayland"
-	];
+  variants = [
+    "autologin"
+    "hibernateResume"
+    "wayland"
+  ];
 
 }

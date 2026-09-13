@@ -1,10 +1,10 @@
 { lib, pkgs, ... }:
 {
 
-	imports = [
-		./users
-		./desktops
-		./programs
-	];	
+  imports = [
+    ./users
+    ./desktops
+    ./programs
+  ];
 
 }

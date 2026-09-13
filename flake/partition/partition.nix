@@ -1,33 +1,23 @@
 let
-	merge = lhs: rhs: lhs // rhs;
+  merge = lhs: rhs: lhs // rhs;
 
-	mergeSets = list: builtins.foldl' merge {} list;
+  mergeSets = list: builtins.foldl' merge { } list;
 
-	partitionsDirectory = "partitions";
+  partitionsDirectory = "partitions";
 
-	files' = builtins.readDir ./${partitionsDirectory};
-	files = builtins.map
-	(
-		name:
-			./${partitionsDirectory} + "/${name}"
-	) (builtins.attrNames files');
+  files' = builtins.readDir ./${partitionsDirectory};
+  files = builtins.map (name: ./${partitionsDirectory} + "/${name}") (builtins.attrNames files');
 
-	sets = builtins.map
-	(
-		file:
-			builtins.fromJSON (builtins.readFile file)
-	) files;
+  sets = builtins.map (file: builtins.fromJSON (builtins.readFile file)) files;
 
-	disksSet = mergeSets sets;
-	
-	diskless = builtins.fromJSON (builtins.readFile ./diskless);
+  disksSet = mergeSets sets;
 
-	merged.disko = diskless.disko //
-	{
-		devices = diskless.disko.devices // 
-		{
-			disk = disksSet;
-		};
-	};
+  diskless = builtins.fromJSON (builtins.readFile ./diskless);
+
+  merged.disko = diskless.disko // {
+    devices = diskless.disko.devices // {
+      disk = disksSet;
+    };
+  };
 in
-	merged
+merged

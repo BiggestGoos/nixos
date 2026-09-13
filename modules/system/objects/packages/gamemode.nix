@@ -1,20 +1,22 @@
-{ szy, lib, config, pkgs, ... }:
-(szy config).objects.make
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+(szy config).objects.make {
 
-	inherits = [ "gaming" ];
+  inherits = [ "gaming" ];
 
-	name = "gamemode";
-	namespace = [ "packages" ];
+  name = "gamemode";
+  namespace = [ "packages" ];
 
-	output.config = 
-	{
-		programs.gamemode = 
-		{
-			enable = true;
-		};
-		"${szy}".users.types.gaming.groups = [ "gamemode" ];	
-	};
+  output.config = {
+    programs.gamemode = {
+      enable = true;
+    };
+    "${szy}".users.types.gaming.groups = [ "gamemode" ];
+  };
 
 }
-

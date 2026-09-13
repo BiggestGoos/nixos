@@ -1,10 +1,14 @@
-{ lib, szy, config, ... }:
-szy.programs.mkProgram
 {
+  lib,
+  szy,
+  config,
+  ...
+}:
+szy.programs.mkProgram {
 
-	inherit config;
-	name = "lutris";
+  inherit config;
+  name = "lutris";
 
-	singleInstance = true;
-	
+  singleInstance = true;
+
 }

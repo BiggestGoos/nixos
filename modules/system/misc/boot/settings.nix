@@ -1,70 +1,68 @@
-{ szy, pkgs, lib, config, ... }:
+{
+  szy,
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
 
-	cfg = config."${szy}".boot;
+  cfg = config."${szy}".boot;
 
 in
 {
 
-	options."${szy}".boot = 
-	{
+  options."${szy}".boot = {
 
-		silent.enable = lib.mkOption 
-		{
-			type = lib.types.bool;
-			default = true;
-		};
+    silent.enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+    };
 
-		timeout.enable = lib.mkOption 
-		{
-			type = lib.types.bool;
-			default = true;
-		};
+    timeout.enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+    };
 
-	};
+  };
 
-  	config.boot = szy.lib.attrsets.deepMergeList 
-	[ 
-		{
+  config.boot = szy.lib.attrsets.deepMergeList [
+    {
 
-			initrd.systemd.services = lib.mkIf (cfg.timeout.enable) 
-			{
-				boot-timeout = {
-					wantedBy = [ "initrd.target" ];
-					before = [ "cryptsetup.target" ];
-		
-					# In seconds, 300 = 5 Minutes
-					script = "(sleep 300 && shutdown now) & disown";
+      initrd.systemd.services = lib.mkIf (cfg.timeout.enable) {
+        boot-timeout = {
+          wantedBy = [ "initrd.target" ];
+          before = [ "cryptsetup.target" ];
 
-					unitConfig.DefaultDependencies = "no";
-					serviceConfig.Type = "forking";
-				};
-			};
+          # In seconds, 300 = 5 Minutes
+          script = "(sleep 300 && shutdown now) & disown";
 
-		} 
-		(
-			lib.mkIf (cfg.silent.enable)
-			{ 
+          unitConfig.DefaultDependencies = "no";
+          serviceConfig.Type = "forking";
+        };
+      };
 
-				loader.timeout = 0;
+    }
+    (lib.mkIf (cfg.silent.enable) {
 
-   				consoleLogLevel = 3;
+      loader.timeout = 0;
 
-		   		initrd = {
-					verbose = false;
-		   			systemd.enable = true;
-				};
+      consoleLogLevel = 3;
 
-		   		kernelParams = [
-       				"quiet"
-		       		"splash"
-       				"intremap=on"
-		       		"rd.udev.log_priority=3"
-       				"rd.systemd.show_status=auto"
-		   		];
+      initrd = {
+        verbose = false;
+        systemd.enable = true;
+      };
 
-			}
-		) 
-	];
+      kernelParams = [
+        "quiet"
+        "splash"
+        "intremap=on"
+        "rd.udev.log_priority=3"
+        "rd.systemd.show_status=auto"
+      ];
+
+    })
+  ];
 
 }

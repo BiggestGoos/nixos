@@ -1,13 +1,13 @@
 { ... }:
 {
 
-	imports = [
-		./programs
-		./themes
-		./configuration
-		./uwsm.nix
-	];
+  imports = [
+    ./programs
+    ./themes
+    ./configuration
+    ./uwsm.nix
+  ];
 
-	services.hyprpolkitagent.enable = true;
+  services.hyprpolkitagent.enable = true;
 
 }

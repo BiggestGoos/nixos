@@ -1,15 +1,21 @@
-{ szy, pkgs, lib, config, ... }:
+{
+  szy,
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 {
 
-	boot.loader = { 
+  boot.loader = {
 
-		systemd-boot = {
-			enable = true;
-			configurationLimit = 10;
-		};
+    systemd-boot = {
+      enable = true;
+      configurationLimit = 10;
+    };
 
-		efi.canTouchEfiVariables = true;
-			
-	};
+    efi.canTouchEfiVariables = true;
+
+  };
 
 }

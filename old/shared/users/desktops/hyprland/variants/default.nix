@@ -1,13 +1,16 @@
 { szy, config, ... }:
-szy.variants.mkVarying
-{
+szy.variants.mkVarying {
 
-	path = ./.;
-	inherit config;
-	option = [ "desktops" "desktops" "hyprland" ];
+  path = ./.;
+  inherit config;
+  option = [
+    "desktops"
+    "desktops"
+    "hyprland"
+  ];
 
-	variants = [
-		"fallout"
-	];
+  variants = [
+    "fallout"
+  ];
 
 }

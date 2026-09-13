@@ -2,8 +2,7 @@
   viAlias = true;
   vimAlias = true;
 
-  opts =
-  {
+  opts = {
     # Save undo history
     undofile = true;
 

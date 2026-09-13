@@ -1,23 +1,30 @@
-{ szy, lib, config, pkgs, ... }:
-(szy config).objects.make
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+(szy config).objects.make {
 
-	inherits = [ [ "programs" "editor" ] ];
+  inherits = [
+    [
+      "programs"
+      "editor"
+    ]
+  ];
 
-	name = "neovim";
-	namespace = [ "programs" ];
+  name = "neovim";
+  namespace = [ "programs" ];
 
-	constant.type = "cli";
+  constant.type = "cli";
 
-	output.config = 
-	{
+  output.config = {
 
-		programs.neovim = 
-		{
-			enable = true;	
-		};	
+    programs.neovim = {
+      enable = true;
+    };
 
-	};
+  };
 
 }
-

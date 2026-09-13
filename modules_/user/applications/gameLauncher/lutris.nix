@@ -1,58 +1,66 @@
-{ szy, lib, osConfig, config, pkgs, ... }:
-szy.objects.define
 {
+  szy,
+  lib,
+  osConfig,
+  config,
+  pkgs,
+  ...
+}:
+szy.objects.define {
 
-	inherit config;
-	template = "gameLauncher";
+  inherit config;
+  template = "gameLauncher";
 
-	name = "lutris";
+  name = "lutris";
 
-	arguments = 
-	let
+  arguments =
+    let
 
-		steam = szy.objects.helper.definition.get { inherit config; identifier = { name = "steam"; template = "gameLauncher"; }; };
+      steam = szy.objects.helper.definition.get {
+        inherit config;
+        identifier = {
+          name = "steam";
+          template = "gameLauncher";
+        };
+      };
 
-	in
-	{
+    in
+    {
 
-		package = 
-		lib.mkDefault
-		(
-			lib.trivial.warnIf
-			(
-				steam == {}
-			)
-			"There is no steam definition, getting steam package directly from system config"
-			(steam.data or {}).package or osConfig.programs.steam.package
-		);
+      package = lib.mkDefault (
+        lib.trivial.warnIf (steam == { })
+          "There is no steam definition, getting steam package directly from system config"
+          (steam.data or { }).package or osConfig.programs.steam.package
+      );
 
-		application.type = "gui";
+      application.type = "gui";
 
-	};
+    };
 
-	configuration = 
-	{ final, ... }:
-	{
+  configuration =
+    { final, ... }:
+    {
 
-		programs.lutris = {
+      programs.lutris = {
 
-			enable = true;
+        enable = true;
 
-			steamPackage = final.data.package;
+        steamPackage = final.data.package;
 
-			protonPackages = [
-				pkgs.proton-ge-bin
-			];
-			defaultWinePackage = pkgs.proton-ge-bin;
+        protonPackages = [
+          pkgs.proton-ge-bin
+        ];
+        defaultWinePackage = pkgs.proton-ge-bin;
 
-			/*extraPackages = with pkgs; [
-				libadwaita
-				gtk4
-			];*/
+        /*
+          extraPackages = with pkgs; [
+          				libadwaita
+          				gtk4
+          			];
+        */
 
-		};
+      };
 
-	};
+    };
 
 }
-

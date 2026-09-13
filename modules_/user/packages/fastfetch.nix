@@ -1,18 +1,21 @@
-{ szy, lib, config, pkgs, ... }:
-szy.objects.define
 {
+  szy,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+szy.objects.define {
 
-	inherit config;
-	template = "package";
+  inherit config;
+  template = "package";
 
-	name = "fastfetch";
+  name = "fastfetch";
 
-	configuration = 
-	{
-		programs.fastfetch = {
-			enable = true;
-		};	
-	};
+  configuration = {
+    programs.fastfetch = {
+      enable = true;
+    };
+  };
 
 }
-

@@ -1,18 +1,22 @@
-{ szy, lib, osConfig, config, pkgs, ... }:
-(szy config).objects.make
 {
+  szy,
+  lib,
+  osConfig,
+  config,
+  pkgs,
+  ...
+}:
+(szy config).objects.make {
 
-	inherits = [ "application" ];
+  inherits = [ "application" ];
 
-	name = "discord";
-	namespace = [ "programs" ];
+  name = "discord";
+  namespace = [ "programs" ];
 
-	constant.type = "gui";
+  constant.type = "gui";
 
-	output.config = 
-	{
-		programs.discord.enable = true;
-	};
+  output.config = {
+    programs.discord.enable = true;
+  };
 
 }
-

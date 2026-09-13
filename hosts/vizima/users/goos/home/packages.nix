@@ -1,15 +1,15 @@
 { szy, pkgs, ... }:
 {
 
-	/*"${szy}".objects.package.definitions =
-	{
-		starship.data.enable = true;
-	};*/
+  /*
+    "${szy}".objects.package.definitions =
+    	{
+    		starship.data.enable = true;
+    	};
+  */
 
-	home.packages =
-	with pkgs;
-	[
-		python314
-	];
+  home.packages = with pkgs; [
+    python314
+  ];
 
 }
