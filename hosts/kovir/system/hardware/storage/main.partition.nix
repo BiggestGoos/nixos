@@ -1,6 +1,3 @@
-let
-  compress = "compress-force=zstd:15";
-in
 {
   disko.devices = {
     disk = {
@@ -23,41 +20,39 @@ in
             base = {
               size = "100%";
               content = {
-                type = "btrfs";
-                extraArgs = [ "-f" ]; # Not sure but the example uses it.
-
-                mountpoint = "/partitions";
-
-                subvolumes = {
-
-                  "@root" = {
-                    mountpoint = "/";
-                    mountOptions = [
-                      "defaults"
-                      compress
-                    ];
-                  };
-
-                  "@home" = {
-                    mountpoint = "/home";
-                    mountOptions = [
-                      "defaults"
-                      compress
-                    ];
-                  };
-
-                  "@nix" = {
-                    mountpoint = "/nix";
-                    mountOptions = [
-                      "defaults"
-                      compress
-                      "noatime"
-                    ];
-                  };
-
-                };
+                type = "lvm_pv";
+                vg = "base";
               };
             };
+          };
+        };
+      };
+    };
+    lvm_vg."base" = {
+      type = "lvm_vg";
+      lvs = {
+        root = {
+          size = "10%";
+          content = {
+            type = "filesystem";
+            format = "ext4";
+            mountpoint = "/";
+          };
+        };
+        nix = {
+          size = "20%";
+          content = {
+            type = "filesystem";
+            format = "ext4";
+            mountpoint = "/nix";
+          };
+        };
+        home = {
+          size = "100%";
+          content = {
+            type = "filesystem";
+            format = "ext4";
+            mountpoint = "/home";
           };
         };
       };
