@@ -1,4 +1,4 @@
-{ szy, ... }:
+{ szy, lib, ... }:
 {
 
   "${szy}".catalog.programs = {

@@ -18,6 +18,8 @@ if inputs ? nixvim then
       enable = true;
       package = finalPackage;
 
+      nixpkgs.useGlobalPackages = true;
+
       imports = szy.lib.imports.propagate.recursive {
         arg = input // {
           inherit szy;

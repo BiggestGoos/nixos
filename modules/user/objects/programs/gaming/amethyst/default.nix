@@ -4,7 +4,7 @@
   lib,
   ...
 }:
-if inputs ? amethyst-nixpkgs then
+if inputs ? amethyst then
   {
     imports = [
       ./amethyst.nix

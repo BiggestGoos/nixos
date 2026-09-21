@@ -31,7 +31,7 @@
 
     in
     {
-      program.package.input = systemSteam.constant.program.package.final;
+      program.package.input = osConfig.programs.steam.package;
       enable = lib.mkIf (!systemSteam.constant.enabled) (lib.mkForce false);
     };
 

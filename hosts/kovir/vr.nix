@@ -11,18 +11,20 @@
     inputs.nixpkgs-xr.nixosModules.nixpkgs-xr
   ];
 
-  nixpkgs.overlays = [
-    (final: prev: {
-      xrizer = prev.xrizer.overrideAttrs (old: {
-        src = inputs.xrizer-inputFix.outPath;
-      });
-    })
-    (final: prev: {
-      wivrn = prev.wivrn.override {
-        ovrCompatSearchPaths = "${final.xrizer}/lib/xrizer:${final.opencomposite}/lib/opencomposite:${final.vapor}/lib/VapoR";
-      };
-    })
-  ];
+  /*
+    nixpkgs.overlays = [
+      (final: prev: {
+        xrizer = prev.xrizer.overrideAttrs (old: {
+          src = inputs.xrizer-inputFix.outPath;
+        });
+      })
+      (final: prev: {
+        wivrn = prev.wivrn.override {
+          ovrCompatSearchPaths = "${final.xrizer}/lib/xrizer:${final.opencomposite}/lib/opencomposite:${final.vapor}/lib/VapoR";
+        };
+      })
+    ];
+  */
 
   services.wivrn = {
 

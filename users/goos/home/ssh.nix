@@ -1,10 +1,10 @@
-{ config, ... }:
+{ szy, lib, ... }:
 {
 
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    settings = {
+    settings = lib.mkIf (szy.data.host.name != "mahakam") {
 
       "mahakam" = {
         HostName = "mahakam";

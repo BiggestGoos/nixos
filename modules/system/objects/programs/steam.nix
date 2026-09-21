@@ -31,6 +31,7 @@
         remotePlay.openFirewall = true;
 
         #extest.enable = true;
+        protontricks.enable = true;
 
         extraCompatPackages = [
           pkgs.proton-ge-bin

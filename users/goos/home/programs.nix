@@ -1,21 +1,21 @@
-{ szy, ... }:
+{ szy, lib, ... }:
 {
 
   "${szy}".catalog.programs = {
-    git.enable = true;
-    neovim.enable = true;
-    yazi.enable = true;
-    zsh.enable = true;
+    git.enable = lib.mkDefault true;
+    neovim.enable = lib.mkDefault true;
+    yazi.enable = lib.mkDefault true;
+    zsh.enable = lib.mkDefault true;
 
     default = {
-      shell.cli = "zsh";
+      shell.cli = lib.mkDefault "zsh";
       editor = {
-        cli = "neovim";
-        any = "neovim";
+        cli = lib.mkDefault "neovim";
+        any = lib.mkDefault "neovim";
       };
       fileManager = {
-        cli = "yazi";
-        any = "yazi";
+        cli = lib.mkDefault "yazi";
+        any = lib.mkDefault "yazi";
       };
     };
 

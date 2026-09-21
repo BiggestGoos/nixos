@@ -2,10 +2,11 @@
   szy,
   config,
   inputs,
+  pkgs,
   ...
 }:
 let
-  package = inputs.amethyst-nixpkgs.amethyst-mod-manager;
+  package = inputs.amethyst.outputs.packages.${szy.data.host.system}.default;
 in
 {
 
