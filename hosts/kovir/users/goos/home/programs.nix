@@ -1,4 +1,4 @@
-{ szy, lib, ... }:
+{ szy, pkgs, ... }:
 {
 
   "${szy}".catalog.programs = {
@@ -20,5 +20,9 @@
   programs = {
     obsidian.enable = true;
   };
+
+  home.packages = with pkgs; [
+    logisim-evolution
+  ];
 
 }

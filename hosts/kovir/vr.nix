@@ -28,10 +28,10 @@
 
   services.wivrn = {
 
-    #enable = true;
+    enable = true;
     openFirewall = true;
 
-    #autoStart = true;
+    autoStart = true;
 
     highPriority = true;
 
@@ -85,28 +85,24 @@
     	};
   */
 
+  environment = {
+
+    sessionVariables = {
+      PRESSURE_VESSEL_IMPORT_OPENXR_1_RUNTIMES = "1";
+      PRESSURE_VESSEL_FILESYSTEMS_RW = "\${XDG_RUNTIME_DIR}/wivrn/comp_ipc";
+    };
+
+    systemPackages = [
+      pkgs.android-tools
+      pkgs.wayvr
+      #pkgs.vapor
+      #pkgs.xr-chaperone
+    ];
+
+  };
+
   /*
-    environment =
-    	{
-
-    		sessionVariables =
-    		{
-    			PRESSURE_VESSEL_IMPORT_OPENXR_1_RUNTIMES = "1";
-    			PRESSURE_VESSEL_FILESYSTEMS_RW = "\${XDG_RUNTIME_DIR}/wivrn/comp_ipc";
-    		};
-
-    		systemPackages =
-    		[
-    			pkgs.android-tools
-    			pkgs.wayvr
-    			pkgs.vapor
-    			#pkgs.xr-chaperone
-    		];
-
-    	};
-  */
-
-  environment.systemPackages =
+    environment.systemPackages =
     let
 
       wrapWithMissingLibraries =
@@ -129,6 +125,7 @@
     [
       wayvr
     ];
+  */
 
   # IMPORTANT: SteamVR needs CAP_SYS_NICE to be set for ~/.steam/steam/steamapps/common/SteamVR/bin/linux64/vrcompositor-launcher
 

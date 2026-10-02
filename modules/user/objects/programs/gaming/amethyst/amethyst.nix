@@ -6,7 +6,7 @@
   ...
 }:
 let
-  package = inputs.amethyst.outputs.packages.${szy.data.host.system}.default;
+  package = inputs.amethyst.outputs.legacyPackages.${szy.data.host.system}.amethyst-mod-manager;
 in
 {
 

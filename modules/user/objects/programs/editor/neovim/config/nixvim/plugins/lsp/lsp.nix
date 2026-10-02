@@ -95,6 +95,12 @@
         enable = true;
       };
 
+      # Haskell lsp
+      hls = {
+        enable = true;
+        installGhc = false;
+      };
+
       # Lua lsp
       lua_ls = {
         enable = true;

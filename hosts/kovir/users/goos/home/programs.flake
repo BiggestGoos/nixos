@@ -3,11 +3,12 @@
 	inputs =
 	{
 		nixvim.url = "github:nix-community/nixvim";
-    /*amethyst =
+    amethyst =
     {
-      url = "github:ChrisDKN/Amethyst-Mod-Manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };*/
+      url = "github:RoGreat/nixpkgs/amethyst-mod-manager";
+      #url = "github:ChrisDKN/Amethyst-Mod-Manager";
+      #inputs.nixpkgs.follows = "nixpkgs";
+    };
 	};
 
 }
