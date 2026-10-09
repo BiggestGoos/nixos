@@ -47,10 +47,6 @@ in
         ];
       };
 
-      auth = {
-        type = "none";
-      };
-
       storage.filesystem_folder = dataFolder;
 
     };
