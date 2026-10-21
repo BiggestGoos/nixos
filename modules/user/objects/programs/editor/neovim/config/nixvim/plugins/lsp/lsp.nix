@@ -90,6 +90,8 @@
       #   enable = true;
       # };
 
+      basedpyright.enable = true;
+
       # Nix lsp
       nixd = {
         enable = true;
